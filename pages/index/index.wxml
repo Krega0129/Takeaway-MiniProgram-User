@@ -1,0 +1,9 @@
+<!--pages/index/index.wxml-->
+<view class="grid col-3 padding-sm">
+  <view class="padding-sm">
+    <view class="bg-red padding radius text-center shadow-blur">
+      <view class="text-lg">嫣红</view>
+      <view class="margin-top-sm text-Abc">red</view>
+    </view>
+  </view>
+</view>
