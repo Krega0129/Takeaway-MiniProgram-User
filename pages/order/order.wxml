@@ -1,0 +1,5 @@
+<!--pages/order/order.wxml-->
+<cu-custom bgColor="bg-red">
+  <text slot="content">订单</text>
+</cu-custom>
+<text>pages/order/order.wxml</text>

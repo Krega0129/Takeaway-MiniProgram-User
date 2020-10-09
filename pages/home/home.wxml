@@ -1,0 +1,16 @@
+<!--pages/home/home.wxml-->
+<cu-custom bgColor="bg-red" isLocated="true">
+  <text slot="location">{{position}}</text>
+  <text slot="content">首页</text>
+</cu-custom>
+
+<w-swiper swiperList="{{swiperList}}"></w-swiper>
+
+<view class="grid col-4 margin-bottom text-center margin-top-xs">
+  <view wx:for="{{categoryList}}" wx:key="index">
+    <category-item class="padding">
+      <!-- <image slot="img" src="{{item.img}}"></image> -->
+      <text slot="title">{{item.title}}</text>
+    </category-item>
+  </view>
+</view>

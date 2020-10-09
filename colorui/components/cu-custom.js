@@ -27,6 +27,10 @@ Component({
       type: String,
       default: ''
     },
+    isLocated: {
+      type: [Boolean, String],
+      default: false
+    }
   },
   /**
    * 组件的初始数据
@@ -47,7 +51,12 @@ Component({
     },
     toHome(){
       wx.reLaunch({
-        url: '/pages/index/index',
+        url: '/pages/home/home',
+      })
+    },
+    selctPosition() {
+      wx.navigateTo({
+        url: '/pages/location/location',
       })
     }
   }

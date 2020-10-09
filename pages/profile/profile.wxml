@@ -1,0 +1,5 @@
+<!--pages/profile/profile.wxml-->
+<cu-custom bgColor="bg-red">
+  <text slot="content">我的</text>
+</cu-custom>
+<text>pages/profile/profile.wxml</text>

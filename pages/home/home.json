@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "w-swiper": "/components/WCH/w-swiper/w-swiper",
+    "category-item": "/components/WCH/category-item/category-item"
+  }
+}
