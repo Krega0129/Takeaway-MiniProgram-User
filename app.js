@@ -6,6 +6,9 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
 
+    wx.setStorageSync('searchSchoolHistoryList', [])
+    wx.setStorageSync('searchFoodHistoryList', [])
+
     wx.getSystemInfo({
       success: e => {
         this.globalData.StatusBar = e.statusBarHeight;
@@ -46,6 +49,7 @@ App({
     userInfo: null,
     StatusBar: null,
     Custom: null,
-    CustomBar: null
+    CustomBar: null,
+    nowLocation: '广东工业大学'
   }
 })

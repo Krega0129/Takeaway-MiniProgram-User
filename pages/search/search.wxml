@@ -1,13 +1,13 @@
-<!--pages/location/location.wxml-->
+<!--pages/search/search.wxml-->
 <cu-custom bgColor="bg-red" isBack="true">
   <text slot="backText">返回</text>
-  <text slot="content">定位</text>
+  <text slot="content">搜索</text>
 </cu-custom>
 
 <view class="cu-bar bg-red search">
   <view class="search-form radius">
     <text class="cuIcon-search"></text>
-    <input type="text" placeholder="搜索学校" confirm-type="search" bindinput="inputSearch"></input>
+    <input type="text" placeholder="搜索美食" confirm-type="search" bindinput="inputSearch" focus="{{true}}"></input>
   </view>
   <view class="action" bindtap="cancelLocate">
     <text class="cuIcon-close"></text>
@@ -15,14 +15,9 @@
   </view>
 </view>
 
-<view class="nowLocation text-cut padding-sm bg-white margin-bottom-xs">
-  <text class="cuIcon-locationfill"></text>
-  <text>当前定位：{{nowLocation}}</text>
-</view>
-
 <scroll-view scroll-y style="max-height: 75vh" wx:if="{{showSearchTip}}">
   <view class="cu-list menu">
-    <view class="cu-item bg-white" wx:for="{{schoolList}}" wx:key="index" data-location="{{item}}" bindtap="reLocate">
+    <view class="cu-item bg-white" wx:for="{{foodList}}" wx:key="index" data-food="{{item}}" bindtap="searchFood">
       <text class="cuIcon-search"> {{item}}</text>
     </view>
   </view>
@@ -33,7 +28,7 @@
     <text>搜索记录</text>
   </view>
   <view class="cu-list menu">
-    <view class="cu-item bg-white" wx:for="{{searchHistoryList}}" wx:key="index" data-index="{{index}}" data-location="{{item}}" bindtap="reLocate">
+    <view class="cu-item bg-white" wx:for="{{searchHistoryList}}" wx:key="index" data-index="{{index}}" data-location="{{item}}" bindtap="searchFood">
       <text>{{item}}</text>
       <view class="padding-sm" data-index="{{index}}" catchtap="deleteSearchHistory">
         <text class="cuIcon-close"></text>

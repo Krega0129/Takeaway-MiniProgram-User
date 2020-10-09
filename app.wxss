@@ -6,12 +6,20 @@
   display: flex;
 }
 
-.pos-ab {
-  position: absolute;
+.dp-in-bk {
+  display: inline-block;
 }
 
 .pos-re {
   position: relative;
+}
+
+.pos-ab {
+  position: absolute;
+}
+
+.pos-fix {
+  position: fixed;
 }
 
 .full {

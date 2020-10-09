@@ -4,13 +4,32 @@
   <text slot="content">首页</text>
 </cu-custom>
 
+<view class="cu-bar bg-red search">
+  <view class="search-form radius" bindtap="focusSearch">
+    <text class="cuIcon-search"></text>
+    <text class="text-gray">搜索美食</text>
+  </view>
+  <view class="action">
+    <text class="cuIcon-search"></text>
+    <text>搜索</text>
+  </view>
+</view>
+
 <w-swiper swiperList="{{swiperList}}"></w-swiper>
 
-<view class="grid col-4 margin-bottom text-center margin-top-xs">
+<view class="grid col-4 margin-bottom-xs text-center margin-top-xs bg-white">
   <view wx:for="{{categoryList}}" wx:key="index">
     <category-item class="padding">
-      <!-- <image slot="img" src="{{item.img}}"></image> -->
+      <image slot="img" src="{{item.img}}" style="width: 100rpx; height: 80rpx"></image>
       <text slot="title">{{item.title}}</text>
     </category-item>
   </view>
 </view>
+
+<!-- <view class="storesname text-center padding-sm text-bold text-xxl bg-white solid-bottom line-black">
+  <text>热门商家</text>
+</view> -->
+
+<block wx:for="{{8}}" wx:key="index">
+  <w-shop-item></w-shop-item>
+</block>

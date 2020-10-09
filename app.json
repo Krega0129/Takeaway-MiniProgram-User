@@ -5,7 +5,8 @@
     "pages/location/location",
     "pages/sociality/sociality",
     "pages/order/order",
-    "pages/profile/profile"
+    "pages/profile/profile",
+    "pages/search/search"
   ],
   "window": {
     "navigationStyle": "custom"
