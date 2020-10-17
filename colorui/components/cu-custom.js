@@ -51,12 +51,12 @@ Component({
     },
     toHome(){
       wx.reLaunch({
-        url: '/pages/home/home',
+        url: '/pages/WCH/home/home',
       })
     },
     selctPosition() {
       wx.navigateTo({
-        url: '/pages/location/location',
+        url: '/pages/WCH/location/location',
       })
     }
   }

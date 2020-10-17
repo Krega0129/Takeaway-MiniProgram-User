@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "cu-custom": "/colorui/components/cu-custom",
+    "w-shop-item": "/components/WCH/w-shop-item/w-shop-item"
+  }
+}

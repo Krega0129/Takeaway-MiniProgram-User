@@ -1,0 +1,22 @@
+<!--pages/storeListPage/storeListPage.wxml-->
+<cu-custom bgColor="bg-red" isBack="{{true}}">
+  <text slot="backText">返回</text>
+  <text slot="content">{{title}}</text>
+</cu-custom>
+
+<view class="cu-bar bg-red search pos-fix" style="width:100%; z-index: 10">
+  <view class="search-form radius" bindtap="focusSearch">
+    <text class="cuIcon-search"></text>
+    <text class="text-gray">搜索美食</text>
+  </view>
+  <view class="action">
+    <text class="cuIcon-search"></text>
+    <text>搜索</text>
+  </view>
+</view>
+<!-- 占位 -->
+<view class="cu-bar search"></view>
+
+<block wx:for="{{10}}" wx:key="index">
+  <w-shop-item></w-shop-item>
+</block>

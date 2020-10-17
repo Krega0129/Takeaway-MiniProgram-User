@@ -1,4 +1,4 @@
-// pages/position/position.js
+// pages/WCH/bill/bill.js
 Page({
 
   /**

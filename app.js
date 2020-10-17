@@ -6,8 +6,12 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
 
-    wx.setStorageSync('searchSchoolHistoryList', [])
-    wx.setStorageSync('searchFoodHistoryList', [])
+    if(!wx.getStorageSync('searchSchoolHistoryList')) {
+      wx.setStorageSync('searchSchoolHistoryList', [])
+    }
+    if(!wx.getStorageSync('searchFoodHistoryList')) {
+      wx.setStorageSync('searchFoodHistoryList', [])
+    }
 
     wx.getSystemInfo({
       success: e => {
@@ -45,11 +49,28 @@ App({
       }
     })
   },
+  addToCart(obj) {
+    // 1.判断是否已经添加进来
+    const oldInfo = this.globalData.cartList.find((item) => item.id === obj.id)
+    if (oldInfo) {
+      oldInfo.count += 1
+    } else {
+      obj.count = 1
+      this.globalData.cartList.push(obj)
+    }
+  },
   globalData: {
     userInfo: null,
     StatusBar: null,
     Custom: null,
     CustomBar: null,
-    nowLocation: '广东工业大学'
+    // 当前定位
+    nowLocation: '广东工业大学',
+    // 购物车列表
+    cartList: [],
+    // 总价格
+    totalPrice: 0,
+    // 总数量
+    totalCount: 0
   }
 })

@@ -1,0 +1,4 @@
+<!--components/WCH/w-to-top-btn/w-to-top-btn.wxml-->
+<view class="toTop pos-fix bg-gray round text-center" style="right: 50rpx; bottom: 50rpx; z-index: 20" bindtap="scrollToTop">
+  <view class="cuIcon-top margin-sm"></view>
+</view>

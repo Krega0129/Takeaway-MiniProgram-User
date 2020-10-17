@@ -4,7 +4,7 @@
   <text slot="content">定位</text>
 </cu-custom>
 
-<view class="cu-bar bg-red search">
+<!-- <view class="cu-bar bg-red search">
   <view class="search-form radius">
     <text class="cuIcon-search"></text>
     <input type="text" placeholder="搜索学校" confirm-type="search" bindinput="inputSearch"></input>
@@ -13,22 +13,30 @@
     <text class="cuIcon-close"></text>
     <text>取消</text>
   </view>
-</view>
+</view> -->
 
 <view class="nowLocation text-cut padding-sm bg-white margin-bottom-xs">
   <text class="cuIcon-locationfill"></text>
   <text>当前定位：{{nowLocation}}</text>
 </view>
 
-<scroll-view scroll-y style="max-height: 75vh" wx:if="{{showSearchTip}}">
+<scroll-view scroll-y style="max-height: calc(100vh - 260rpx)">
+  <view class="cu-list menu">
+    <view class="cu-item bg-white" wx:for="{{schoolList}}" wx:key="index" data-location="{{item}}" bindtap="reLocate">
+      <text class="cuIcon-location"> {{item}}</text>
+    </view>
+  </view>
+</scroll-view>
+
+<!-- <scroll-view scroll-y style="max-height: 75vh" wx:if="{{showSearchTip}}">
   <view class="cu-list menu">
     <view class="cu-item bg-white" wx:for="{{schoolList}}" wx:key="index" data-location="{{item}}" bindtap="reLocate">
       <text class="cuIcon-search"> {{item}}</text>
     </view>
   </view>
-</scroll-view>
+</scroll-view> -->
 
-<view wx:if="{{showHistory}}">
+<!-- <view wx:if="{{showHistory}}">
   <view class="padding-sm bg-white solid-bottom line-gray">
     <text>搜索记录</text>
   </view>
@@ -43,4 +51,4 @@
   <view class="padding-sm text-center bg-white margin-top-xs" bindtap="clearAllSearchHistory">
     <text class="text-red">清除所有搜索记录</text>
   </view>
-</view>
+</view> -->

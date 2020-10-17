@@ -1,0 +1,4 @@
+<!--pages/WCH/bill/bill.wxml-->
+<cu-custom bgColor="bg-red" isBack="true"></cu-custom>
+
+

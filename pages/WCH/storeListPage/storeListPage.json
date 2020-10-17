@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "w-shop-item": "/components/WCH/w-shop-item/w-shop-item"
+  }
+}

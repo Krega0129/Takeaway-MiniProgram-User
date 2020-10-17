@@ -1,12 +1,14 @@
 {
   "pages": [
-    "pages/home/home",
-    "pages/position/position",
-    "pages/location/location",
+    "pages/WCH/home/home",
+    "pages/WCH/location/location",
     "pages/sociality/sociality",
     "pages/order/order",
     "pages/profile/profile",
-    "pages/search/search"
+    "pages/WCH/search/search",
+    "pages/WCH/storeListPage/storeListPage",
+    "pages/WCH/storeDetails/storeDetails",
+    "pages/WCH/bill/bill"
   ],
   "window": {
     "navigationStyle": "custom"
@@ -18,14 +20,14 @@
     "selectedColor": "#e54d42",
     "list": [
       {
-        "pagePath": "pages/home/home",
+        "pagePath": "pages/WCH/home/home",
         "text": "首页",
         "iconPath": "/assets/img/WCH/tabBar/home.png",
         "selectedIconPath": "/assets/img/WCH/tabBar/home-active.png"
       },
       {
         "pagePath": "pages/sociality/sociality",
-        "text": "朋友圈",
+        "text": "分享校园",
         "iconPath": "/assets/img/WCH/tabBar/sociality.png",
         "selectedIconPath": "/assets/img/WCH/tabBar/sociality-active.png"
       },

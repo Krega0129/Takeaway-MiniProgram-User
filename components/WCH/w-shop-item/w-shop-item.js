@@ -26,6 +26,10 @@ Component({
     
   },
   methods: {
-
+    showStoreDetails() {
+      wx.navigateTo({
+        url: '/pages/WCH/storeDetails/storeDetails',
+      })
+    }
   }
 })

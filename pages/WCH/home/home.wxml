@@ -4,8 +4,8 @@
   <text slot="content">首页</text>
 </cu-custom>
 
-<view class="cu-bar bg-red search">
-  <view class="search-form radius" bindtap="focusSearch">
+<view class="cu-bar bg-red search pos-fix" style="width:100%; z-index: 10" bindtap="focusSearch">
+  <view class="search-form radius">
     <text class="cuIcon-search"></text>
     <text class="text-gray">搜索美食</text>
   </view>
@@ -14,15 +14,17 @@
     <text>搜索</text>
   </view>
 </view>
+<!-- 占位 -->
+<view class="cu-bar search"></view>
 
 <w-swiper swiperList="{{swiperList}}"></w-swiper>
 
-<view class="grid col-4 margin-bottom-xs text-center margin-top-xs bg-white">
+<view class="grid col-4 margin-bottom-xs text-center margin-top-xs bg-white padding-lr">
   <view wx:for="{{categoryList}}" wx:key="index">
-    <category-item class="padding">
+    <w-category-item class="padding" data-title="{{item.title}}" bindtap="tapCategory">
       <image slot="img" src="{{item.img}}" style="width: 100rpx; height: 80rpx"></image>
       <text slot="title">{{item.title}}</text>
-    </category-item>
+    </w-category-item>
   </view>
 </view>
 
@@ -33,3 +35,5 @@
 <block wx:for="{{8}}" wx:key="index">
   <w-shop-item></w-shop-item>
 </block>
+
+<w-to-top-btn wx:if="{{showBackTop}}"></w-to-top-btn>

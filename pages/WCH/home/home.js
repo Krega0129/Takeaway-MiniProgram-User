@@ -1,5 +1,6 @@
 // pages/home/home.js
 const app = getApp()
+const BACK_TOP = 500
 Page({
   data: {
     position: app.globalData.nowLocation,
@@ -65,16 +66,36 @@ Page({
         title: '超市商铺',
         img: '/assets/img/WCH/category/shop.png'
       },
-    ]
+    ],
+    showBackTop: false
   },
   onShow() {
     this.setData({
       position: app.globalData.nowLocation
     })
   },
+  onPageScroll(options) {
+    const scrollTop = options.scrollTop
+    const flag = scrollTop >= BACK_TOP
+
+    if(flag !== this.data.showBackTop) {
+      this.setData({
+        showBackTop: flag
+      })
+    }
+  },
   focusSearch() {
     wx.navigateTo({
-      url: '/pages/search/search',
+      url: '/pages/WCH/search/search',
+    })
+  },
+  tapCategory(e) {
+    wx.navigateTo({
+      url: '/pages/WCH/storeListPage/storeListPage',
+      success(res) {
+        // 通过eventChannel向被打开页面传送数据
+        res.eventChannel.emit('showSearchList', {title: e.currentTarget.dataset.title})
+      }
     })
   }
 })

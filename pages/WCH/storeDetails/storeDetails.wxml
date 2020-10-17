@@ -1,0 +1,190 @@
+<!--pages/storeDetails/storeDetails.wxml-->
+<cu-custom bgColor="bg-red" isBack="true"></cu-custom>
+
+<!-- 商家信息展示 -->
+<view class="cu-card article no-card">
+  <view class="cu-item" style="background: #e54d42">
+    <view class="content">
+      <image src="/assets/img/WCH/category/shop.png" mode="aspectFill" style="width: 200rpx; height: 166rpx" class="margin-top bg-white"></image>
+      <view class="desc">
+        <view class="title text-cut" style="color: white; width: 500rpx; font-size: 40rpx">{{storeName}}</view>
+        <view class="margin-left text-white text-cut pos-re" style="width: 500rpx; top: -20rpx" bindtap="showStoreIntro">
+          {{storeIntro}}
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 商家介绍弹窗 -->
+<view class="cu-modal {{showStoreIntro?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">商家简介</view>
+      <view class="action" bindtap="hideStoreIntro">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      商家简介商家简介商家简介商家简介商家简介商家简介商家简介商家简介商家简介商家简介商家简介商家简介商家简介商家简介商家简介商家简介商家简介
+    </view>
+  </view>
+</view>
+
+<!-- 水平导航 -->
+<scroll-view scroll-x class="bg-white nav">
+  <view class="flex text-center">
+    <view class="cu-item flex-sub {{index==TabIndex?'text-orange cur':''}}" wx:for="{{tabTitleList}}" wx:key="index" bindtap="tapTabIndex" data-id="{{index}}">
+      {{item}}
+    </view>
+  </view>
+</scroll-view>
+
+<!-- 垂直导航（点餐页面） -->
+<view class="VerticalBox" wx:if="{{TabIndex === 0}}">
+  <scroll-view class="VerticalNav nav" scroll-y="{{true}}" scroll-with-animation scroll-top="{{VerticalNavTop}}" style="height:calc(100vh - 500rpx)">
+    <view class="cu-item {{index==TabCur?'text-green cur':''}}" wx:for="{{list}}" wx:key="index" bindtap='tabSelect' data-id="{{index}}">
+      {{item.name}}
+    </view>
+  </scroll-view>
+  <scroll-view class="VerticalMain" scroll-y scroll-with-animation lower-threshold="{{0}}" style="height:calc(100vh - 500rpx)" scroll-into-view="main-{{MainCur}}" bindscroll="VerticalMain" bindscrolltolower="reachBottom">
+    <view class="cateList padding-top padding-lr" wx:for="{{goodsCategoryList}}" wx:for-item="foodList" wx:for-index="ind" wx:key="ind" id="main-{{ind}}">
+      <view class='cu-bar solid-bottom bg-white'>
+        <view class='action'>
+          <text class='cuIcon-title text-green'></text>
+          <text class="text-lg text-bold">{{foodList.title}}</text>
+        </view>
+      </view>
+      <view class="cu-list menu-avatar">
+        <view class="cu-item" wx:for="{{foodList.foodsList}}" wx:key="index" style="height: 160rpx" data-food="{{item}}" bindtap="showFoodDetails">
+          <view class="cu-avatar xl" style="background-image:url(https://ossweb-img.qq.com/images/lol/img/champion/Taric.png);">
+            <view class="cu-tag badge">99+</view>
+          </view>
+          <view class="content margin-left">
+            <view class="text-black">
+              <text class="text-cut text-bold">{{item.name}}</text>
+              <view class="cu-tag round bg-orange sm">标签</view>
+            </view>
+            <view class="text-cut text-xs text-gray" style="line-height: 26rpx">
+              {{item.intro}}
+            </view>
+            <view class="text-cut text-xs text-gray" style="height: 30rpx; line-height: 38rpx">
+              月售{{item.monthSells}}
+            </view>
+            <view class="text-cut text-gray">
+              <text class="text-price text-sm">{{item.price}}</text>
+            </view>
+          </view>
+          <view class="action">
+            <view style="margin-top: 100rpx; width: 120rpx; margin-left: -30rpx" class="flex text-center">
+              <view class="round cuIcon-move text-lg text-white bg-{{goodsCategoryList[ind].foodsList[index].num > 0 ? 'blue' : 'gray'}}" style="height: 40rpx; width: 40rpx; line-height: 40rpx" data-food="{{item}}" catchtap="removeGoods"></view>
+              <text class="margin-lr-xs text-xl"> {{goodsCategoryList[ind].foodsList[index].num}} </text>
+              <view class="round cuIcon-add text-white bg-blue text-lg" data-food="{{item}}" style="height: 40rpx; width: 40rpx; line-height: 40rpx" catchtap="addGoods"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
+
+<!-- 商品详情 -->
+<view class="cu-modal {{showFoodDetails?'show':''}}" style="z-index: 3000">
+  <view class="cu-dialog">
+    <view class="padding text-left text-lg text-bold">{{foodDetails.name}}</view>
+    <view class="bg-img" style="background-image: url('https://ossweb-img.qq.com/images/lol/web201310/skin/big91012.jpg'); height:400rpx;"></view>
+    <view class="action pos-fix text-center round" style="bottom: 50%; left: 50%; margin-left: -25rpx; transform: translateY(350rpx); height: 50rpx; width: 50rpx; background: rgba(0,0,0,.5); line-height: 50rpx" bindtap="hideFoodDetails">
+      <text class="cuIcon-close text-white"></text>
+    </view>
+  </view>
+</view>
+
+<!-- 商家页面 -->
+<view class="padding-lg bg-white" wx:if="{{TabIndex == 1}}">
+  <view class="flex justify-between text-lg padding-bottom-sm">
+    <view>
+      <text class="cuIcon-location text padding-right-xs"></text>
+      <text>{{storeAddress}}</text>
+    </view>
+    <view class="cuIcon-phone lg text-xxl solid-left line-black padding-left" bindtap="callStore"></view>
+  </view>
+  <view class="flex justify-between text-lg padding-top-sm">
+    <view>
+      <text class="cuIcon-selection text padding-right-xs"></text>
+      <text class="text-bold">查看食品安全档案</text>
+    </view>
+    <view class="cuIcon-right text-xxl"></view>
+  </view>
+  <view class="flex margin-top-lg">
+    <view class="text-bold text-lg" style="width: 660rpx">
+      <text class="cuIcon-notification text padding-right-xs"></text>商家公告：
+    </view>
+    <view class="text-lg" style="line-height: 50rpx">{{storeNotice}}</view>
+  </view>
+</view>
+
+<!-- 电话底部弹窗 -->
+<view class="cu-modal bottom-modal {{showBottomDialog?'show':''}}">
+  <view class="cu-dialog">
+    <view class="padding-xl">
+      <text class="text-green text-xl text-bold">18319328003</text>
+    </view>
+    <view class="padding-xl" bindtap="hiddenBottomDialog">取消</view>
+  </view>
+</view>
+
+<!-- 底部结算栏 -->
+<view class="pos-fix bg-black text-center" style="bottom: 0; height: 130rpx; width: 100%; z-index: 2000" wx:if="{{TabIndex == 0}}">
+  <view class="cuIcon-cartfill round bg-white pos-ab text-sl" style="width: 140rpx; height: 140rpx; top: -70rpx; left: 50rpx; line-height: 140rpx;" catchtap="showCartList">
+    <view class="round bg-red pos-ab" style="width: 40rpx; height: 40rpx; font-size: 30rpx; line-height: 40rpx; top: 0; right: 10rpx;" wx:if="{{totalCount > 0}}">{{totalCount}}</view>
+  </view>
+  <view class="text-left" style="width: 60%; padding-left: 200rpx; line-height: 100rpx">
+    <text class="text-price text-white">{{totalPrice}}</text>
+    <view class="text-sm" style="margin-top: -60rpx">
+      <text>另需配送费<text class="text-price">2</text>/可自提</text>
+    </view>
+  </view>
+  <view class="pos-ab bg-red text-xl" style="right: 0; top: 0; height: 100%; line-height: 130rpx; width: 260rpx" bindtap="bill">去结算</view>
+</view>
+
+<!-- 结算栏菜单 -->
+<view class="cu-modal bottom-modal {{showCartList?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white">
+      <view class="action cuIcon-delete text-red" bindtap="showDeleteCartTip" wx:if="{{cartList[0]}}">清空购物车</view>
+      <view class="action"></view>
+      <view class="action" bindtap="hideCartList">关闭</view>
+    </view>
+    <scroll-view scroll-y style="height: 800rpx">
+      <view wx:if="{{cartList[0]}}">
+        <view class="cartList-item cu-item flex justify-between padding-lg" wx:for="{{cartList}}" wx:key="index" style="height: 160rpx">
+          <view class="flex">
+            <view class="cu-avatar lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/img/champion/Taric.png);">
+              <view class="cu-tag badge">99+</view>
+            </view>
+            <view class="content margin-left">
+              <view class="text-black">
+                <text class="text-cut text-lg text-bold">{{item.name}}</text>
+                <view class="cu-tag round bg-orange sm">标签</view>
+              </view>
+              <view class="text-left" style="line-height: 60rpx">
+                <text class="text-price">{{item.price}}</text>
+              </view>
+            </view>
+          </view>
+          <view class="action">
+            <view style="margin-top: 40rpx; width: 200rpx; margin-left: -30rpx" class="flex text-center">
+              <view class="round cuIcon-move text-lg text-white bg-blue" style="height: 40rpx; width: 40rpx; line-height: 40rpx" data-food="{{item}}" catchtap="removeGoods"></view>
+              <text class="margin-lr-xs text-xl"> {{cartList[index].count}} </text>
+              <view class="round cuIcon-add text-white bg-blue text-lg" data-food="{{item}}" style="height: 40rpx; width: 40rpx; line-height: 40rpx" catchtap="addGoods"></view>
+              <view class="cuIcon-delete text-red text-xl margin-left" catchtap="deleteCartListItem" data-food="{{item}}"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{!cartList[0]}}" class="text-center padding-tb-lg">
+        购物车为空
+      </view>
+    </scroll-view>
+  </view>
+</view>
