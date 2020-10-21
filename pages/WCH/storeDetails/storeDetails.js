@@ -20,8 +20,6 @@ Page({
     // 垂直导航栏当前id
     MainCur: 0,
     VerticalNavTop: 0,
-    // 用来显示商家的商品数量
-    goodsList: [],
     // 购物车列表
     cartList: app.globalData.cartList,
     // 后台获取的信息
@@ -58,7 +56,7 @@ Page({
       },
       {
         id: 1,
-        title: '全球美食',
+        title: '全球美食qqqqqqqqq',
         foodsList: [
           {
             id: 3,
@@ -132,16 +130,9 @@ Page({
       list[i].id = i;
     }
 
-    for(let item of this.data.goodsCategoryList) {
-      for(let food of item.foodsList) {
-        this.data.goodsList.push(food)
-      }
-    }
-
     this.setData({
       list: list,
-      listCur: list[0],
-      goodsList: this.data.goodsList
+      listCur: list[0]
     })
   },
   onReady() {
@@ -228,26 +219,61 @@ Page({
       }
     }
   },
+  addSingleFood() {
+    // 选中的商品
+    const goodsObj = {}
+
+    goodsObj.id = this.data.foodDetails.id
+    goodsObj.name = this.data.foodDetails.name
+    goodsObj.price = this.data.foodDetails.price
+
+    app.addToCart(goodsObj)
+    let foodInfo = null
+
+    // 改变对象里的数据
+    for(let item of this.data.goodsCategoryList) {
+      const a = item.foodsList
+      foodInfo = a.find(item => item.id === this.data.foodDetails.id)
+      if(foodInfo) {
+        foodInfo.num++
+        this.data.foodDetails.num++
+        app.globalData.totalCount++
+        app.globalData.totalPrice += foodInfo.price
+      }
+    }
+
+    this.setData({
+      cartList: app.globalData.cartList,
+      goodsCategoryList: this.data.goodsCategoryList,
+      totalPrice: app.globalData.totalPrice,
+      totalCount: app.globalData.totalCount
+    })
+  },
   addGoods(e) {
     // 选中的商品
     const goodsItem = e.currentTarget.dataset.food
     const goodsObj = {}
-    
+
     goodsObj.id = goodsItem.id
     goodsObj.name = goodsItem.name
     goodsObj.price = goodsItem.price
 
     app.addToCart(goodsObj)
+    let foodInfo = null
 
     // 改变对象里的数据
-    const foodInfo = this.data.goodsList.find(item => item.id === goodsItem.id)
-    foodInfo.num++
-    goodsItem.num++
-    app.globalData.totalCount++
-    app.globalData.totalPrice += foodInfo.price
+    for(let item of this.data.goodsCategoryList) {
+      const a = item.foodsList
+      foodInfo = a.find(item => item.id === goodsItem.id)
+      if(foodInfo) {
+        foodInfo.num++
+        goodsItem.num++
+        app.globalData.totalCount++
+        app.globalData.totalPrice += foodInfo.price
+      }
+    }
 
     this.setData({
-      goodsList: this.data.goodsList,
       cartList: app.globalData.cartList,
       goodsCategoryList: this.data.goodsCategoryList,
       totalPrice: app.globalData.totalPrice,
@@ -257,22 +283,26 @@ Page({
   removeGoods(e) {
     const goodsItem = e.currentTarget.dataset.food
 
-    const foodInfo = this.data.goodsList.find(item => item.id === goodsItem.id)
+    let foodInfo = null
     const cartFood = app.globalData.cartList.find(item => item.id === goodsItem.id)
-    if(foodInfo.num > 0) {
-      foodInfo.num--
-      goodsItem.num--
-      cartFood.count--
-      app.globalData.totalPrice -= foodInfo.price
-      app.globalData.totalCount--
-      if(cartFood.count <= 0) {
-        const index = app.globalData.cartList.indexOf(cartFood)
-        app.globalData.cartList.splice(index, 1)
+
+    for(let item of this.data.goodsCategoryList) {
+      const a = item.foodsList
+      foodInfo = a.find(item => item.id === goodsItem.id)
+      if(foodInfo && foodInfo.num > 0) {
+        foodInfo.num--
+        goodsItem.num--
+        cartFood.count--
+        app.globalData.totalPrice -= foodInfo.price
+        app.globalData.totalCount--
+        if(cartFood.count <= 0) {
+          const index = app.globalData.cartList.indexOf(cartFood)
+          app.globalData.cartList.splice(index, 1)
+        }
       }
     }
 
     this.setData({
-      goodsList: this.data.goodsList,
       cartList: app.globalData.cartList,
       goodsCategoryList: this.data.goodsCategoryList,
       totalPrice: app.globalData.totalPrice,
@@ -315,13 +345,19 @@ Page({
   // 删除购物车的商品
   deleteCartListItem(e) {
     const cartFood = app.globalData.cartList.find(item => item.id === e.currentTarget.dataset.food.id)
-    const foodInfo = this.data.goodsList.find(item => item.id === e.currentTarget.dataset.food.id)
+    let foodInfo = null
     const index = app.globalData.cartList.indexOf(cartFood)
 
-    app.globalData.cartList.splice(index, 1)
-    app.globalData.totalPrice -= foodInfo.price * foodInfo.num
-    app.globalData.totalCount -= foodInfo.num
-    foodInfo.num = 0
+    for(let item of this.data.goodsCategoryList) {
+      const a = item.foodsList
+      foodInfo = a.find(item => item.id === e.currentTarget.dataset.food.id)
+      if(foodInfo) {
+        app.globalData.cartList.splice(index, 1)
+        app.globalData.totalPrice -= foodInfo.price * foodInfo.num
+        app.globalData.totalCount -= foodInfo.num
+        foodInfo.num = 0
+      }
+    }
 
     this.setData({
       cartList: app.globalData.cartList,
@@ -348,13 +384,28 @@ Page({
     app.globalData.totalCount = 0
     app.globalData.totalPrice = 0
 
+    // 清空数量
+    for(let item of this.data.goodsCategoryList) {
+      for(let food of item.foodsList) {
+        food.num = 0
+      }
+    }
+
     this.setData({
       cartList: app.globalData.cartList,
       totalPrice: app.globalData.totalPrice,
-      totalCount: app.globalData.totalCount
+      totalCount: app.globalData.totalCount,
+      goodsCategoryList: this.data.goodsCategoryList
     })
   },
   bill() {
-
+    if(this.data.cartList[0]) {
+      wx.navigateTo({
+        url: '/pages/WCH/bill/bill',
+        success: res => {
+          res.eventChannel.emit('emitStoreAddress', {storeAddress: this.data.storeAddress})
+        }
+      })
+    }
   }
 })

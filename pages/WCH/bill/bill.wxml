@@ -1,4 +1,130 @@
 <!--pages/WCH/bill/bill.wxml-->
 <cu-custom bgColor="bg-red" isBack="true"></cu-custom>
 
+<view class="bg-red pos-re" style="padding-top: 100rpx">
+  <view class="round flex justify-between pos-ab text-center" style="width: 300rpx; height: 60rpx; line-height: 60rpx; top: 20rpx; right: 50rpx; box-sizing: content-box; border: 1px solid white">
+    <view class="round pos-ab text-{{takeAway?'red':'white'}}" style="top: 0; left: 0;height:60rpx; width:150rpx; z-index: 2" bindtap="takeAway">外卖配送</view>
+    <view class="round pos-ab text-{{takeAway?'white':'red'}}" style="top: 0; right: 0;height:60rpx; width:150rpx; z-index: 2" bindtap="selfTake">到店自取</view>
+    <view class="round bg-white takeAwayBg" style="transform: {{takeAway?'translateX(0)':'translateX(150rpx)'}}; height:60rpx; width:160rpx; transition: .2s;"></view>
+  </view>
+  <view wx:if="{{takeAway}}">
+    <!-- 未选择地址 -->
+    <view class="bg-white margin-lr-sm solid-bottom" style="box-sizing: border-box" wx:if="{{!chooseLocation}}" bindtap="changeLocation">
+      <view class="flex justify-between" style="line-height: 60rpx">
+        <view class="padding text-bold text-lg">
+          <text class="cuIcon-roundaddfill text-yellow"> 选择收货地址</text>
+        </view>
+        <view class="cuIcon-right padding"></view>
+      </view>
+    </view>
+    <!-- 选择地址后显示 -->
+    <view class="bg-white margin-lr-sm" style="box-sizing: border-box" wx:if="{{chooseLocation}}" bindtap="changeLocation">
+      <view class="flex justify-between" style="line-height: 60rpx">
+        <view class="padding text-bold text-lg">
+          <text class="cuIcon-location"> {{user.school}}{{user.room}}</text>
+        </view>
+        <view class="cuIcon-right padding"></view>
+      </view>
+      <view class="flex margin-left-xl" style="line-height: 40rpx">
+        <view>{{user.name}} {{user.sex}}</view>
+        <view class="margin-left padding-bottom">{{user.telNum}}</view>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{!takeAway}}">
+    <view class="bg-white margin-lr-sm padding-sm" style="box-sizing: border-box">
+      <text>商家地址</text>
+      <view class="text-xl padding-tb-sm">{{storeAddress}}</view>
+    </view>
+  </view>
+</view>
 
+<view class="cu-modal bottom-modal {{changeLocation?'show':''}}">
+  <view class="cu-dialog text-left bg-white" style="height: 800rpx">
+    <view class="bg-white solid-bottom line-gray">
+      <view class="action text-gray padding-sm" bindtap="cancleChangeLocation">取消</view>
+    </view>
+    <view class="solid-tb flex justify-between padding-sm padding-left-xl solid-bottom line-gray" wx:for="{{locationList}}" wx:key="index" data-user="{{item}}" bindtap="selectLocation">
+      <view class="text-cut text-sm" style="width: 600rpx">
+        <view class="text-cut text-black" style="line-height: 40rpx">{{item.school}}{{item.room}}</view>
+        <view class="text-gray">
+          <text class="padding-right-xs">{{item.name}}</text>
+          <text class="padding-right-xs">{{item.sex}}</text>
+          <text class="padding-right-xs">{{item.telNum}}</text>
+        </view>
+      </view>
+      <view class="padding-sm" catchtap="editLocation" data-user="{{item}}" data-index="{{index}}">
+        <text class="cuIcon-write"></text>
+      </view>
+    </view>
+  </view>
+  <view class="padding pos-ab text-center bg-red margin-sm" style="bottom: 0; width: 95%" bindtap="newLocation">
+    <text class="cuIcon-roundadd"> 新增地址</text>
+  </view>
+</view>
+
+<view class="cu-form-group margin-lr-sm" wx:if="{{takeAway}}">
+  <view class="title">配送时间</view>
+  <picker bindchange="PickerChange" value="{{index}}" range="{{picker}}">
+    <view class="picker">
+      {{picker[index]}}
+    </view>
+  </picker>
+</view>
+
+<view class="cu-form-group margin-lr-sm" wx:if="{{!takeAway}}">
+  <view class="title">预留手机号码</view>
+  <input type="number" value="{{userTel}}" placeholder="请填写预留手机号码" id=""/>
+</view>
+
+<view class="margin-sm bg-white">
+  <view class="padding text-lg">商家名</view>
+  <view class="padding-tb-sm padding-lr flex justify-between" style="line-height: 64rpx" wx:for="{{cartList}}" wx:key="index">
+    <view class="flex">
+      <view class="cu-avatar" style="background-image:url(https://ossweb-img.qq.com/images/lol/img/champion/Taric.png);"></view>
+      <view class="content margin-left">
+        <view class="text-cut text-black" style="width: 300rpx">
+          <text class="text-bold">{{item.name}}</text>
+        </view>
+      </view>
+      <view class="margin-left">x{{item.count}}</view>
+    </view>
+    <view class="text-price margin-right-xl text-red text-bold">{{item.price}}</view>
+  </view>
+  <view class="padding-lr padding-bottom-xs padding-top-lg flex justify-between" style="line-height: 38rpx">
+    <view>包装费</view>
+    <view class="text-price margin-right-xl text-red text-bold">{{packPrice}}</view>
+  </view>
+  <view class="padding-lr padding-tb-xs flex justify-between" style="line-height: 38rpx">
+    <view>配送费</view>
+    <view class="text-price margin-right-xl text-red text-bold">{{sendPrice}}</view>
+  </view>
+  <view class="padding text-right margin-right-xl" style="line-height: 38rpx">
+    <text class="text-sm padding-right">小计</text>
+    <text class="text-price text-red text-bold">{{totalPrice + packPrice + sendPrice}}</text>
+  </view>
+</view>
+
+<view class="cu-form-group margin-lr-sm" style="line-height: 38rpx" bindtap="editRemark">
+  <view class="title">订单备注</view>
+  <view class="text-grey flex">
+    <view class="text-cut text-right" style="width: 400rpx">
+      {{remark?remark:'口味、偏好'}}
+    </view>
+    <text class="cuIcon-right text-lg"></text>
+  </view>
+</view>
+
+<view class="cu-form-group margin-lr-sm" style="margin-bottom: 140rpx">
+  <view class="title">餐具数量</view>
+  <picker bindchange="tableWareChange" value="{{ind}}" range="{{tableWare}}">
+    <view class="picker">
+      {{ind?tableWare[ind]:'未选择'}}
+    </view>
+  </picker>
+</view>
+
+<view class="pos-fix margin-sm round bg-darkGray flex justify-between cu-card text-lg" style="bottom: 0; width: 95%;">
+  <view class="padding"><view class="text-price margin-left">{{totalPrice + packPrice + sendPrice}}</view></view>
+  <view class="padding-tb bg-red padding-lr-xl">提交订单</view>
+</view>

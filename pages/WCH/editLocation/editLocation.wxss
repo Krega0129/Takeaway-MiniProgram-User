@@ -1,0 +1,4 @@
+/* pages/WCH/editLocation/editLocation.wxss */
+Page{
+  background: white;
+}

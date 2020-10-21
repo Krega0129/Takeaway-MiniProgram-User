@@ -2391,7 +2391,7 @@ button.icon.lg {
 
 .cu-form-group textarea {
 	margin: 32rpx 0 30rpx;
-	height: 4.6em;
+	height: 8.6em;
 	width: 100%;
 	line-height: 1.2em;
 	flex: 1;
@@ -3938,4 +3938,23 @@ scroll-view.cu-steps .cu-item {
 .line-white,
 .lines-white {
 	color: var(--white);
+}
+
+/* 
+	==============
+			自定义
+	==============
+*/
+
+.bg-darkGray {
+	background-color: var(--darkGray);
+	color: var(--white);
+}
+
+.bg-white.dark {
+	background: #f8f8f8;
+}
+
+.cu-form-group .title {
+  min-width: calc(4em + 30rpx);
 }

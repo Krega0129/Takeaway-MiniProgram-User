@@ -5,7 +5,7 @@
 <view class="cu-card article no-card">
   <view class="cu-item" style="background: #e54d42">
     <view class="content">
-      <image src="/assets/img/WCH/category/shop.png" mode="aspectFill" style="width: 200rpx; height: 166rpx" class="margin-top bg-white"></image>
+      <image src="/assets/img/WCH/category/shop.png" mode="aspectFill" style="width: 200rpx; height: 166rpx; margin-right: 0" class="margin-top bg-white"></image>
       <view class="desc">
         <view class="title text-cut" style="color: white; width: 500rpx; font-size: 40rpx">{{storeName}}</view>
         <view class="margin-left text-white text-cut pos-re" style="width: 500rpx; top: -20rpx" bindtap="showStoreIntro">
@@ -42,13 +42,13 @@
 
 <!-- 垂直导航（点餐页面） -->
 <view class="VerticalBox" wx:if="{{TabIndex === 0}}">
-  <scroll-view class="VerticalNav nav" scroll-y="{{true}}" scroll-with-animation scroll-top="{{VerticalNavTop}}" style="height:calc(100vh - 500rpx)">
-    <view class="cu-item {{index==TabCur?'text-green cur':''}}" wx:for="{{list}}" wx:key="index" bindtap='tabSelect' data-id="{{index}}">
+  <scroll-view class="VerticalNav nav" scroll-y="{{true}}" scroll-with-animation scroll-top="{{VerticalNavTop}}" style="height:calc(100vh - 500rpx);">
+    <view class="cu-item {{index==TabCur?'text-green cur':''}} text-sm" wx:for="{{list}}" wx:key="index" bindtap='tabSelect' data-id="{{index}}" style="height: auto; line-height: 40rpx; padding: 30rpx 10rpx; word-break: break-all;">
       {{item.name}}
     </view>
   </scroll-view>
   <scroll-view class="VerticalMain" scroll-y scroll-with-animation lower-threshold="{{0}}" style="height:calc(100vh - 500rpx)" scroll-into-view="main-{{MainCur}}" bindscroll="VerticalMain" bindscrolltolower="reachBottom">
-    <view class="cateList padding-top padding-lr" wx:for="{{goodsCategoryList}}" wx:for-item="foodList" wx:for-index="ind" wx:key="ind" id="main-{{ind}}">
+    <view class="cateList padding-top-sm padding-lr-sm" wx:for="{{goodsCategoryList}}" wx:for-item="foodList" wx:for-index="ind" wx:key="ind" id="main-{{ind}}">
       <view class='cu-bar solid-bottom bg-white'>
         <view class='action'>
           <text class='cuIcon-title text-green'></text>
@@ -56,30 +56,41 @@
         </view>
       </view>
       <view class="cu-list menu-avatar">
-        <view class="cu-item" wx:for="{{foodList.foodsList}}" wx:key="index" style="height: 160rpx" data-food="{{item}}" bindtap="showFoodDetails">
-          <view class="cu-avatar xl" style="background-image:url(https://ossweb-img.qq.com/images/lol/img/champion/Taric.png);">
-            <view class="cu-tag badge">99+</view>
+        <view class="cu-item" wx:for="{{foodList.foodsList}}" wx:key="index" style="height: 200rpx; justify-content: start;" data-food="{{item}}" bindtap="showFoodDetails">
+          <view class="flex">
+            <!-- <view class="margin-sm pos-re xl" style="background-image:url('/assets/img/WCH/category/noodle.png'); background-size: cover; width: 160rpx; height: 160rpx"></view> -->
+            <view class="margin-sm pos-re" style="background: red; background-size: cover; width: 160rpx; height: 160rpx">
+              <!-- <view class="cu-tag badge">99+</view> -->
+            </view>
+            <view class="flex-sub padding-top-sm">
+              <view class="text-black" style="height: 34rpx; line-height: 34rpx">
+                <text class="text-cut text-bold text-lg">{{item.name}}</text>
+                <!-- <view class="cu-tag round bg-orange sm" style="vertical-align: text-top">标签</view> -->
+              </view>
+              <view class="text-cut text-sm text-gray padding-top-xs padding-right-xs" style="max-width: 360rpx">
+                {{item.intro}}
+              </view>
+              <view class="text-cut text-sm text-gray" style="height: 50rpx; line-height: 50rpx">
+                月售{{item.monthSells}}
+              </view>
+              <view class="text-cut text-gray">
+                <text class="text-price text-lg text-red text-bold">{{item.price}}</text>
+              </view>
+            </view>
           </view>
-          <view class="content margin-left">
-            <view class="text-black">
-              <text class="text-cut text-bold">{{item.name}}</text>
-              <view class="cu-tag round bg-orange sm">标签</view>
+          <view class="action padding-bottom-xs padding-right-xs pos-ab" style="width:162rpx; height: 80rpx; line-height: 36rpx; bottom: 0; right: 0; text-align: right">
+            <view class="padding-xs" data-food="{{item}}" catchtap="removeGoods" style="display: inline-block">
+              <view class="round cuIcon-move text-white bg-grey text-center" 
+                  style="height: 36rpx; width: 36rpx; line-height: 36rpx; display: inline-block" 
+                  wx:if="{{goodsCategoryList[ind].foodsList[index].num > 0}}"></view>
             </view>
-            <view class="text-cut text-xs text-gray" style="line-height: 26rpx">
-              {{item.intro}}
+            <view class="text-lg padding-tb-xs text-center" style="width: 40rpx; height: 36rpx; box-sizing: content-box; display: inline-block"
+                  wx:if="{{goodsCategoryList[ind].foodsList[index].num > 0}}"> 
+              {{goodsCategoryList[ind].foodsList[index].num}}
             </view>
-            <view class="text-cut text-xs text-gray" style="height: 30rpx; line-height: 38rpx">
-              月售{{item.monthSells}}
-            </view>
-            <view class="text-cut text-gray">
-              <text class="text-price text-sm">{{item.price}}</text>
-            </view>
-          </view>
-          <view class="action">
-            <view style="margin-top: 100rpx; width: 120rpx; margin-left: -30rpx" class="flex text-center">
-              <view class="round cuIcon-move text-lg text-white bg-{{goodsCategoryList[ind].foodsList[index].num > 0 ? 'blue' : 'gray'}}" style="height: 40rpx; width: 40rpx; line-height: 40rpx" data-food="{{item}}" catchtap="removeGoods"></view>
-              <text class="margin-lr-xs text-xl"> {{goodsCategoryList[ind].foodsList[index].num}} </text>
-              <view class="round cuIcon-add text-white bg-blue text-lg" data-food="{{item}}" style="height: 40rpx; width: 40rpx; line-height: 40rpx" catchtap="addGoods"></view>
+            <view catchtap="addGoods" data-food="{{item}}" class="padding-xs" style="display: inline-block">
+              <view class="round cuIcon-add text-white bg-blue text-center" 
+                  style="height: 36rpx; width: 36rpx; line-height: 36rpx; display: inline-block"></view>
             </view>
           </view>
         </view>
@@ -93,8 +104,12 @@
   <view class="cu-dialog">
     <view class="padding text-left text-lg text-bold">{{foodDetails.name}}</view>
     <view class="bg-img" style="background-image: url('https://ossweb-img.qq.com/images/lol/web201310/skin/big91012.jpg'); height:400rpx;"></view>
-    <view class="action pos-fix text-center round" style="bottom: 50%; left: 50%; margin-left: -25rpx; transform: translateY(350rpx); height: 50rpx; width: 50rpx; background: rgba(0,0,0,.5); line-height: 50rpx" bindtap="hideFoodDetails">
+    <view class="action pos-fix text-center round" style="bottom: 50%; left: 50%; margin-left: -25rpx; transform: translateY(400rpx); height: 50rpx; width: 50rpx; background: rgba(0,0,0,.5); line-height: 50rpx" bindtap="hideFoodDetails">
       <text class="cuIcon-close text-white"></text>
+    </view>
+    <view class="padding-sm flex justify-between">
+      <view></view>
+      <view class="bg-red padding-sm" bindtap="addSingleFood">加入购物车</view>
     </view>
   </view>
 </view>
@@ -144,7 +159,7 @@
       <text>另需配送费<text class="text-price">2</text>/可自提</text>
     </view>
   </view>
-  <view class="pos-ab bg-red text-xl" style="right: 0; top: 0; height: 100%; line-height: 130rpx; width: 260rpx" bindtap="bill">去结算</view>
+  <view class="pos-ab bg-{{cartList[0]?'red':'grey'}} text-xl" style="right: 0; top: 0; height: 100%; line-height: 130rpx; width: 260rpx" bindtap="bill">去结算</view>
 </view>
 
 <!-- 结算栏菜单 -->

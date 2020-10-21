@@ -1,0 +1,21 @@
+<!--pages/WCH/remarks/remarks.wxml-->
+<cu-custom bgColor="bg-red" isBack="true">
+  <text slot="content">订单备注</text>
+</cu-custom>
+
+<view class="cu-form-group margin-sm bg-white dark pos-re radius">
+  <textarea maxlength="50" bindinput="textareaInput" value="{{textareaValue}}" placeholder="填写订单备注信息，例如：少加辣"></textarea>
+  <view class="bg-white dark pos-ab text-gray text-sm" style="bottom: 20rpx; right: 40rpx">{{textareaValue.length}}/50个字</view>
+</view>
+
+<view class="margin-sm">
+  <view>快捷输入</view>
+  <view class="flex" style="width: 80%; flex-wrap: wrap">
+    <view wx:for="{{audioTag}}" wx:key="index" class="cu-tag radius margin-xs {{item.check?'bg-orange':''}}" data-index="{{index}}" data-taglist="{{audioTag}}" data-listname="audioTag" bindtap="chooseAudioTag">{{item.tag}}</view>
+    <view wx:for="{{tagList}}" wx:key="index" class="cu-tag radius margin-xs {{item.check?'bg-orange':''}}" data-index="{{index}}" bindtap="chooseTag">{{item.tag}}</view>
+  </view>
+</view>
+
+<view class="pos-fix bg-red margin-sm radius text-lg padding text-center" style="width: 95%; left: 0; bottom: 0;" bindtap="finishRemark">
+  完成
+</view>

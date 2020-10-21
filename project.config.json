@@ -71,8 +71,29 @@
       "list": [
         {
           "id": 0,
+          "name": "pages/WCH/remarks/remarks",
+          "pathName": "pages/WCH/remarks/remarks",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
           "name": "pages/WCH/storeDetails/storeDetails",
           "pathName": "pages/WCH/storeDetails/storeDetails",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "pages/WCH/bill/bill",
+          "pathName": "pages/WCH/bill/bill",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "pages/WCH/editLocation/editLocation",
+          "pathName": "pages/WCH/editLocation/editLocation",
           "query": "",
           "scene": null
         }

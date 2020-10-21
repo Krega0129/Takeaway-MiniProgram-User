@@ -30,7 +30,12 @@ Component({
     isLocated: {
       type: [Boolean, String],
       default: false
-    }
+    },
+    isRedirectPage: {
+      type: [Boolean, String],
+      default: false
+    },
+    url: String
   },
   /**
    * 组件的初始数据
@@ -58,6 +63,18 @@ Component({
       wx.navigateTo({
         url: '/pages/WCH/location/location',
       })
+    },
+    redirectPage() {
+      let pages = getCurrentPages()
+    
+      // 判断前一页是否是备注页面
+      if('/pages/WCH/bill/bill' === pages[pages.length - 2].route) {
+        wx.navigateBack()
+      }else {
+        wx.redirectTo({
+          url: '/pages/WCH/bill/bill'
+        })
+      }
     }
   }
 })

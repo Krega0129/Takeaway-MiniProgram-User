@@ -5,6 +5,11 @@
       <slot name="backText"></slot>
     </view>
 
+    <view class="action" bindtap="redirectPage" wx:if="{{isRedirectPage}}">
+      <text class="cuIcon-back"></text>
+      <slot name="backText"></slot>
+    </view>
+
     <view class="text-cut text-lg margin-left-xs" style="max-width: 200rpx" bindtap="selctPosition" wx:if="{{isLocated}}">
       <text class="cuIcon-locationfill"></text>
       <slot name="location"></slot>
