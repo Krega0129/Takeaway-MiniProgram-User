@@ -1,0 +1,68 @@
+<!--pages/profile/profile.wxml-->
+<cu-custom bgColor="bg-gray">
+  <text slot="content">我的</text>
+</cu-custom>
+<view>
+  <view class="bg-white padding-lr margin-bottom-xs" bindtap="toPersonInfo">
+    <view class="padding-tb-xl flex justify-between align-center">
+      <view class=" flex align-center">
+        <view class="cu-avatar radius xl" style="background-image:url({{imgUrl}});background-size:cover"></view>
+        <view class="margin-left-xl">
+          <view class="margin-bottom-sm text-bold text-xl">{{name}}</view>
+          <view class="text-sm">{{phoneNumber}}</view>
+        </view>
+      </view>
+      <view><text class="cuIcon-right text-xxl"></text></view>
+    </view>
+  </view>
+  <!-- 收货地址 -->
+  <view class="bg-white padding-lr margin-bottom-xs" bindtap="toAddressList">
+    <view class="padding-tb flex justify-between align-end">
+      <view class=" flex align-center">
+        <text class="cuIcon-locationfill text-xl"></text>
+        <text class="margin-left">收货地址</text>
+      </view>
+      <view class="padding-right-xs"><text class="cuIcon-right"></text></view>
+    </view>
+  </view>
+  <!-- 历史说说 -->
+  <view class="bg-white padding-lr margin-bottom-xs" bindtap="toSocial">
+    <view class="padding-tb flex justify-between align-end">
+      <view class=" flex align-center">
+        <text class="cuIcon-messagefill text-xl"></text>
+        <text class="margin-left">历史说说</text>
+      </view>
+      <view class="padding-right-xs"><text class="cuIcon-right"></text></view>
+    </view>
+  </view>
+  <!-- 商业合作 -->
+  <view class="bg-white padding-lr margin-bottom-xs">
+    <view class="padding-tb flex justify-between align-end">
+      <view class=" flex align-center">
+        <text class="cuIcon-dianhua text-xl"></text>
+        <text class="margin-left">商业合作</text>
+      </view>
+      <view class="padding-right-xs"><text class="cuIcon-right"></text></view>
+    </view>
+  </view>
+  <!-- 骑手招聘 -->
+  <view class="bg-white padding-lr margin-bottom-xs">
+    <view class="padding-tb flex justify-between align-end">
+      <view class=" flex align-center">
+        <text class="cuIcon-expressman  text-xl"></text>
+        <text class="margin-left">骑手招聘</text>
+      </view>
+      <view class="padding-right-xs"><text class="cuIcon-right"></text></view>
+    </view>
+  </view>
+  <!-- 投诉建议 -->
+  <view class="bg-white padding-lr margin-bottom-xs" bindtap="toSuggest">
+    <view class="padding-tb flex justify-between align-end">
+      <view class=" flex align-center">
+        <text class="cuIcon-commentfill  text-xl"></text>
+        <text class="margin-left">投诉建议</text>
+      </view>
+      <view class="padding-right-xs"><text class="cuIcon-right"></text></view>
+    </view>
+  </view>
+</view>

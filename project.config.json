@@ -4,7 +4,7 @@
     "ignore": []
   },
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
     "es6": true,
     "enhance": false,
     "postcss": true,
@@ -18,11 +18,11 @@
     "scopeDataCheck": false,
     "uglifyFileName": false,
     "checkInvalidKey": true,
-    "checkSiteMap": true,
+    "checkSiteMap": false,
     "uploadWithSourceMap": true,
     "compileHotReLoad": false,
     "useMultiFrameRuntime": false,
-    "useApiHook": false,
+    "useApiHook": true,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
@@ -32,12 +32,13 @@
     "useCompilerModule": true,
     "userConfirmedUseCompilerModuleSwitch": false,
     "packNpmManually": false,
-    "packNpmRelationList": []
+    "packNpmRelationList": [],
+    "minifyWXSS": true
   },
   "compileType": "miniprogram",
   "libVersion": "2.13.0",
-  "appid": "wxbf24e4c755c37d93",
-  "projectname": "Takeaway-User",
+  "appid": "wx3f6fe20d6c3ea467",
+  "projectname": "Takeaway-MiniProgram-User",
   "debugOptions": {
     "hidedInDevtools": []
   },
@@ -46,29 +47,30 @@
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "condition": {
-    "search": {
-      "current": -1,
-      "list": []
-    },
-    "conversation": {
-      "current": -1,
+    "plugin": {
       "list": []
     },
     "game": {
-      "current": -1,
-      "list": []
-    },
-    "plugin": {
-      "current": -1,
       "list": []
     },
     "gamePlugin": {
-      "current": -1,
       "list": []
     },
     "miniprogram": {
-      "current": -1,
-      "list": []
+      "list": [
+        {
+          "name": "pages/orders/orders",
+          "pathName": "pages/orders/orders",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/mine/addressList/addressList",
+          "pathName": "pages/mine/addressList/addressList",
+          "query": "",
+          "scene": null
+        }
+      ]
     }
   }
 }

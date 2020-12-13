@@ -1,6 +1,9 @@
 //app.js
+import { showToast } from './service/config'
+import  bus  from './utils/bus'
 App({
   onLaunch: function () {
+    this.globalData.bus=bus
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
@@ -10,7 +13,7 @@ App({
       success: e => {
         this.globalData.StatusBar = e.statusBarHeight;
         let custom = wx.getMenuButtonBoundingClientRect();
-        this.globalData.Custom = custom;  
+        this.globalData.Custom = custom;
         this.globalData.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
       },
     })
@@ -30,7 +33,6 @@ App({
             success: res => {
               // 可以将 res 发送给后台解码出 unionId
               this.globalData.userInfo = res.userInfo
-
               // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
               // 所以此处加入 callback 以防止这种情况
               if (this.userInfoReadyCallback) {
@@ -42,10 +44,75 @@ App({
       }
     })
   },
+  onShow() {
+    this.webSocketConnect()
+  },
   globalData: {
-    userInfo: null,
     StatusBar: null,
+    userInfo: null,
     Custom: null,
-    CustomBar: null
+
+  },
+  webSocketConnect(uid = 12, identity, lastestOrderDate) {
+    wx.connectSocket({
+      url: 'ws://192.168.1.111:58080/ws',
+      timeout: 50000,
+      header: {
+        'content-type': 'application/json'
+      },
+      success: (res) => {
+        console.log('connect',res);
+        this.webSocketOpen(uid, identity = 'user', lastestOrderDate)
+      },
+      fail: (res) => {
+      }
+    })
+  },
+  webSendSocketMessage(uid, identity, lastestOrderDate) {
+    if(lastestOrderDate){
+      wx.sendSocketMessage({
+        data: JSON.stringify({
+          uid,
+          identity,
+          lastestOrderDate
+        }),
+        success: res => {
+          console.log('send',res);
+          this.webGetSocketMessage()
+        }
+      })
+    }
+    else{
+      wx.sendSocketMessage({
+        data: JSON.stringify({
+          uid,
+          identity,
+        }),
+        success: res => {
+          console.log('send',res);
+          this.webGetSocketMessage()
+        }
+      })
+    }
+  },
+  webGetSocketMessage() {      
+    wx.onSocketMessage((res) => {
+    // const a=JSON.parse(res.data)
+      console.log('get',res);
+      if(res.data!=="服务器连接成功！"){
+        // console.log(JSON.parse(res.data));
+        let orderMsg=JSON.parse(res.data)
+        bus.emit('orderMsg',orderMsg)
+        // showToast('订单状态改变', 1000)
+      }
+    })
+  },
+  webSocketOpen(uid, identity, lastestOrderDate) {
+    wx.onSocketOpen((res) => {
+      this.webSendSocketMessage(uid, identity, lastestOrderDate)
+    })
+  },
+  webSocketClose() {
+    wx.onSocketClose((result) => { })
   }
 })

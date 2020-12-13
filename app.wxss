@@ -1,6 +1,7 @@
 /**app.wxss**/
 @import "/colorui/icon.wxss";
 @import "/colorui/main.wxss";
+@import "/assets/wxss/iconfont.wxss";
 
 .dp-flex {
   display: flex;

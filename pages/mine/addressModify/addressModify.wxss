@@ -1,0 +1,22 @@
+/* pages/profile/address/address.wxss */
+radio .wx-radio-input{
+	margin: 0;
+	width: 18px;
+	height: 18px;
+}
+radio.radio[checked]::after {
+	content: "";
+	background-color: transparent;
+	display: block;
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	z-index: 999;
+	top: -1rpx;
+	left: -56rpx;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	border-radius: 200rpx;
+	border: 4px solid var(--white) !important;
+}

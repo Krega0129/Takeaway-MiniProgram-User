@@ -1,13 +1,42 @@
 // pages/profile/profile.js
+const app = getApp()
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    profileItems: [
+      { icon: '', itemName: '收获地址' },
+      { icon: '', itemName: '历史说说' },
+      { icon: '', itemName: '商业合作' },
+      { icon: '', itemName: '骑手招聘' },
+      { icon: '', itemName: '投诉建议' }
+    ],
 
   },
+  toPersonInfo() {
+    wx.navigateTo({
+      url: '/pages/mine/personInfo/personInfo',
+    })
+  },
+  toAddressList() {
+    wx.navigateTo({
+      url: '/pages/mine/addressList/addressList',
+    })
+  },
+  toSuggest() {
+    wx.navigateTo({
+      url: '/pages/mine/suggest/suggest',
+    })
+  },
+  toSocial() {
+    wx.showToast({
+      icon: 'none',
+      title: '内容未开放',
+    });
 
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -26,7 +55,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.setData({
+      name: app.globalData.name,
+      phoneNumber:app.globalData.phoneNumber,
+      imgUrl:app.globalData.head
+    })
   },
 
   /**

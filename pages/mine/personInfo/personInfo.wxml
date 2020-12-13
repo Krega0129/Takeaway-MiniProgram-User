@@ -1,0 +1,43 @@
+<!--pages/mine/personInfo/personInfo.wxml-->
+<cu-custom bgColor="bg-gray" isBack="true">
+  <text slot="backText">返回</text>
+  <text slot="content">个人信息</text>
+</cu-custom>
+<view class="bg-white padding solid-bottom" bindtap="headChange">
+  <view class="flex align-center justify-between margin-left">
+    <view class="">头像</view>
+    <view class="flex align-center">
+      <view class="cu-avatar radius margin-right xl" style="background-image:url({{imgUrl}});background-size:cover">
+      </view><text class="cuIcon-right text-xxl"></text>
+    </view>
+  </view>
+</view>
+<view class="bg-white padding solid-bottom" bindtap="nameChange">
+  <view class="flex align-center justify-between margin-left">
+    <view class="">姓名</view>
+    <view class="flex align-center">
+      <view class="margin-right-xl">{{name}}</view><text class="cuIcon-right padding-right-xs"></text>
+    </view>
+  </view>
+</view>
+<view class="bg-white padding solid-bottom" bindtap="phoneChange">
+  <view class="flex align-center justify-between margin-left">
+    <view class="">手机号码</view>
+    <view class="flex align-center">
+      <view class="margin-right-xl">{{phoneNumber}}</view><text class="cuIcon-right padding-right-xs"></text>
+    </view>
+  </view>
+</view>
+<view class="bg-white padding solid-bottom">
+  <view class="flex align-center justify-between margin-left">
+    <view class="title">性别</view>
+    <picker value="{{index}}" range="{{sex}}" class="" mode="selector" bindchange="PickerChange">
+      <view class="flex align-center justify-between">
+        <view class="picker margin-right-xl">
+          {{sex[index]}}
+        </view>
+        <text class="cuIcon-right padding-right-xs"></text>
+      </view>
+    </picker>
+  </view>
+</view>
