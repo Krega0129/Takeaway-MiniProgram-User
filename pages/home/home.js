@@ -1,7 +1,8 @@
 // pages/home/home.js
+const app = getApp()
 Page({
   data: {
-    position: '定位',
+    position: app.globalData.nowLocation,
     swiperList: [{
       id: 0,
       type: 'image',
@@ -34,36 +35,46 @@ Page({
     categoryList: [
       {
         title: '美食快餐',
-        img: ''
+        img: '/assets/img/WCH/category/fast-food.png'
       },
       {
         title: '米粉面馆',
-        img: ''
+        img: '/assets/img/WCH/category/noodle.png'
       },
       {
         title: '汉堡炸鸡',
-        img: ''
+        img: '/assets/img/WCH/category/hambur.png'
       },
       {
         title: '奶茶',
-        img: ''
+        img: '/assets/img/WCH/category/tea-milk.png'
       },
       {
         title: '面包糕点',
-        img: ''
+        img: '/assets/img/WCH/category/bread.png'
       },
       {
         title: '鲜果',
-        img: ''
+        img: '/assets/img/WCH/category/fruit.png'
       },
       {
         title: '烧烤夜宵',
-        img: ''
+        img: '/assets/img/WCH/category/BBQ.png'
       },
       {
         title: '超市商铺',
-        img: ''
+        img: '/assets/img/WCH/category/shop.png'
       },
     ]
+  },
+  onShow() {
+    this.setData({
+      position: app.globalData.nowLocation
+    })
+  },
+  focusSearch() {
+    wx.navigateTo({
+      url: '/pages/search/search',
+    })
   }
 })

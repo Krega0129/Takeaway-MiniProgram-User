@@ -1,5 +1,7 @@
 <!--components/category-item/category-item.wxml-->
 <view class="text-center">
-  <slot name="img"></slot>
+  <view class="margin-bottom-xs">
+    <slot name="img"></slot>
+  </view>
   <slot name="title"></slot>
 </view>

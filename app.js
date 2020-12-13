@@ -9,6 +9,9 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
 
+    wx.setStorageSync('searchSchoolHistoryList', [])
+    wx.setStorageSync('searchFoodHistoryList', [])
+
     wx.getSystemInfo({
       success: e => {
         this.globalData.StatusBar = e.statusBarHeight;
@@ -51,7 +54,8 @@ App({
     StatusBar: null,
     userInfo: null,
     Custom: null,
-
+    CustomBar: null,
+    nowLocation: '广东工业大学'
   },
   webSocketConnect(uid = 12, identity, lastestOrderDate) {
     wx.connectSocket({

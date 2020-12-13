@@ -12,7 +12,9 @@
     "pages/mine/personInfo/personInfo",
     "pages/mine/nameChange/nameChange",
     "pages/mine/phoneChange/phoneChange",
-    "pages/mine/addressList/addressList"
+    "pages/mine/addressList/addressList",
+    "pages/profile/profile",
+    "pages/search/search"
   ],
   "window": {
     "navigationStyle": "custom"
