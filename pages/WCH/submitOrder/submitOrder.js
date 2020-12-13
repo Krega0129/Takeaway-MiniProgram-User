@@ -2,8 +2,16 @@
 const app = getApp()
 
 import {
+  BASE_URL
+} from '../../../service/config'
+
+import {
   cancelOrder
 } from '../../../service/bill'
+
+import {
+  formatTime
+} from '../../../utils/util'
 
 Page({
   data: {
@@ -17,17 +25,19 @@ Page({
     remark: '',
     takeAway: true,
     orderNum: null,
+    payTime: '',
     isPay: null,
-    obj: {}
+    obj: {},
+    time: '15:00'
   },
   onLoad: function (options) {
     wx.showLoading({
       title: '加载中...'
     })
+
     let eventChannel = this.getOpenerEventChannel()
     eventChannel.on('submitOrder', data => {
-      console.log(data);
-      
+      const payTime = formatTime(data.payTime)
       app.culPrice(data.cartList, data.sendPrice)
       this.setData({
         cartList: data.cartList,
@@ -41,9 +51,22 @@ Page({
         orderNum: data.obj.orderNumber,
         takeAway: data.takeAway,
         isPay: data.isPay,
+        payTime: payTime,
         obj: data.obj
       })
     })
+
+    let t = setInterval(() => {
+      let time = wx.getStorageSync('time') - new Date().getTime()
+      time -= 1000
+      time = formatTime(new Date(time)).split(' ')[1].substring(3, 8)
+      this.setData({
+        time: time
+      })
+      if(time <= 0) {
+        clearInterval(t)
+      }
+    }, 1000)
   },
   onReady: function () {
     wx.hideLoading()
@@ -69,10 +92,14 @@ Page({
       console.log(res);
     })
   },
-
+  orderAgain() {
+    wx.navigateBack({
+      delta: 2
+    })
+  },
   pay() {
     wx.request({
-      url: 'http://192.168.43.63:8080/wechatpay/prePay',
+      url: BASE_URL + '/wechatpay/prePay',
       method: 'POST',
       header: { 'content-type': 'application/x-www-form-urlencoded' },
       data: this.data.obj,
@@ -126,5 +153,5 @@ Page({
         }
       }
     });
-  },
+  }
 })

@@ -162,7 +162,7 @@
 <view class="cu-modal {{showFoodDetails?'show':''}}" style="z-index: 3000">
   <view class="cu-dialog">
     <view class="padding text-left text-lg text-bold">{{foodDetails.name}}</view>
-    <view class="bg-img" style="background-image: url('https://ossweb-img.qq.com/images/lol/web201310/skin/big91012.jpg'); height:400rpx;"></view>
+    <view class="bg-img" style="background-image: url({{foodDetails.imgUrl}}); height:400rpx;"></view>
     <view class="action pos-fix text-center round" style="bottom: 50%; left: 50%; margin-left: -25rpx; transform: translateY(400rpx); height: 50rpx; width: 50rpx; background: rgba(0,0,0,.5); line-height: 50rpx" bindtap="hideFoodDetails">
       <text class="cuIcon-close text-white"></text>
     </view>
@@ -207,7 +207,6 @@
               style="height: 36rpx; width: 36rpx; line-height: 36rpx; display: inline-block"></view>
         </view>
       </view>
-
     </view>
   </view>
 </view>

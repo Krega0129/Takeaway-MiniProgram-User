@@ -2,32 +2,44 @@
 <cu-custom bgColor="bg-red" isBack="true"></cu-custom>
 
 <view class="bg-white text-center margin-sm padding-bottom">
-
+  <!-- 等待支付 -->
   <view class="padding-tb text-lg text-bold">
     <text wx:if="{{!isPay}}">等待支付</text>
     <text wx:if="{{isPay}}">支付成功</text>
+    <text wx:if="{{cancel}}">订单已取消</text>
   </view>
 
   <view wx:if="{{!isPay}}">
     <text class="cuIcon-timefill"> 等待支付：</text>
-    <text class="text-blue">15:00</text>
+    <text class="text-blue">{{time}}</text>
     <view class="cuIcon-notice text-sm text-gray margin-top-xs">
       请在15分钟内完成支付，超时将自动取消
     </view>
   </view>
+
+  <!-- 已支付 -->
   <view wx:if="{{isPay}}">
     <view class="text-sm text-gray margin-top-xs">
       支付成功，请耐心等待商家送达
     </view>
   </view>
 
+  <!-- 已取消 -->
+  <view wx:if="{{cancel}}">
+    <view class="text-sm text-gray margin-top-xs">
+      订单已取消
+    </view>
+  </view>
+
   <view class="margin-top">
+    <!-- 未支付 -->
     <view class="flex justify-between" style="width: 60%; margin: 0 auto" wx:if="{{!isPay}}" >
       <view style="width: 45%" class="solid line-black padding-xs" bindtap="cancelOrder">取消订单</view>
       <view style="width: 45%" class="padding-xs bg-red" bindtap="pay">去支付</view>
     </view>
-    <view style="width: 40%; margin: 0 auto" wx:if="{{isPay}}" >
-      <view wx:if="{{isPay}}" class="bg-red padding-xs">再来一单</view>
+    <!-- 支付 -->
+    <view style="width: 40%; margin: 0 auto" wx:if="{{isPay || cancel}}" >
+      <view class="bg-red padding-xs" bindtap="orderAgain">再来一单</view>
     </view>
   </view>
 </view>
@@ -36,7 +48,7 @@
   <view class="padding text-lg text-bold">{{shopName}}</view>
   <view class="padding-tb-sm padding-lr flex justify-between" wx:for="{{cartList}}" wx:key="index">
     <view class="flex">
-      <view class="cu-avatar" style="background-image:url(https://ossweb-img.qq.com/images/lol/img/champion/Taric.png);"></view>
+      <view class="cu-avatar" style="background-image:url({{item.imgUrl}});"></view>
       <view class="content margin-left">
         <view class="text-cut text-black" style="width: 300rpx">
           <view class="text-bold">{{item.name}}</view>
@@ -91,9 +103,9 @@
   </view>
   <view class="flex padding-tb-sm">
     <view class="flex-sub">订单号码</view>
-    <view class="flex-treble">1111111111111111</view>
+    <view class="flex-treble">{{orderNum}}</view>
   </view>
-  <view class="flex padding-tb-sm" wx:if="{{isPay}}">
+  <view class="flex padding-padding-bottom-sm" wx:if="{{isPay}}">
     <view class="flex-sub">支付时间</view>
     <view class="flex-treble">{{payTime}}</view>
   </view>

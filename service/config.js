@@ -1,19 +1,10 @@
-// const BASE_URL = 'http://192.168.1.100:8081'
-// const BASE_URL = 'http://175.24.113.119:8081'
-// const BASE_URL = 'http://192.168.1.105:8081'
-// const BASE_URL = 'http://121.41.229.2:8081'
 
-// KY
-// const BASE_URL = 'http://192.168.43.63:8080'
-// const BASE_URL = 'http://175.24.113.119:8080'
-
-// DL
-const BASE_URL = 'http://192.168.43.63:8080'
-// const BASE_URL = 'http://47.93.19.109:1:8080'
+const BASE_URL = 'http://192.168.1.111:8080'
 
 const H_config = {}
-
+// 登录
 H_config.LOGIN = '/user/login'
+// 搜索提示
 H_config.SEARCH = '/getShopInfo/autoComplete'
 
 // 首页
@@ -42,6 +33,8 @@ H_config.ADD_NEW_ADDRESS = '/address/addNewAddress'
 H_config.ORDER_NEW_ORDER = '/order/orderNewOrder'
 // 取消未支付订单
 H_config.CANCEL_ORDER = '/order/cancelUnpaidOrder'
+// 修改订单状态
+H_config.CHANGE_ORDER_STATUS = '/order/payForOrder'
 
 // DL
 // 获取校区

@@ -1,9 +1,17 @@
 // pages/WCH/bill/bill.js
 import {
+  BASE_URL
+} from '../../../service/config'
+
+import {
   getAllAddress,
   orderNewOrder,
-
+  changeOrderStatus
 } from '../../../service/bill'
+
+import {
+  formatTime
+} from '../../../utils/util'
 
 const app = getApp()
 Page({
@@ -13,7 +21,7 @@ Page({
     imgUrl: null,
     cartList: [],
     totalPrice: 0,
-    sendPrice: 2,
+    sendPrice: 0,
     chooseLocation: false,
     changeLocation: false,
     // locationList: [
@@ -54,7 +62,10 @@ Page({
     userTel: null,
     // 配送时间
     index: 0,
+    // 显示的时间
     picker: ['立即'],
+    // 真实的时间
+    realTime: [],
     // 餐具
     ind: null,
     tableWare: ['不要餐具', '1份', '2份', '3份'],
@@ -78,21 +89,18 @@ Page({
       })
     })
 
-    // 获取当前时间
-    let date = new Date()
-    let i = 1
-    for(;i < 8; i++) {
-      let hour = date.getHours()
-      let min = date.getMinutes()
-      if(min + 15 * i >= 60) {
-        hour = hour + (min + 15 * i) / 60
+    let currentTime = new Date()
+    for(let i = 1; i < 8; i++) {
+      let date = formatTime(currentTime)
+      this.data.realTime.push(date)
+      let time = date.split(' ')[1].substring(0, 5)
+      if(i !== 1) {
+        this.data.picker.push(time)
       }
-      min = min + 15 * i
-
-      hour = parseInt(hour)
-      min = parseInt(min)
-      this.data.picker.push(this.formatNumber(hour % 24) + ':' + this.formatNumber(min % 60))
+      currentTime = currentTime.getTime() + 900000
+      currentTime = new Date(currentTime)
     }
+
     this.setData({
       picker: this.data.picker
     })
@@ -108,20 +116,19 @@ Page({
       })
     })
 
-    getAllAddress().then(res => {
-      let addressList = res.data.data
-      
-      this.setData({
-        locationList: addressList
+    if(wx.getStorageSync('userId')) {
+      getAllAddress({
+        userId: 1
+      }).then(res => {
+        let addressList = res.data.data
+        this.setData({
+          locationList: addressList
+        })
       })
-    })
+    }
   },
   onShareAppMessage: function () {
 
-  },
-  formatNumber: n => {
-    n = n.toString()
-    return n[1] ? n : '0' + n
   },
   takeAway() {
     this.data.sendPrice = 2
@@ -162,9 +169,23 @@ Page({
     })
   },
   changeLocation() {
-    this.setData({
-      changeLocation: true
-    })
+    if(wx.getStorageSync('userId')) {
+      this.setData({
+        changeLocation: true
+      })
+    } else {
+      wx.login({
+        success: res => {
+          const code = res.code
+          wx.navigateTo({
+            url: '/pages/WCH/login/login',
+            success: res => {
+              res.eventChannel.emit('code',{ code: code })
+            }
+          })
+        }
+      })
+    }
   },
   cancleChangeLocation() {
     this.setData({
@@ -200,52 +221,6 @@ Page({
     })
   },
   order() {
-    
-    // 整个订单大对象
-    const order = {
-      businessPhone: this.data.storeTelNum,
-      deliveryFee: this.data.sendPrice,
-      orderCommodities: [],
-      remarks: this.data.remark,
-      shopAddress: this.data.storeAddress,
-      shopId: this.data.shopId,
-      shopName: this.data.shopName,
-      shopPicture: this.data.imgUrl,
-      totalAmount: this.data.totalPrice,
-      totalQuantity: this.data.totalCount,
-      userId: 1
-    }
-
-    // 是否自提
-    if(this.data.takeAway) {
-      order.userName = this.data.user.contactName,
-      order.userPhone = this.data.user.contactPhone
-      order.deliveryAddress = this.data.user.campus + this.data.user.detailedAddress
-    } else {
-      order.userPhone = this.data.userTel
-    }
-
-    // 每个商品对象
-    for(let item of this.data.cartList) {
-      let num = item.count ? item.count : item.num
-      let food = {
-        goodsName: item.name,
-        picture: item.imgUrl,
-        quantity: num,
-        specification: item.spec,
-        totalPrice: num * item.price,
-        unitPrice: item.price
-      }
-      order.orderCommodities.push(food)
-    }
-
-    // 是否预约
-    if(this.data.index != 0) {
-      order.isReserved = 1
-    } else {
-      order.isReserved = 0
-    }
-
     // 检查手机号码格式
     if(!this.data.takeAway && !/^1\d{10}$/.test(this.data.userTel)) {
       wx.showToast({
@@ -260,7 +235,7 @@ Page({
           wx.navigateTo({
             url: '/pages/WCH/login/login',
             success: res => {
-              res.eventChannel.emit('code',{code: code})
+              res.eventChannel.emit('code',{ code: code })
             }
           })
         }
@@ -271,10 +246,55 @@ Page({
         title: '请先选择收货地址!',
         icon: 'none'
       })
-    
     } else {
+      // 整个订单大对象
+      const order = {
+        businessPhone: this.data.storeTelNum,
+        deliveryFee: this.data.sendPrice,
+        orderCommodities: [],
+        remarks: this.data.remark,
+        shopAddress: this.data.storeAddress,
+        // shopId: this.data.shopId,
+        shopId: 1,
+        shopName: this.data.shopName,
+        shopPicture: this.data.imgUrl || 'a',
+        totalAmount: this.data.totalPrice,
+        totalQuantity: this.data.totalCount,
+        userId: wx.getStorageSync('userId')
+      }
+
+      // 是否自提
+      if(this.data.takeAway) {
+        order.userName = this.data.user.contactName + this.data.user.sex === 1 ? '（先生）' : '（女士）',
+        order.userPhone = this.data.user.contactPhone
+        order.deliveryAddress = this.data.user.campus + '-' + this.data.user.detailedAddress
+      } else {
+        order.userPhone = this.data.userTel
+      }
+
+      // 每个商品对象
+      for(let item of this.data.cartList) {
+        let num = item.count ? item.count : item.num
+        let food = {
+          goodsName: item.name,
+          picture: item.imgUrl || 'a',
+          quantity: num,
+          specification: item.spec,
+          totalPrice: num * item.price,
+          unitPrice: item.price
+        }
+        order.orderCommodities.push(food)
+      }
+
+      // 是否预约
+      if(this.data.index != 0) {
+        order.isReserved = 1
+        order.reservedTime = this.data.realTime[this.data.index]
+      } else {
+        order.isReserved = 0
+      }
+
       orderNewOrder(order).then(res => {
-        console.log(res);
         const obj = res.data.data
         obj.userId = wx.getStorageSync('userId')
         // 下单成功
@@ -286,25 +306,6 @@ Page({
             totalAmount: obj.totalAmount,
             userId: wx.getStorageSync('userId')
           })
-
-          // wx.navigateTo({
-          //   url: '/pages/WCH/submitOrder/submitOrder',
-          //   success: res => {
-          //     res.eventChannel.emit('submitOrder', {
-          //       cartList: this.data.cartList,
-          //       shopName: this.data.shopName,
-          //       shopAddress: this.data.storeAddress,
-          //       user: this.data.user,
-          //       sendPrice: this.data.sendPrice,
-          //       totalPrice: this.data.totalPrice,
-          //       storeTelNum: this.data.storeTelNum,
-          //       remark: this.data.remark || '',
-          //       takeAway: this.data.takeAway,
-          //       orderNum: orderNum,
-          //       isPay: false
-          //     })
-          //   }
-          // })
         }else {
           wx.showToast({
             title: res.data.msg,
@@ -316,11 +317,13 @@ Page({
   },
   pay(data) {
     wx.request({
-      url: 'http://192.168.43.63:8080/wechatpay/prePay',
+      url: BASE_URL + '/wechatpay/prePay',
       method: 'POST',
       header: { 'content-type': 'application/x-www-form-urlencoded' },
       data: data,
       success: (res) => {
+        console.log(res);
+        
         if (res.data.prepayId != ''){
           const map = res.data.data.payMap
           wx.requestPayment({
@@ -330,7 +333,17 @@ Page({
             'package': map.package,
             'signType': 'MD5',
             'paySign': map.paySign,
-            'success':  (paymentRes) => {
+            'success':  (res) => {
+              if(res.errMsg === 'requestPayment:ok') {
+                changeOrderStatus({
+                  orderNumber: data.orderNumber,
+                  userId: wx.getStorageSync('userId')
+                }).then(() => {
+                  wx.showToast({
+                    title: '支付成功！'
+                  })
+                })
+              }
               wx.navigateTo({
                 url: '/pages/WCH/submitOrder/submitOrder',
                 success: result => {
@@ -341,24 +354,19 @@ Page({
                     storeTelNum: this.data.storeTelNum,
                     remark: this.data.remark || '',
                     takeAway: this.data.takeAway,
+                    payTime: new Date(),
                     obj: data,
                     isPay: true
                   })
                 }
               })
-              // that.setData({
-              //   notPay: true,
-              //   paySuccess: false,
-              //   teamNotPay: true,
-              //   button:true,
-              //   outTradeNo: outTradeNo,
-              //   payDate:new Date()
-              // })
             },
             fail: (error) => {
               wx.navigateTo({
                 url: '/pages/WCH/submitOrder/submitOrder',
                 success: res => {
+                  // 记录时间
+                  wx.setStorageSync('time', new Date().getTime() + 900000)
                   res.eventChannel.emit('submitOrder', {
                     cartList: this.data.cartList,
                     shopAddress: this.data.storeAddress,
@@ -374,6 +382,12 @@ Page({
             }
           })
         }
+      },
+      fail: () => {
+        wx.showToast({
+          title: '支付异常，请重新尝试！',
+          icon: 'none'
+        })
       }
     });
   },

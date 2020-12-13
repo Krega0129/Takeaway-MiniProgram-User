@@ -1,18 +1,13 @@
 // pages/home/home.js
-const app = getApp()
 const BACK_TOP = 500
-
-import {
-  BASE_URL,
-  H_config
-} from '../../../service/config'
 
 import { 
   getShopCategory
 } from '../../../service/home'
 
 import {
-  _getMultiData
+  _getMultiData,
+  formatTime
 } from '../../../utils/util'
 
 Page({
@@ -53,11 +48,12 @@ Page({
       '../../../assets/img/WCH/category/shop.png',
       '../../../assets/img/WCH/category/tea-milk.png'
     ],
-    totalPages: 0,
-    showEnd: false,
-    code: null
+    totalPages: 1,
+    showEnd: false
   },
   onLoad() {
+    wx.stopPullDownRefresh()
+
     wx.showLoading({
       title: '加载中...'
     })
@@ -67,7 +63,6 @@ Page({
     })
 
     if(wx.getStorageSync('address')) {
-      
       getShopCategory().then(res => {
         let cateList = res.data.data
         let i = 0
@@ -100,9 +95,6 @@ Page({
         icon: 'none'
       })
     }
-  },
-  onReady() {
-    
   },
   onShow() {
     
@@ -159,5 +151,10 @@ Page({
       })
     }
   },
-
+  onPullDownRefresh() {
+    this.setData({
+      pageNum: 1
+    })
+    this.onLoad()
+  }
 })

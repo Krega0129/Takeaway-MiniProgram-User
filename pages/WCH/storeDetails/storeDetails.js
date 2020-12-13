@@ -416,53 +416,15 @@ Page({
     
   },
   onShow() {
-    // this.renewCartList()
-    // // 加载购物车
-    // if(this.data.cartList[0]) {
-    //   for(let item of this.data.goodsCategoryList) {
-    //     for(let food of this.data.cartList) {
-    //       let cartFood = item.foodsList.find(goods => goods.id === food.id)
-    //       if(cartFood) {
-    //         console.log(cartFood);
-            
-    //         cartFood.num = food.num
-    //       }
-    //     }
-    //   }
-    //   app.culPrice(this.data.cartList)
-      
-    //   this.setData({
-    //     totalCount: app.globalData.totalCount,
-    //     goodsCategoryList: this.data.goodsCategoryList,
-    //     cartList: this.data.cartList,
-    //     totalPrice: app.globalData.totalPrice
-    //   })
-    // }
 
-    // if(app.globalData.cartList[0]) {
-    //   for(let item of this.data.goodsCategoryList) {
-    //     for(let food of app.globalData.cartList) {
-    //       let cartFood = item.foodsList.find(goods => goods.id === food.id)
-    //       if(cartFood) {
-    //         cartFood.num = food.num
-    //       }
-    //     }
-    //   }
-    //   this.setData({
-    //     totalCount: app.globalData.totalCount,
-    //     goodsCategoryList: this.data.goodsCategoryList,
-    //     cartList: app.globalData.cartList,
-    //     totalPrice: app.globalData.totalPrice
-    //   })
-    // }
   },
   renewCartList() {
     let foodList= app.globalData.cartList.find(item => item.shopId === this.data.shopId)
-      if(foodList) {
-        this.setData({
-          cartList: foodList.foodList
-        })
-      }
+    if(foodList) {
+      this.setData({
+        cartList: foodList.foodList
+      })
+    }
   },
   // 商家简介
   showStoreIntro() {

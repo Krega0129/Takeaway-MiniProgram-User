@@ -4,9 +4,14 @@ import {
   H_config
 } from './config'
 
-export function getAllAddress() {
+export function getAllAddress(data) {
   return request({
-    url: H_config.GET_ALL_ADDRESS
+    url: H_config.GET_ALL_ADDRESS,
+    method: 'post',
+    data: data,
+    header: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
   })
 }
 
@@ -49,5 +54,12 @@ export function cancelOrder(data) {
     header: {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
+  })
+}
+
+export function changeOrderStatus(data) {
+  return request({
+    url: H_config.CHANGE_ORDER_STATUS,
+    data: data
   })
 }
