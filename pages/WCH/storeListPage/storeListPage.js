@@ -1,27 +1,79 @@
 // pages/storeListPage/storeListPage.js
+import {
+  _getMultiData
+} from '../../../utils/util'
+
+const app = getApp()
+
 Page({
   data: {
-    title: ''
+    category: null,
+    keyWord: null,
+    position: wx.getStorageSync('address') || '',
+    currentPage: 1,
+    storeList: [],
+    totalPages: 0,
+    showEnd: false,
   },
   onLoad: function (options) {
     // 监听acceptDataFromOpenerPage事件，获取上一页面通过eventChannel传送到当前页面的数据
     let eventChannel = this.getOpenerEventChannel()
     eventChannel.on('showStoreList', (data) => {
       this.setData({
-        title: data.title
+        category: data.title,
+        position: wx.getStorageSync('address')
       })
     })
     eventChannel.on('showSearchList', (data) => {
       this.setData({
-        title: data.title
+        keyWord: data.title
+      })
+    })
+
+    _getMultiData(
+      this.data.position,
+      this.data.storeList,
+      {
+        pageNum: 1,
+        category: this.data.categoryName,
+        keyWord: this.data.keyWord
+      }
+    ).then(res => {
+      this.setData({
+        storeList: res.storeList,
+        totalPages: res.totalPages
       })
     })
   },
-  onPullDownRefresh: function () {
-
+  showStoreDetails(e) {
+    const shopInfo = e.currentTarget.dataset.shopinfo
+    wx.navigateTo({
+      url: '/pages/WCH/storeDetails/storeDetails',
+      success: res => {
+        res.eventChannel.emit('sendStoreInfo', {shopId: shopInfo.shopId})
+      }
+    })
   },
   onReachBottom: function () {
-
+    if(this.data.currentPage < this.data.totalPages) {
+      _getMultiData(
+        this.data.position,
+        this.data.storeList,
+        {
+          pageNum: ++this.data.currentPage,
+          category: this.data.categoryName,
+          keyWord: this.data.keyWord
+        }
+      ).then(() => {
+        this.setData({
+          storeList: this.data.storeList
+        })
+      })
+    } else {
+      this.setData({
+        showEnd: true
+      })
+    }
   },
   onShareAppMessage: function () {
 

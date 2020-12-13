@@ -43,6 +43,17 @@ Page({
   onShow: function () {
     let eventChannel = this.getOpenerEventChannel()
     eventChannel.on('editRemark', (data) => {
+      for(let item of data.remarkObj.audioTag) {
+        if(item.check) {
+          this.data.valueArr.push(item.tag)
+        }
+      }
+      for(let item of data.remarkObj.tagList) {
+        if(item.check) {
+          this.data.valueArr.push(item.tag)
+        }
+      }
+
       this.setData({
         audioTag: data.remarkObj.audioTag,
         tagList: data.remarkObj.tagList,
@@ -105,31 +116,6 @@ Page({
       [ListName]: audioList
     })
   },
-  // chooseAudioTag(e) {
-  //   // 点击第几个标签
-  //   const index = e.currentTarget.dataset.index;
-
-  //   // 单选
-  //   for(let item of this.data.audioTag) {
-  //     if((this.data.audioTag.indexOf(item) == index) && !this.data.audioTag[index].check) {
-  //       item.check = true
-  //       this.data.valueArr.push(this.data.audioTag[index].tag)
-  //     } else {
-  //       // 其他的不勾选
-  //       item.check = false
-  //       let tag = this.data.valueArr.indexOf(item.tag)
-  //       // 若存在就删除
-  //       if(tag != -1) {
-  //         this.data.valueArr.splice(tag, 1)
-  //       }
-  //     }
-  //   }
-
-  //   this.setData({
-  //     textareaValue: this.data.textareaValue,
-  //     audioTag: this.data.audioTag
-  //   })
-  // },
   finishRemark() {
     let pages = getCurrentPages()
     let lastPage = pages[pages.length - 2]

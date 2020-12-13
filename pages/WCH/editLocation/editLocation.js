@@ -1,4 +1,10 @@
 // pages/WCH/editLocation/editLocation.js
+import {
+  updateAddress,
+  deleteAddress,
+  addNewAddress,
+} from '../../../service/bill'
+
 Page({
   data: {
     user: {},
@@ -6,8 +12,11 @@ Page({
     hasChange: false,
     // 修改第几个地址
     locationIndex: null,
+    // 选择的学校
     index: null,
-    schoolList: ['广东工业大学', '清华大学', '北京大学']
+    schoolList: ['广东工业大学', '清华大学', '北京大学'],
+    // 是否是新增地址
+    addNewAddress: false
   },
   onLoad: function (options) {
 
@@ -17,50 +26,92 @@ Page({
   },
   onShow: function () {
     let eventChannel = this.getOpenerEventChannel()
+    // 编辑地址
     eventChannel.on('editLocation', (data) => {
       this.setData({
-        user: data.user,
+        user: data.user || {},
         locationIndex: data.index
+      })
+    })
+
+    // 新增地址
+    eventChannel.on('addNewAddress', () => {
+      this.setData({
+        addNewAddress: true
       })
     })
   },
   changeSchool(e) {
-    this.data.user.school = this.data.schoolList[e.detail.value]
+    this.data.user.campus = this.data.schoolList[e.detail.value]
+    this.data.hasChange = true
     this.setData({
       index: e.detail.value,
     })
   },
   selectSex(e) {
-    const sex = e.detail.value
-    if(0 === sex) {
-      this.data.user.sex = '先生'
-    } else {
-      this.data.user.sex = '女士'
-    }
-
+    this.data.user.sex = e.detail.value
+    this.data.hasChange = true
     this.setData({
       user: this.data.user
     })
   },
   newName(e) {
-    this.data.user.name = e.detail.value
+    this.data.hasChange = true
+    this.data.user.contactName = e.detail.value
   },
   newRoom(e) {
-    this.data.user.room = e.detail.value
+    this.data.hasChange = true
+    this.data.user.detailedAddress = e.detail.value
   },
   newTelNum(e) {
-    this.data.user.telNum = e.detail.value
+    this.data.hasChange = true
+    this.data.user.contactPhone = e.detail.value
   },
   saveLocation() {
-    let pages = getCurrentPages()
-    let lastPages = pages[pages.length - 2]
-
-    lastPages.setData({
-      user: this.data.user,
-      locationIndex: this.data.locationIndex
-    })
-
-    wx.navigateBack()
+    if(/^1\d{10}$/.test(this.data.user.contactPhone)) {
+      if(this.data.addNewAddress) {
+        addNewAddress({
+          campus: this.data.user.campus,
+          contactName: this.data.user.contactName,
+          sex: this.data.user.sex,
+          contactPhone: this.data.user.contactPhone,
+          detailedAddress: this.data.user.detailedAddress
+        }).then(res => {
+          wx.showToast({
+            title: res.data.msg,
+            icon: 'success'
+          })
+        })
+      } else {
+        updateAddress({
+          receiveId: this.data.user.receiveId,
+          campus: this.data.user.campus,
+          contactName: this.data.user.contactName,
+          contactPhone: this.data.user.contactPhone,
+          sex: this.data.user.sex,
+          detailedAddress: this.data.user.detailedAddress,
+          receiveId: this.data.user.receiveId
+        }).then(res => {
+          // 修改成功后
+          if(res.data.code === 3258) {
+            wx.showToast({
+              title: res.data.msg,
+              icon: 'success'
+            })
+            wx.navigateBack()
+          } else {
+            wx.showToast({
+              title: res.data.msg
+            })
+          }
+        })
+      }
+    } else {
+      wx.showToast({
+        title: '请输入正确的手机号码！',
+        icon: 'none'
+      })
+    }
   },
   deleteLocation() {
     wx.showModal({
@@ -68,17 +119,16 @@ Page({
       content: '确定要删除该地址？',
       confirmColor: 'red',
       cancelColor: 'grey',
-      success: () => {
-        let pages = getCurrentPages()
-        let lastPage = pages[pages.length - 2]
-        
-        lastPage.data.locationList.splice(this.data.locationIndex, 1)
-
-        lastPage.setData({
-          locationList: lastPage.data.locationList
-        })
-        
-        wx.navigateBack()
+      success: ({confirm}) => {
+        if(confirm) {
+          deleteAddress({
+            receiveId: this.data.user.receiveId
+          }).then(res => {
+            // 删除地址后的操作
+          })
+          
+          wx.navigateBack()
+        }
       }
     })
   }

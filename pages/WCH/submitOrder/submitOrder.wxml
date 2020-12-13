@@ -1,0 +1,100 @@
+<!--pages/WCH/submitOrder/submitOrder.wxml-->
+<cu-custom bgColor="bg-red" isBack="true"></cu-custom>
+
+<view class="bg-white text-center margin-sm padding-bottom">
+
+  <view class="padding-tb text-lg text-bold">
+    <text wx:if="{{!isPay}}">等待支付</text>
+    <text wx:if="{{isPay}}">支付成功</text>
+  </view>
+
+  <view wx:if="{{!isPay}}">
+    <text class="cuIcon-timefill"> 等待支付：</text>
+    <text class="text-blue">15:00</text>
+    <view class="cuIcon-notice text-sm text-gray margin-top-xs">
+      请在15分钟内完成支付，超时将自动取消
+    </view>
+  </view>
+  <view wx:if="{{isPay}}">
+    <view class="text-sm text-gray margin-top-xs">
+      支付成功，请耐心等待商家送达
+    </view>
+  </view>
+
+  <view class="margin-top">
+    <view class="flex justify-between" style="width: 60%; margin: 0 auto" wx:if="{{!isPay}}" >
+      <view style="width: 45%" class="solid line-black padding-xs" bindtap="cancelOrder">取消订单</view>
+      <view style="width: 45%" class="padding-xs bg-red" bindtap="pay">去支付</view>
+    </view>
+    <view style="width: 40%; margin: 0 auto" wx:if="{{isPay}}" >
+      <view wx:if="{{isPay}}" class="bg-red padding-xs">再来一单</view>
+    </view>
+  </view>
+</view>
+
+<view class="margin-sm bg-white">
+  <view class="padding text-lg text-bold">{{shopName}}</view>
+  <view class="padding-tb-sm padding-lr flex justify-between" wx:for="{{cartList}}" wx:key="index">
+    <view class="flex">
+      <view class="cu-avatar" style="background-image:url(https://ossweb-img.qq.com/images/lol/img/champion/Taric.png);"></view>
+      <view class="content margin-left">
+        <view class="text-cut text-black" style="width: 300rpx">
+          <view class="text-bold">{{item.name}}</view>
+          <view class="text-gray text-xs">{{item.spec}}</view>
+        </view>
+      </view>
+      <view class="margin-left" style="line-height: 64rpx">x{{item.count ? item.count : item.num}}</view>
+    </view>
+    <view class="text-price margin-right-xl text-red text-bold" style="line-height: 64rpx">{{item.price + (item.attrPrice?item.attrPrice:0)}}</view>
+  </view>
+  <view class="padding-lr padding-tb-xs flex justify-between" style="line-height: 38rpx" wx:if="{{takeAway}}">
+    <view>配送费</view>
+    <view class="text-price margin-right-xl text-red text-bold">{{sendPrice}}</view>
+  </view>
+  <view class="padding text-right margin-right-xl" style="line-height: 38rpx">
+    <text class="text-sm padding-right">小计</text>
+    <text class="text-price text-red text-bold">{{totalPrice}}</text>
+  </view>
+  <view class="text-bold text-center padding solids-top">
+    <text class="cuIcon-phone" bindtap="callShop"> 联系商家</text>
+  </view>
+</view>
+
+<view class="margin-sm bg-white padding-left-sm" wx:if="{{takeAway}}">
+  <view class="flex padding-top-sm">
+    <view class="flex-sub">配送时间</view>
+    <view class="flex-treble">立即配送</view>
+  </view>
+  <view class="flex padding-tb-sm">
+    <view class="flex-sub">配送地址</view>
+    <view class="flex-treble">
+      <view>{{user.contactName}}{{user.sex === 1 ? '(先生)' : '(女士)'}}{{user.contactPhone}}</view>
+      <view class="margin-top-xs">{{user.compus}}{{user.detailedAddress}}</view>
+    </view>
+  </view>
+</view>
+<view class="margin-sm bg-white padding-left-sm" wx:if="{{!takeAway}}">
+  <view class="flex padding-top-sm">
+    <view class="flex-sub">自取时间</view>
+    <view class="flex-treble">立即取餐</view>
+  </view>
+  <view class="flex padding-tb-sm">
+    <view class="flex-sub">商家地址</view>
+    <view class="flex-treble">{{shopAddress}}</view>
+  </view>
+</view>
+
+<view class="margin-sm bg-white padding-left-sm">
+  <view class="flex padding-top-sm">
+    <view class="flex-sub">备注</view>
+    <view class="flex-treble">{{remark}}</view>
+  </view>
+  <view class="flex padding-tb-sm">
+    <view class="flex-sub">订单号码</view>
+    <view class="flex-treble">1111111111111111</view>
+  </view>
+  <view class="flex padding-tb-sm" wx:if="{{isPay}}">
+    <view class="flex-sub">支付时间</view>
+    <view class="flex-treble">{{payTime}}</view>
+  </view>
+</view>

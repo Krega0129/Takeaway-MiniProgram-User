@@ -4,7 +4,7 @@
     "ignore": []
   },
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
     "es6": true,
     "enhance": false,
     "postcss": true,
@@ -36,7 +36,7 @@
   },
   "compileType": "miniprogram",
   "libVersion": "2.13.1",
-  "appid": "wxbf24e4c755c37d93",
+  "appid": "wxb2dfbd203ddd200f",
   "projectname": "Takeaway-User",
   "debugOptions": {
     "hidedInDevtools": []
@@ -95,6 +95,19 @@
           "name": "pages/WCH/editLocation/editLocation",
           "pathName": "pages/WCH/editLocation/editLocation",
           "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "pages/WCH/login/login",
+          "pathName": "pages/WCH/login/login",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "pages/WCH/submitOrder/submitOrder",
+          "pathName": "pages/WCH/submitOrder/submitOrder",
           "scene": null
         }
       ]

@@ -11,7 +11,8 @@
     "pages/WCH/bill/bill",
     "pages/WCH/remarks/remarks",
     "pages/WCH/editLocation/editLocation",
-    "pages/WCH/NewLocation/newLocation"
+    "pages/WCH/login/login",
+    "pages/WCH/submitOrder/submitOrder"
   ],
   "window": {
     "navigationStyle": "custom"

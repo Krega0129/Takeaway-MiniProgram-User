@@ -13,6 +13,12 @@ App({
       wx.setStorageSync('searchFoodHistoryList', [])
     }
 
+    if(!wx.getStorageSync('address')) {
+      wx.redirectTo({
+        url: '/pages/WCH/location/location?canback=' + 0
+      })
+    }
+
     wx.getSystemInfo({
       success: e => {
         this.globalData.StatusBar = e.statusBarHeight;
@@ -22,55 +28,342 @@ App({
       },
     })
 
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-      }
-    })
-    // 获取用户信息
-    wx.getSetting({
-      success: res => {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-          wx.getUserInfo({
-            success: res => {
-              // 可以将 res 发送给后台解码出 unionId
-              this.globalData.userInfo = res.userInfo
+    // 检查登录态
+    // wx.checkSession({
+    //   success: (res) => {
+    //     if(res.errMsg === 'checkSession:ok') {
+    //       console.log('登录态未过期');
+          
+    //     }
+    //   },
+    //   fail: (res) => {
+    //     wx.login({
+    //       success: res => {
+    //         console.log(res);
+            
+    //       }
+    //     })
+    //   }
+    // })
 
-              // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-              // 所以此处加入 callback 以防止这种情况
-              if (this.userInfoReadyCallback) {
-                this.userInfoReadyCallback(res)
-              }
-            }
-          })
-        }
+    // 判断token
+    // if(wx.getStorageSync('token')) {
+    //   this.globalData.token = wx.getStorageSync('token')
+    // } else {
+    //   wx.login({
+    //     success: res => {
+    //       // 发送 res.code 到后台换取 openId, sessionKey, unionId
+    //       console.log(res.code);
+          
+    //       if(res.code) {
+    //         wx.request({
+    //           url: 'http://192.168.1.111:8080' + H_config.LOGIN,
+    //           data: {
+    //             code: res.code
+    //           },
+    //           method: 'post',
+    //           success: res => {
+    //             console.log(res);
+    //           },
+    //           fail: msg => {
+    //             console.log(msg);
+    //           }
+              
+    //         })
+    //       } else {
+    //         console.log('登陆失败！' + res.msg);
+    //       }
+    //     }
+    //   })
+    // }
+
+    // wx.getSetting({
+    //   success: res => {
+    //     console.log(res);
+        
+    //   },
+    //   fail: res => {
+    //     console.log(res);
+        
+    //   }
+    // })
+
+    // 登录
+
+    // wx.login({
+    //   success: res => {
+    //     // 发送 res.code 到后台换取 openId, sessionKey, unionId
+    //     if(res.code) {
+    //       wx.request({
+    //         url: 'url',
+    //         data: {
+    //           code: res.code
+    //         }
+    //       })
+    //     } else {
+    //       console.log('登陆失败！' + res.msg);
+    //     }
+    //   }
+    // })
+
+    // 获取用户信息
+    // wx.getSetting({
+    //   success: res => {
+    //     if (res.authSetting['scope.userInfo']) {
+    //       // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+    //       wx.getUserInfo({
+    //         success: res => {
+    //           // 可以将 res 发送给后台解码出 unionId
+    //           this.globalData.userInfo = res.userInfo
+
+    //           // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+    //           // 所以此处加入 callback 以防止这种情况
+    //           if (this.userInfoReadyCallback) {
+    //             this.userInfoReadyCallback(res)
+    //           }
+    //         }
+    //       })
+    //     }
+    //   }
+    // })
+  },
+  addToCart(obj, tag, bool) {
+    // 1.判断是否已经添加进来
+    let old = null
+    let oldInfo = null
+
+    // 判断是哪家店铺的购物车
+    if(this.globalData.cartList.find((item) => item.shopId === obj.shopId)) {
+      old = this.globalData.cartList.find((item) => item.shopId === obj.shopId)
+    } else {
+      old = {shopId: obj.shopId, foodList:[]}
+      this.globalData.cartList.push(old)
+    }
+    
+    // 是否存在规格
+    if(tag) {
+      oldInfo = old.foodList.find((item) => item.id === obj.id && item.spec === tag)
+    } else {
+      oldInfo = old.foodList.find((item) => item.id === obj.id)
+    }
+
+    // 购物车中存在 && 没有规格 && 不是在详情页加购
+    if(oldInfo && !tag && !bool) {
+      oldInfo.num++
+    } else if(!oldInfo && !tag) {
+      // 购物车不存在 && 没有规格
+      obj.num = 1
+      old.foodList.push(obj)
+    } else if (oldInfo && tag && tag === oldInfo.spec) {
+      // 购物车中存在 && 有规格 && 购物车中存在此规格商品
+      oldInfo.num++
+      oldInfo.count++
+    } else if(!oldInfo || (oldInfo && tag && tag !== oldInfo.spec)){
+      // 购物车中不存在该商品 || 规格
+      old.foodList.push({...obj, spec: tag, count: 1})
+    }
+
+    if(oldInfo) {
+      obj.num = oldInfo.num
+    }
+
+    for(let food of old.foodList) {
+      if(food.id === obj.id) {
+        food.num = obj.num
+      }
+    }
+    this.culPrice(old.foodList);
+  },
+  culPrice(list, sendPrice) {
+    this.globalData.totalPrice = 0
+    this.globalData.totalCount = 0
+    for(let item of list) {
+      const num = item.count ? item.count : item.num
+      this.globalData.totalPrice += (item.price + (item.attrPrice ? item.attrPrice : 0)) * num
+      this.globalData.totalCount += num
+    }
+    this.globalData.totalPrice = this.globalData.totalPrice + (sendPrice || 0)
+    this.globalData.totalPrice = this.globalData.totalPrice.toFixed(2)
+  },
+
+  // login(e) {
+  //   if (e.detail.errMsg == "getUserInfo:ok")//判断用户是否授权
+  //    {
+  //     const encryptedData = e.detail.encryptedData;
+  //     const iv = e.detail.iv;
+  //     wx.showLoading({
+  //       title: '正在登录中...',
+  //       icon: 'loading',
+  //       mask: true
+  //     })
+  //     wx.login({ 
+  //       success: (res) => {
+  //         console.log(encryptedData);
+  //         console.log(iv);
+          
+  //         console.log(res.code);
+          
+  //         if (res.code) {
+  //           const code = res.code;
+
+  //             wx.request({
+  //             url: 'http://192.168.1.100:8080/driverinfo/getOpenId', //访问后端,定义对应的url
+  //             data: {
+  //               encryptedData: encryptedData,
+  //               iv: iv,
+  //               code: code
+  //             },
+  //             method: 'POST',
+  //             header: {
+  //               'Content-Type': 'application/x-www-form-urlencoded'
+  //             },
+  //             success: (res) => {
+  //             //解密成功后 获取自己服务器返回的结果
+  //             console.log(res);
+  //             this.globalData.openId = res.data.data.openId
+  //             this.globalData.sessionKey = res.data.data.sessionKey
+  //               // if (res.data.code > 0) {
+  //               wx.hideLoading();
+  //               //   wx.setStorageSync('token', res.data.userInfo.accessToken);
+  //               //   wx.setStorageSync('mid', res.data.userInfo.id);
+  //               //   wx.setStorageSync('nickName', res.data.userInfo.nickName);
+  //               //   wx.setStorageSync('avatarUrl', res.data.userInfo.avatarUrl);
+  //               //   wx.setStorageSync('status', res.data.userInfo.status);
+  //               //   wx.reLaunch({//关闭所有页面，打开到应用内的某个页面
+  //               //     url: "/pages/WCH/home/home"
+  //               //   })
+  //               // }else {
+  //               //   console.log('解密失败')
+  //               // }
+  //             },
+  //             fail: function(res) {
+  //               console.log(res);
+  //             }
+  //           })
+            
+  //         }
+  //       },
+  //       fail: function () {
+  //         console.log("启用wx.login函数，失败！");
+  //       },
+  //     })
+  //    }
+  // },
+  getPhoneNumber(e) {
+    console.log(e);
+    wx.request({
+      url: 'http://192.168.1.100:8080/driverinfo/getPhoneNumber',
+      data: {
+        encryptedData: e.detail.encryptedData,
+        iv: e.detail.iv,
+        openId: this.globalData.openId,
+        sessionKey: this.globalData.sessionKey
+      },
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      success: function(res) {
+        console.log(res);
+      },
+      fail: function(err) {
+        console.log(err);
       }
     })
-  },
-  addToCart(obj) {
-    // 1.判断是否已经添加进来
-    const oldInfo = this.globalData.cartList.find((item) => item.id === obj.id)
-    if (oldInfo) {
-      oldInfo.count += 1
-    } else {
-      obj.count = 1
-      this.globalData.cartList.push(obj)
-    }
   },
   globalData: {
     userInfo: null,
     StatusBar: null,
     Custom: null,
     CustomBar: null,
-    // 当前定位
-    nowLocation: '广东工业大学',
     // 购物车列表
     cartList: [],
     // 总价格
     totalPrice: 0,
     // 总数量
-    totalCount: 0
-  }
+    totalCount: 0,
+    phoneNum: null,
+    token: null,
+
+    openId: null
+  },
+  // login(e) {
+  //   if (e.detail.errMsg == "getUserInfo:ok")//判断用户是否授权
+  //    {
+  //     var encryptedData = e.detail.encryptedData;//加密的用户信息
+  //     var iv = e.detail.iv; //加密算法的初始向量
+  //     wx.showLoading({
+  //       title: '正在登录中...',
+  //       icon: 'loading',
+  //       mask: true
+  //     })
+  //     wx.login({ //调用接口获取登录凭证（code）
+  //       success: (res) => {
+  //         if (res.code) {
+  //           var code = res.code;
+  //             wx.request({
+  //             url: 'http://192.168.1.116:8080/driverinfo/getOpenId', //访问后端,定义对应的url
+  //             data: {
+  //               encryptedData: encryptedData,
+  //               iv: iv,
+  //               code: code
+  //             },
+  //             method: 'POST',
+  //             header: {
+  //               'Content-Type': 'application/x-www-form-urlencoded'
+  //             },
+  //             success: (res) => {
+  //             //解密成功后 获取自己服务器返回的结果
+  //             console.log(res);
+  //             this.globalData.openId = res.data.data.openId
+  //             this.globalData.sessionKey = res.data.data.sessionKey
+  //               // if (res.data.code > 0) {
+  //               wx.hideLoading();
+  //               //   wx.setStorageSync('token', res.data.userInfo.accessToken);
+  //               //   wx.setStorageSync('mid', res.data.userInfo.id);
+  //               //   wx.setStorageSync('nickName', res.data.userInfo.nickName);
+  //               //   wx.setStorageSync('avatarUrl', res.data.userInfo.avatarUrl);
+  //               //   wx.setStorageSync('status', res.data.userInfo.status);
+  //               //   wx.reLaunch({//关闭所有页面，打开到应用内的某个页面
+  //               //     url: "/pages/WCH/home/home"
+  //               //   })
+  //               // }else {
+  //               //   console.log('解密失败')
+  //               // }
+  //             },
+  //             fail: function(res) {
+  //               console.log(res);
+                
+  //             }
+  //           })
+  //         }
+  //       },
+  //       fail: function () {
+  //         console.log("启用wx.login函数，失败！");
+  //       },
+  //     })
+  //    }
+  // },
+  // getPhoneNumber(e) {
+  //   console.log(e);
+  //   wx.request({
+  //     url: 'http://192.168.1.116:8080/driverinfo/getPhoneNumber',
+  //     data: {
+  //       encryptedData: e.detail.encryptedData,
+  //       iv: e.detail.iv,
+  //       openId: this.globalData.openId,
+  //       sessionKey: this.globalData.sessionKey
+  //     },
+  //     method: 'POST',
+  //     header: {
+  //       'Content-Type': 'application/x-www-form-urlencoded'
+  //     },
+  //     success: function(res) {
+  //       console.log(res);
+  //     },
+  //     fail: function(err) {
+  //       console.log(err);
+  //     }
+  //   })
+  // }
 })

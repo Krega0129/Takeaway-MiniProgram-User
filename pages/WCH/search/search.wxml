@@ -15,8 +15,11 @@
   </view>
 </view>
 
-<scroll-view scroll-y style="max-height: 75vh" wx:if="{{showSearchTip}}">
+<scroll-view scroll-y style="max-height: 75vh">
   <view class="cu-list menu">
+    <view class="cu-item bg-white" wx:for="{{storeList}}" wx:key="index" data-food="{{item}}" bindtap="searchFood">
+      <text class="cuIcon-shop"> {{item}}</text>
+    </view>
     <view class="cu-item bg-white" wx:for="{{foodList}}" wx:key="index" data-food="{{item}}" bindtap="searchFood">
       <text class="cuIcon-search"> {{item}}</text>
     </view>

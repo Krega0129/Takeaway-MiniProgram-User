@@ -1,7 +1,7 @@
 <!--pages/storeListPage/storeListPage.wxml-->
 <cu-custom bgColor="bg-red" isBack="{{true}}">
   <text slot="backText">返回</text>
-  <text slot="content">{{title}}</text>
+  <text slot="content">{{category ? category : keyWord}}</text>
 </cu-custom>
 
 <view class="cu-bar bg-red search pos-fix" style="width:100%; z-index: 10">
@@ -17,6 +17,22 @@
 <!-- 占位 -->
 <view class="cu-bar search"></view>
 
-<block wx:for="{{10}}" wx:key="index">
-  <w-shop-item></w-shop-item>
-</block>
+<view class="cu-card article no-card margin-lr-xs margin-bottom-xs radius" bindtap="showStoreDetails" data-shopInfo="{{item}}" wx:for="{{storeList}}" wx:key="index" lower-threshold="{{0}}">
+  <view class="cu-item">
+    <view class="content">
+      <image src="{{item.shopHead}}" mode="aspectFill" style="width: 200rpx; height: 6.4em" class="margin-top"></image>
+      <view class="desc">
+        <view class="title text-cut" style="font-size: 40rpx">{{item.shopName}}</view>
+        <view class="text-gray margin-left">
+          起送 <text class="text-price">{{item.minPrice ? item.minPrice : 0}}</text>
+          配送 <text class="text-price">{{item.sentPrice ? item.sentPrice : 0}}</text>
+        </view>
+        <view>
+          <view class="dp-in-bk text-cut bg-orange light margin-left" style="max-width: 380rpx">“ {{item.shopIntroduce}} ”</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="padding-sm text-center text-gray" wx:if="{{showEnd}}">--------- 我可是有底线的 ---------</view>

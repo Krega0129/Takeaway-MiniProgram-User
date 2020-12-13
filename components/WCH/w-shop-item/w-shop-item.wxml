@@ -2,7 +2,7 @@
 <view class="cu-card article no-card margin-lr-xs margin-bottom-xs radius" bindtap="showStoreDetails">
   <view class="cu-item">
     <view class="content">
-      <image src="/assets/img/WCH/category/shop.png" mode="aspectFill" style="width: 200rpx; height: 6.4em" class="margin-top"></image>
+      <image src="{{imgURL}}" mode="aspectFill" style="width: 200rpx; height: 6.4em" class="margin-top"></image>
       <view class="desc">
         <view class="title text-cut" style="font-size: 40rpx">{{storeName}}</view>
         <view class="text-gray margin-left">
@@ -10,7 +10,7 @@
           配送 <text class="text-price">{{sentPrice}}</text>
         </view>
         <view>
-          <view class="dp-in-bk text-cut bg-orange light margin-left" style="max-width: 380rpx">“ {{desc}} ”</view>
+          <view class="dp-in-bk text-cut bg-orange light margin-left" style="max-width: 380rpx">“ {{intro}} ”</view>
         </view>
       </view>
     </view>

@@ -1,54 +1,19 @@
 <!--pages/location/location.wxml-->
-<cu-custom bgColor="bg-red" isBack="true">
+<cu-custom bgColor="bg-red" isBack="{{canBack}}">
   <text slot="backText">返回</text>
   <text slot="content">定位</text>
 </cu-custom>
-
-<!-- <view class="cu-bar bg-red search">
-  <view class="search-form radius">
-    <text class="cuIcon-search"></text>
-    <input type="text" placeholder="搜索学校" confirm-type="search" bindinput="inputSearch"></input>
-  </view>
-  <view class="action" bindtap="cancelLocate">
-    <text class="cuIcon-close"></text>
-    <text>取消</text>
-  </view>
-</view> -->
 
 <view class="nowLocation text-cut padding-sm bg-white margin-bottom-xs">
   <text class="cuIcon-locationfill"></text>
   <text>当前定位：{{nowLocation}}</text>
 </view>
+<view class="cuIcon-notice margin-bottom-xs margin-left text-gray text-sm"> 选择校区后才能正常使用</view>
 
-<scroll-view scroll-y style="max-height: calc(100vh - 260rpx)">
+<scroll-view scroll-y style="max-height: calc(100vh - 260rpx)" bindscrolltolower='scrollToLower'>
   <view class="cu-list menu">
     <view class="cu-item bg-white" wx:for="{{schoolList}}" wx:key="index" data-location="{{item}}" bindtap="reLocate">
       <text class="cuIcon-location"> {{item}}</text>
     </view>
   </view>
 </scroll-view>
-
-<!-- <scroll-view scroll-y style="max-height: 75vh" wx:if="{{showSearchTip}}">
-  <view class="cu-list menu">
-    <view class="cu-item bg-white" wx:for="{{schoolList}}" wx:key="index" data-location="{{item}}" bindtap="reLocate">
-      <text class="cuIcon-search"> {{item}}</text>
-    </view>
-  </view>
-</scroll-view> -->
-
-<!-- <view wx:if="{{showHistory}}">
-  <view class="padding-sm bg-white solid-bottom line-gray">
-    <text>搜索记录</text>
-  </view>
-  <view class="cu-list menu">
-    <view class="cu-item bg-white" wx:for="{{searchHistoryList}}" wx:key="index" data-index="{{index}}" data-location="{{item}}" bindtap="reLocate">
-      <text>{{item}}</text>
-      <view class="padding-sm" data-index="{{index}}" catchtap="deleteSearchHistory">
-        <text class="cuIcon-close"></text>
-      </view>
-    </view>
-  </view>
-  <view class="padding-sm text-center bg-white margin-top-xs" bindtap="clearAllSearchHistory">
-    <text class="text-red">清除所有搜索记录</text>
-  </view>
-</view> -->

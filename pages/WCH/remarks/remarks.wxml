@@ -11,8 +11,20 @@
 <view class="margin-sm">
   <view>快捷输入</view>
   <view class="flex" style="width: 80%; flex-wrap: wrap">
-    <view wx:for="{{audioTag}}" wx:key="index" class="cu-tag radius margin-xs {{item.check?'bg-orange':''}}" data-index="{{index}}" data-taglist="{{audioTag}}" data-listname="audioTag" bindtap="chooseAudioTag">{{item.tag}}</view>
-    <view wx:for="{{tagList}}" wx:key="index" class="cu-tag radius margin-xs {{item.check?'bg-orange':''}}" data-index="{{index}}" bindtap="chooseTag">{{item.tag}}</view>
+    <view wx:for="{{audioTag}}" wx:key="index" 
+          class="cu-tag radius margin-xs {{item.check?'bg-orange':''}}" 
+          data-index="{{index}}" 
+          data-taglist="{{audioTag}}" 
+          data-listname="audioTag" 
+          bindtap="chooseAudioTag">
+      {{item.tag}}
+    </view>
+    <view wx:for="{{tagList}}" wx:key="index" 
+          class="cu-tag radius margin-xs {{item.check?'bg-orange':''}}" 
+          data-index="{{index}}" 
+          bindtap="chooseTag">
+      {{item.tag}}
+    </view>
   </view>
 </view>
 

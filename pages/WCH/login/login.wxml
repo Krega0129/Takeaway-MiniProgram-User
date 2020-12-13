@@ -1,0 +1,14 @@
+<!--pages/WCH/login/login.wxml-->
+<cu-custom bgColor="bg-red" isBack="true">
+  <text slot="content">微信授权</text>
+</cu-custom>
+
+<view class="padding-xl" style="margin-top: 300rpx">
+  <view class="flex justify-center">
+    <image style="width: 128rpx; height: 128rpx" src="../../../assets/img/WCH/wx_logo.png"></image>
+  </view>
+  <!-- <view class="text-center margin-top-lg">
+    <image style="height: 96rpx; width: 474rpx" src="../../../assets/img/WCH/wx_button.png"></image>
+  </view> -->
+  <button open-type="getPhoneNumber" bindgetphonenumber="showLogin" class="text-center margin-top" type="primary" style="height: 96rpx; width: 474rpx; line-height: 66rpx">微信授权登录</button>
+</view>

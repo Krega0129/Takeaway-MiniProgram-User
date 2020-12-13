@@ -11,9 +11,20 @@ Component({
     }
   },
   data: {
-
+    imgUrl: '',
+    showImg: false
   },
   methods: {
-
+    tapBanner(e) {
+      this.setData({
+        showImg: true,
+        imgUrl: e.currentTarget.dataset.url
+      })
+    },
+    hideImg() {
+      this.setData({
+        showImg: false
+      })
+    }
   }
 })

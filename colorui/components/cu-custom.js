@@ -61,7 +61,7 @@ Component({
     },
     selctPosition() {
       wx.navigateTo({
-        url: '/pages/WCH/location/location',
+        url: '/pages/WCH/location/location?canback=' + 1,
       })
     },
     redirectPage() {

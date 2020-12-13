@@ -1,3 +1,12 @@
+import request from '../service/network'
+import {
+  BASE_URL,
+  H_config
+} from '../service/config'
+import {
+  getMultiData
+} from '../service/home'
+
 const formatTime = date => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
@@ -14,6 +23,40 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+async function _getMultiData(position, storeList, {pageNum, category, keyWord}) {
+  let totalPages = 0
+  await getMultiData({
+    address: position,
+    category: category,
+    keyWord: keyWord,
+    pageNum: pageNum,
+    pageSize: 10
+  }).then(res => {
+    const shopList = res.data.data
+    for(let item of shopList.list) {
+      item.shopHead = BASE_URL + '/' + item.shopHead
+    }
+    storeList.push(...shopList.list)
+    totalPages = shopList.totalPages
+  })
+
+  return {storeList, totalPages}
+}
+
+function login(data) {
+  return request({
+    url: H_config.LOGIN,
+    data: data,
+    method: 'post'
+  })
+}
+
+function showMsg(modelName) {
+  
+}
+
 module.exports = {
-  formatTime: formatTime
+  formatTime: formatTime,
+  _getMultiData,
+  login
 }

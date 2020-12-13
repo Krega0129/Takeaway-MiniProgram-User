@@ -21,13 +21,13 @@
     <view class="bg-white margin-lr-sm" style="box-sizing: border-box" wx:if="{{chooseLocation}}" bindtap="changeLocation">
       <view class="flex justify-between" style="line-height: 60rpx">
         <view class="padding text-bold text-lg">
-          <text class="cuIcon-location"> {{user.school}}{{user.room}}</text>
+          <text class="cuIcon-location"> {{user.compus}}{{user.detailedAddress}}</text>
         </view>
         <view class="cuIcon-right padding"></view>
       </view>
       <view class="flex margin-left-xl" style="line-height: 40rpx">
-        <view>{{user.name}} {{user.sex}}</view>
-        <view class="margin-left padding-bottom">{{user.telNum}}</view>
+        <view>{{user.contactName}} {{user.sex === 1 ? '先生' : '女士'}}</view>
+        <view class="margin-left padding-bottom">{{user.contactPhone}}</view>
       </view>
     </view>
   </view>
@@ -46,11 +46,11 @@
     </view>
     <view class="solid-tb flex justify-between padding-sm padding-left-xl solid-bottom line-gray" wx:for="{{locationList}}" wx:key="index" data-user="{{item}}" bindtap="selectLocation">
       <view class="text-cut text-sm" style="width: 600rpx">
-        <view class="text-cut text-black" style="line-height: 40rpx">{{item.school}}{{item.room}}</view>
+        <view class="text-cut text-black" style="line-height: 40rpx">{{item.campus}}{{item.detailedAddress}}</view>
         <view class="text-gray">
-          <text class="padding-right-xs">{{item.name}}</text>
-          <text class="padding-right-xs">{{item.sex}}</text>
-          <text class="padding-right-xs">{{item.telNum}}</text>
+          <text class="padding-right-xs">{{item.contactName}}</text>
+          <text class="padding-right-xs">{{item.sex === 1 ? '先生' : '女士'}}</text>
+          <text class="padding-right-xs">{{item.contactPhone}}</text>
         </view>
       </view>
       <view class="padding-sm" catchtap="editLocation" data-user="{{item}}" data-index="{{index}}">
@@ -67,41 +67,50 @@
   <view class="title">配送时间</view>
   <picker bindchange="PickerChange" value="{{index}}" range="{{picker}}">
     <view class="picker">
-      {{picker[index]}}
+      {{picker[index] + '送出'}}
     </view>
   </picker>
 </view>
 
 <view class="cu-form-group margin-lr-sm" wx:if="{{!takeAway}}">
+  <view class="title">取餐时间</view>
+  <picker bindchange="PickerChange" value="{{index}}" range="{{picker}}">
+    <view class="picker">
+      {{picker[index] + '取餐'}}
+    </view>
+  </picker>
+</view>
+<view class="cu-form-group margin-lr-sm" wx:if="{{!takeAway}}">
   <view class="title">预留手机号码</view>
-  <input type="number" value="{{userTel}}" placeholder="请填写预留手机号码" id=""/>
+  <input type="number" value="{{userTel}}" bindinput="inputTel" placeholder="请填写预留手机号码"/>
 </view>
 
 <view class="margin-sm bg-white">
-  <view class="padding text-lg">商家名</view>
-  <view class="padding-tb-sm padding-lr flex justify-between" style="line-height: 64rpx" wx:for="{{cartList}}" wx:key="index">
+  <view class="padding text-lg">{{shopName}}</view>
+  <view class="padding-tb-sm padding-lr flex justify-between" wx:for="{{cartList}}" wx:key="index">
     <view class="flex">
-      <view class="cu-avatar" style="background-image:url(https://ossweb-img.qq.com/images/lol/img/champion/Taric.png);"></view>
+      <view class="cu-avatar" style="background-image:url({{item.imgUrl}});"></view>
       <view class="content margin-left">
         <view class="text-cut text-black" style="width: 300rpx">
-          <text class="text-bold">{{item.name}}</text>
+          <view class="text-bold">{{item.name}}</view>
+          <view class="text-gray text-xs">{{item.spec}}</view>
         </view>
       </view>
-      <view class="margin-left">x{{item.count}}</view>
+      <view class="margin-left" style="line-height: 64rpx">x{{item.count ? item.count : item.num}}</view>
     </view>
-    <view class="text-price margin-right-xl text-red text-bold">{{item.price}}</view>
+    <view class="text-price margin-right-xl text-red text-bold" style="line-height: 64rpx">{{item.price + (item.attrPrice?item.attrPrice:0)}}</view>
   </view>
-  <view class="padding-lr padding-bottom-xs padding-top-lg flex justify-between" style="line-height: 38rpx">
+  <!-- <view class="padding-lr padding-bottom-xs padding-top-lg flex justify-between" style="line-height: 38rpx">
     <view>包装费</view>
     <view class="text-price margin-right-xl text-red text-bold">{{packPrice}}</view>
-  </view>
+  </view> -->
   <view class="padding-lr padding-tb-xs flex justify-between" style="line-height: 38rpx">
     <view>配送费</view>
     <view class="text-price margin-right-xl text-red text-bold">{{sendPrice}}</view>
   </view>
   <view class="padding text-right margin-right-xl" style="line-height: 38rpx">
     <text class="text-sm padding-right">小计</text>
-    <text class="text-price text-red text-bold">{{totalPrice + packPrice + sendPrice}}</text>
+    <text class="text-price text-red text-bold">{{totalPrice}}</text>
   </view>
 </view>
 
@@ -125,6 +134,6 @@
 </view>
 
 <view class="pos-fix margin-sm round bg-darkGray flex justify-between cu-card text-lg" style="bottom: 0; width: 95%;">
-  <view class="padding"><view class="text-price margin-left">{{totalPrice + packPrice + sendPrice}}</view></view>
-  <view class="padding-tb bg-red padding-lr-xl">提交订单</view>
+  <view class="padding"><view class="text-price margin-left">{{totalPrice}}</view></view>
+  <view class="padding-tb bg-red padding-lr-xl" bindtap="order">提交订单</view>
 </view>

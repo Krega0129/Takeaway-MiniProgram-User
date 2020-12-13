@@ -17,10 +17,11 @@ Component({
       type: [String, Number],
       value: 0
     },
-    desc: {
+    intro: {
       type: String,
       value: '欢迎光临！'
-    }
+    },
+    imgURL: String
   },
   data: {
     
@@ -29,6 +30,9 @@ Component({
     showStoreDetails() {
       wx.navigateTo({
         url: '/pages/WCH/storeDetails/storeDetails',
+        success: res => {
+          res.eventChannel.emit('sendStoreInfo', {storeName: this.data.storeName, minPrice: this.data.minPrice})
+        }
       })
     }
   }
