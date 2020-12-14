@@ -63,7 +63,7 @@ Page({
     let t = setInterval(() => {
       let time = wx.getStorageSync('time') - new Date().getTime()
       time -= 1000
-      time = formatTime(new Date(time)).split(' ')[1].substring(3, 8)
+      time = formatTime(time).split(' ')[1].substring(3, 8)
       this.setData({
         time: time
       })
@@ -179,8 +179,5 @@ Page({
         }
       }
     });
-  }, 
-  onUnload() {
-    this.data.cartList = []
   }
 })

@@ -3,7 +3,7 @@
   <text slot="content">订单</text>
 </cu-custom>
 <!-- 导航栏 -->
-<scroll-view scroll-x class="bg-white nav" style="position:fixed;top:170rpx;z-index:100">
+<scroll-view scroll-x class="bg-white nav" style="position:fixed;z-index:100">
   <view class="flex text-center">
     <view class="cu-item flex-sub {{index==TabCur?'text-orange cur':''}}" wx:for="{{TabName}}" wx:key="index"
       bindtap="tabSelect" data-id="{{index}}">
@@ -78,7 +78,7 @@
               class="cuIcon-right lg text-gray margin-left-xs"></text><text
               class="fr text-orange text-smt">{{item.statusCode}}</text>
           </view>
-          <view class="margin-left solids-bottom padding-tb-sm"><text class="text-xs">{{item.completeTime}}</text>
+          <view class="margin-left solids-bottom padding-tb-sm"><text class="text-xs">{{item.date}}</text>
           </view>
           <view class="padding-left padding-tb-sm text-sm text-bold"><text>{{item.commodities[0].goodsName}}   </text><text>等共</text><text>{{item.commodities.length}}件</text><text
               class="fr text-sm text-bold text-price">{{item.totalAmount}}</text></view>

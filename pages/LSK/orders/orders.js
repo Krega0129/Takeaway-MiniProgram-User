@@ -1,8 +1,8 @@
-import { getUserTotalOrder, getUnpaidOrder, cancelUnpaidOrder, selectUserPaidOrder } from '../../service/order';
-import { loadingOff, showToast } from '../../utils/util';
+import { getUserTotalOrder, getUnpaidOrder, cancelUnpaidOrder, selectUserPaidOrder } from '../../../service/order';
+import { loadingOff, showToast } from '../../../utils/util';
 import {
   K_config
-} from '../../service/config'
+} from '../../../service/config'
 let app = getApp()
 let bus = app.globalData.bus
 Page({
@@ -31,7 +31,7 @@ Page({
   goToOrderDetails(e) {
     console.log(e);
     wx.navigateTo({
-      url: '/pages/orderDetails/orderDetails?item=' + JSON.stringify(e.currentTarget.dataset.item),
+      url: '/pages/LSK/orderDetails/orderDetails?item=' + JSON.stringify(e.currentTarget.dataset.item),
     })
   },
   // 打开模态框

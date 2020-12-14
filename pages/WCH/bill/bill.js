@@ -306,6 +306,8 @@ Page({
             totalAmount: obj.totalAmount,
             userId: wx.getStorageSync('userId')
           })
+          let a = app.globalData.cartList.find(item => item.shopId === this.data.shopId)
+          console.log(a);
         }else {
           wx.showToast({
             title: res.data.msg,
@@ -341,7 +343,7 @@ Page({
               storeTelNum: this.data.storeTelNum,
               remark: this.data.remark || '',
               takeAway: this.data.takeAway,
-              payTime: new Date(),
+              payTime: new Date().getTime(),
               obj: data,
               isPay: true
             })

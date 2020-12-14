@@ -1,13 +1,13 @@
 // pages/home/home.js
 const BACK_TOP = 500
+const app = getApp()
 
 import { 
   getShopCategory
 } from '../../../service/home'
 
 import {
-  _getMultiData,
-  formatTime
+  _getMultiData
 } from '../../../utils/util'
 
 Page({
@@ -97,7 +97,11 @@ Page({
     }
   },
   onShow() {
-    
+    for(let item of app.globalData.cartList) {
+      let shop = this.data.storeList.find(store => store.shopId === item.shopId)
+      console.log(shop);
+      
+    }
   },
   onPageScroll(options) {
     const scrollTop = options.scrollTop

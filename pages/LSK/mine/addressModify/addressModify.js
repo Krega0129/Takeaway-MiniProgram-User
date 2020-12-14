@@ -3,21 +3,16 @@ import {
   loadingOn,
   loadingOff,
   showToast
-} from '../../../service/config'
+} from '../../../../utils/util'
 import {
   updateAddress,
   updateAddressStatus,
   addNewAddress,
   deleteAddress
-} from '../../../service/address'
+} from '../../../../service/address'
 import {
-  STATECODE_SUCCESS,
-  STATECODE_updateAddress_SUCCESS,
-  STATECODE_updateAddress_FALSE,
-  STATECODE_updateAddressStatus_SUCCESS,
-  STATECODE_addNewAddress_SUCCESS,
-  STATECODE_deleteAddress_SUCCESS
-} from '../../../service/config'
+  K_config
+} from '../../../../service/config'
 Page({
 
   /**
@@ -104,9 +99,9 @@ Page({
       if (!this.data.isEmpty) {
         let receiveId = this.data.addressMsg.receiveId
         updateAddress(campus, contactName, contactPhone, detailedAddress, isDefault, receiveId, sex).then((res) => {
-          if (res.data.code === STATECODE_SUCCESS || res.data.code === STATECODE_updateAddress_SUCCESS) {
+          if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_updateAddress_SUCCESS) {
             updateAddressStatus(receiveId, addressStatus).then((res) => {
-              if (res.data.code === STATECODE_SUCCESS || res.data.code === STATECODE_updateAddressStatus_SUCCESS) {
+              if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_updateAddressStatus_SUCCESS) {
                 loadingOff()
                 showToast('地址更新成功', 1000)
                 setTimeout(function () {
@@ -117,7 +112,7 @@ Page({
               }
             })
           }
-          else if (res.data.code === STATECODE_updateAddress_FALSE) {
+          else if (res.data.code === K_config.STATECODE_updateAddress_FALSE) {
             showToast('更新地址失败', 1000)
           }
           else {
@@ -130,7 +125,7 @@ Page({
       else {
         let receiveId = 0
         addNewAddress(campus, contactName, contactPhone, detailedAddress, isDefault, receiveId, sex).then((res) => {
-          if (res.data.code === STATECODE_SUCCESS || res.data.code === STATECODE_addNewAddress_SUCCESS) {
+          if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_addNewAddress_SUCCESS) {
             loadingOff()
             showToast('新增地址成功', 1000)
             setTimeout(function () {
@@ -214,7 +209,7 @@ Page({
     let receiveId = this.data.addressMsg.receiveId
     deleteAddress(receiveId).then((res) => {
       loadingOff()
-      if (res.data.code === STATECODE_SUCCESS || res.data.code === STATECODE_deleteAddress_SUCCESS) {
+      if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_deleteAddress_SUCCESS) {
         showToast('删除地址成功', 1000)
         setTimeout(function () {
           wx.navigateBack({

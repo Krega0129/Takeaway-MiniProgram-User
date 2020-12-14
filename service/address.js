@@ -1,16 +1,12 @@
 import request from './network'
 import{ 
-  API_getAllAddress_URL,
-  API_updateAddress_URL,
-  API_addNewAddress_URL,
-  API_updateAddressStatus_URL,
-  API_deleteAddress_URL
+  K_config
 }from './config'
 
 // 获取地址列表
 export function getAllAddress(userId){
   return request({
-    url: API_getAllAddress_URL,
+    url: K_config.API_getAllAddress_URL,
     method:'POST',
     header :{
       'content-type': 'application/x-www-form-urlencoded'
@@ -24,7 +20,7 @@ export function getAllAddress(userId){
 // 修改地址信息
 export function updateAddress(campus,contactName,contactPhone,detailedAddress,isDefault,receiveId,sex){
   return request({
-    url: API_updateAddress_URL,
+    url: K_config.API_updateAddress_URL,
     method:'POST',
     data:{
       campus,
@@ -42,7 +38,7 @@ export function updateAddress(campus,contactName,contactPhone,detailedAddress,is
 // 更改默认地址
 export function updateAddressStatus(receiveId,addressStatus){
   return request({
-    url:API_updateAddressStatus_URL,
+    url:K_config.API_updateAddressStatus_URL,
     method:'POST',
     data:{
       receiveId,
@@ -55,7 +51,7 @@ export function updateAddressStatus(receiveId,addressStatus){
 // 新增地址
 export function addNewAddress(campus,contactName,contactPhone,detailedAddress,isDefault,receiveId,sex,userId){
   return request({
-    url:API_addNewAddress_URL,
+    url:K_config.API_addNewAddress_URL,
     method:'POST',
     data:{
       campus,
@@ -73,7 +69,7 @@ export function addNewAddress(campus,contactName,contactPhone,detailedAddress,is
 // 删除地址
 export function deleteAddress(receiveId){
   return request({
-    url:API_deleteAddress_URL,
+    url:K_config.API_deleteAddress_URL,
     method:'GET',
     data:{
       receiveId

@@ -1,6 +1,6 @@
 // pages/mine/addressList/addressLIst.js
-import{getAllAddress}from '../../../service/address'
-import { loadingOff } from '../../../service/config';
+import{getAllAddress}from '../../../../service/address'
+import { loadingOff } from '../../../../utils/util';
 Page({
   /**
    * 页面的初始数据
@@ -56,7 +56,7 @@ Page({
   },
   // 获取地址列表
   setAllAddress:function(){
-    let userId=1
+    let userId = 1
     getAllAddress(userId).then((res)=>{
       loadingOff()
       // console.log(res.data.data);

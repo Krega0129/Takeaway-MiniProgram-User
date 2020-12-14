@@ -7,7 +7,8 @@ import {
   getMultiData
 } from '../service/home'
 
-const formatTime = date => {
+const formatTime = d => {
+  const date = new Date(d)
   const year = date.getFullYear()
   const month = date.getMonth() + 1
   const day = date.getDate()
