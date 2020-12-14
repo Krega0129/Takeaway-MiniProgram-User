@@ -1,5 +1,5 @@
 // pages/orderDetails/orderDetails.js
-import{loadingOn,loadingOff}from '../../service/config'
+import{loadingOn,loadingOff}from '../../../service/config'
 Page({
 
   /**

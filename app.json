@@ -4,15 +4,15 @@
     "pages/position/position",
     "pages/location/location",
     "pages/sociality/sociality",
-    "pages/orders/orders",
-    "pages/mine/profile/profile",
-    "pages/orderDetails/orderDetails",
-    "pages/mine/addressModify/addressModify",
-    "pages/mine/suggest/suggest",
-    "pages/mine/personInfo/personInfo",
-    "pages/mine/nameChange/nameChange",
-    "pages/mine/phoneChange/phoneChange",
-    "pages/mine/addressList/addressList",
+    "pages/LSK/orders/orders",
+    "pages/LSK/mine/profile/profile",
+    "pages/LSK/orderDetails/orderDetails",
+    "pages/LSK/mine/addressModify/addressModify",
+    "pages/LSK/mine/suggest/suggest",
+    "pages/LSK/mine/personInfo/personInfo",
+    "pages/LSK/mine/nameChange/nameChange",
+    "pages/LSK/mine/phoneChange/phoneChange",
+    "pages/LSK/mine/addressList/addressList",
     "pages/profile/profile",
     "pages/search/search"
   ],
@@ -38,13 +38,13 @@
         "selectedIconPath": "/assets/img/WCH/tabBar/sociality-active.png"
       },
       {
-        "pagePath": "pages/orders/orders",
+        "pagePath": "pages/LSK/orders/orders",
         "text": "订单",
         "iconPath": "/assets/img/WCH/tabBar/order.png",
         "selectedIconPath": "/assets/img/WCH/tabBar/order-active.png"
       },
       {
-        "pagePath": "pages/mine/profile/profile",
+        "pagePath": "pages/LSK/mine/profile/profile",
         "text": "我的",
         "iconPath": "/assets/img/WCH/tabBar/profile.png",
         "selectedIconPath": "/assets/img/WCH/tabBar/profile-active.png"

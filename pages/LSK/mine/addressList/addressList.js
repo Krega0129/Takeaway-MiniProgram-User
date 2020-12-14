@@ -1,6 +1,6 @@
 // pages/mine/addressList/addressLIst.js
-import{getAllAddress}from '../../../service/address'
-import { loadingOff } from '../../../service/config';
+import{getAllAddress}from '../../../../service/address'
+import { loadingOff } from '../../../../service/config';
 Page({
   /**
    * 页面的初始数据

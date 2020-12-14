@@ -3,13 +3,13 @@ import {
   loadingOn,
   loadingOff,
   showToast
-} from '../../../service/config'
+} from '../../../../service/config'
 import {
   updateAddress,
   updateAddressStatus,
   addNewAddress,
   deleteAddress
-} from '../../../service/address'
+} from '../../../../service/address'
 import {
   STATECODE_SUCCESS,
   STATECODE_updateAddress_SUCCESS,
@@ -17,7 +17,7 @@ import {
   STATECODE_updateAddressStatus_SUCCESS,
   STATECODE_addNewAddress_SUCCESS,
   STATECODE_deleteAddress_SUCCESS
-} from '../../../service/config'
+} from '../../../../service/config'
 Page({
 
   /**

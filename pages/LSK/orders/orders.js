@@ -1,12 +1,12 @@
-import { getUserTotalOrder, getUnpaidOrder, cancelUnpaidOrder, selectUserPaidOrder } from '../../service/order';
-import { loadingOff, showToast } from '../../service/config';
+import { getUserTotalOrder, getUnpaidOrder, cancelUnpaidOrder, selectUserPaidOrder } from '../../../service/order';
+import { loadingOff, showToast } from '../../../service/config';
 import {
   STATECODE_SUCCESS,
   STATECODE_getUserOrderByStatus_SUCCESS,
   STATECODE_getUnpaidOrder_SUCCESS,
   STATECODE_cancelUnpaidOrder_SUCCESS,
   STATECODE_selectUserPaidOrder_SUCCESS
-} from '../../service/config'
+} from '../../../service/config'
 let app = getApp()
 let bus = app.globalData.bus
 Page({
@@ -35,7 +35,7 @@ Page({
   goToOrderDetails(e) {
     console.log(e);
     wx.navigateTo({
-      url: '/pages/orderDetails/orderDetails?item=' + JSON.stringify(e.currentTarget.dataset.item),
+      url: '/pages/LSK/orderDetails/orderDetails?item=' + JSON.stringify(e.currentTarget.dataset.item),
     })
   },
   // 打开模态框

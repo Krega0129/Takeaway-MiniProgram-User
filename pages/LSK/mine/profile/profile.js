@@ -17,17 +17,17 @@ Page({
   },
   toPersonInfo() {
     wx.navigateTo({
-      url: '/pages/mine/personInfo/personInfo',
+      url: '/pages/LSK/mine/personInfo/personInfo',
     })
   },
   toAddressList() {
     wx.navigateTo({
-      url: '/pages/mine/addressList/addressList',
+      url: '/pages/LSK/mine/addressList/addressList',
     })
   },
   toSuggest() {
     wx.navigateTo({
-      url: '/pages/mine/suggest/suggest',
+      url: '/pages/LSK/mine/suggest/suggest',
     })
   },
   toSocial() {
