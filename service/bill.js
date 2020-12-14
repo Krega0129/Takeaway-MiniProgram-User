@@ -60,6 +60,10 @@ export function cancelOrder(data) {
 export function changeOrderStatus(data) {
   return request({
     url: H_config.CHANGE_ORDER_STATUS,
-    data: data
+    data: data,
+    method: 'post',
+    header: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
   })
 }

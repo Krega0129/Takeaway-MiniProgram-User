@@ -1,0 +1,16 @@
+<!--pages/mine/phoneChange/phoneChange.wxml-->
+<cu-custom bgColor="bg-gray" isBack="true">
+  <text slot="backText">取消</text>
+  <text slot="content">修改号码</text>
+</cu-custom>
+<form bindsubmit="phoneModify">
+  <view class="cu-form-group" style="min-height:80rpx">
+    <input value="{{phoneNumber}}" class="" data-auto-clear-button="true" style="position:relative" bindinput="inputListener">
+    <text class="cuIcon-roundclosefill text-gray {{isEmpty?'iconHide':'iconShow'}}" style="position:absolute;right:10rpx;top:10rpx;z-index:10" bindtap="clearInput"></text>
+  </input>
+  </view>
+  <view class="padding-sm">
+    <button class="cu-btn bg-red lg" style="width:710rpx" form-type="submit">修改号码</button>
+  </view>
+</form>
+

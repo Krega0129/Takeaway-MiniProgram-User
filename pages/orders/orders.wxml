@@ -1,0 +1,105 @@
+<!--pages/order/order.wxml-->
+<cu-custom bgColor="bg-red">
+  <text slot="content">订单</text>
+</cu-custom>
+<!-- 导航栏 -->
+<scroll-view scroll-x class="bg-white nav" style="position:fixed;top:170rpx;z-index:100">
+  <view class="flex text-center">
+    <view class="cu-item flex-sub {{index==TabCur?'text-orange cur':''}}" wx:for="{{TabName}}" wx:key="index"
+      bindtap="tabSelect" data-id="{{index}}">
+      {{item}}
+    </view>
+  </view>
+</scroll-view>
+<view class="grid col-1">
+  <view class="padding-lr-sm  bg-gray" style="margin-top:80rpx">
+    <block wx:if="{{statusCode[TabCur]==='allList'}}">
+      <view class="padding bg-white radius flex margin-top-sm" bindtap="goToOrderDetails" wx:for="{{allList}}"
+        wx:key="index" data-id="{{index}}" data-item="{{item}}">
+        <view class="cu-avatar lg radius flex">
+          <image src="{{item.shopPicture}}" mode="aspectFill" style="width:100%;height:100%"></image>
+        </view>
+        <view class="flex-treble">
+          <view class="padding-left"><text class=" text-black text-bold">{{item.shopName}}</text><text
+              class="cuIcon-right lg text-gray margin-left-xs"></text><text
+              class="fr text-orange text-smt">{{item.statusCode}}</text>
+          </view>
+          <view class="margin-left solids-bottom padding-tb-sm"><text class="text-xs">{{item.completeTime}}</text>
+          </view>
+          <view class="padding-left padding-tb-sm text-sm text-bold"><text>{{item.commodities[0].goodsName}}   </text><text>等共</text><text>{{item.commodities.length}}件</text><text
+              class="fr text-sm text-bold text-price">{{item.totalAmount}}</text></view>
+          <view class="flex justify-end padding-top-sm">
+            <view class=""><button class="cu-btn button-hover " role="button" aria-disable="false" style="width:180rpx"
+                catchtap="showModal" data-target="Modal">联系商家</button>
+            </view>
+            <view class="padding-left-sm"><button class="cu-btn button-hover " role="button" aria-disable="false"
+                style="width:180rpx" catchtap="cancelOrder" data-target="Modal" data-id="{{index}}"
+                wx:if="{{item.status===0}}">取消订单{{countDown}}</button>
+            </view>
+          </view>
+        </view>
+      </view>
+      <button class="bg-white cu-btn button-hover" style="width:80rpx;height:80rpx;text-align:center;line-height:80rpx;position:fixed;bottom:200rpx;right:50rpx;padding:0rpx;opacity:.8"><text class="cuIcon-refresh text-xxl text-black" catchtap="refreshAllList"></text></button>
+    </block>
+    <block wx:elif="{{statusCode[TabCur]==='obligationList'}}">
+      <view class="padding bg-white radius flex margin-top-sm" bindtap="goToOrderDetails" wx:for="{{obligationList}}"
+        wx:key="index" data-id="{{index}}" data-item="{{item}}">
+        <view class="cu-avatar lg radius flex">
+          <image src="{{item.shopPicture}}" mode="aspectFill" style="width:100%;height:100%"></image>
+        </view>
+        <view class="flex-treble">
+          <view class="padding-left"><text class=" text-black text-bold">{{item.shopName}}</text><text
+              class="cuIcon-right lg text-gray margin-left-xs"></text><text
+              class="fr text-orange text-smt">待付款</text>
+          </view>
+          <view class="margin-left solids-bottom padding-tb-sm"><text class="text-xs">{{item.generateTime}}</text>
+          </view>
+          <view class="padding-left padding-tb-sm text-sm text-bold"><text>{{item.commodities[0].goodsName}}   </text><text>等共</text><text>{{item.commodities.length}}件</text><text
+              class="fr text-sm text-bold text-price">{{item.totalAmount}}</text></view>
+          <view class=" padding-top-sm flex justify-end">
+            <view><button class="cu-btn button-hover " role="button" aria-disable="false"
+                style="width:200rpx" catchtap="cancelOrder" data-target="Modal" data-id="{{index}}" data-orderNumber="{{item.orderNumber}}"
+                wx:if="{{countDown.length!=0}}" catchtap="cancelOrder" >取消订单</button></view>
+            <view class="padding-left-sm"><button class="cu-btn button-hover " role="button" aria-disable="false"
+                style="width:200rpx" catchtap="payOrder" data-target="Modal" data-id="{{index}}">支付订单{{item.countDown}}</button>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+    <block wx:else="{{statusCode[TabCur]==='paidList'}}">
+      <view class="padding bg-white radius flex margin-top-sm" bindtap="goToOrderDetails" wx:for="{{paidList}}"
+        wx:key="index" data-id="{{index}}" data-item="{{item}}">
+        <view class="cu-avatar lg radius flex">
+          <image src="{{item.shopPicture}}" mode="aspectFill" style="width:100%;height:100%"></image>
+        </view>
+        <view class="flex-treble">
+          <view class="padding-left"><text class=" text-black text-bold">{{item.shopName}}</text><text
+              class="cuIcon-right lg text-gray margin-left-xs"></text><text
+              class="fr text-orange text-smt">{{item.statusCode}}</text>
+          </view>
+          <view class="margin-left solids-bottom padding-tb-sm"><text class="text-xs">{{item.completeTime}}</text>
+          </view>
+          <view class="padding-left padding-tb-sm text-sm text-bold"><text>{{item.commodities[0].goodsName}}   </text><text>等共</text><text>{{item.commodities.length}}件</text><text
+              class="fr text-sm text-bold text-price">{{item.totalAmount}}</text></view>
+          <view class="flex justify-end padding-top-sm">
+            <view class=""><button class="cu-btn button-hover " role="button" aria-disable="false" style="width:180rpx"
+                catchtap="showModal" data-target="Modal">联系商家</button></view>
+            <view class="padding-left-sm"><button class="cu-btn button-hover " role="button" aria-disable="false"
+                style="width:180rpx" catchtap="" data-target="Modal" wx:if="{{item.status===1}}">退款</button></view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>
+<!-- 模态框 -->
+<view class="cu-modal {{modalName=='Modal'?'show':''}}" bindtap="hideModal">
+  <view class="cu-dialog">
+    <view class="padding-lr-xl padding-tb-sm text-xl">
+      <view class="padding-tb">{{allList.businessPhone}}</view>
+      <button class="cu-btn bg-red margin-tb-sm lg button-hover" style="width:100%"
+        catchtap="copyPhoneNumber">复制</button>
+    </view>
+  </view>
+</view>

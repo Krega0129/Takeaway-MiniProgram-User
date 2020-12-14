@@ -1,0 +1,55 @@
+<!--pages/profile/address/address.wxml-->
+<cu-custom bgColor="bg-gray" isBack="true">
+  <text slot="backText">返回</text>
+  <text slot="content">编辑收货地址</text>
+</cu-custom>
+<form bindsubmit="formModify">
+  <!-- 校区选择 -->
+  <view class="cu-form-group ">
+    <view class="title">收货地址</view>
+    <picker mode="selector" bindchange="CampusChange" value="{{campusIndex!=null?campus[campusIndex].name:addressMsg.campus}}" range="{{campus}}" range-key="name"
+      data-id="{{campusIndex}}" name="campus" >
+      <view class="picker">
+        {{campusIndex||isEmpty?campus[campusIndex].name:addressMsg.campus}}
+      </view>
+    </picker>
+  </view>
+  <!-- 收货地址 -->
+  <view class="cu-form-group">
+    <view class="title">门牌号</view>
+    <input placeholder="如：宿舍楼-宿舍号" style="text-align:right" name="detailedAddress" value="{{addressMsg.detailedAddress}}"></input>
+  </view>
+  <!-- 收货人姓名 -->
+  <view class="cu-form-group">
+    <view class="title">联系人</view>
+    <input placeholder="如：张三" style="text-align:right" name="contactName" value="{{addressMsg.contactName}}"></input>
+    <radio-group bindchange="sexSelect" name='sex'>
+      <radio value="{{man}}" checked="{{sexChecked}}" class="radio margin-right-sm">先生</radio>
+      <radio value="{{woman}}" checked="{{!sexChecked}}" class="radio">女士</radio>
+    </radio-group>
+  </view>
+  <!-- 收货人手机号 -->
+  <view class="cu-form-group">
+    <view class="title">手机号</view>
+    <!-- <view class="cu-capsule radius">
+    <view class="cu-tag bg-red">
+      +86
+    </view>
+    <view class="cu-tag line-red">
+      中国大陆
+    </view>
+  </view> -->
+    <input placeholder="请输入正确的手机号" style="text-align:right" name="contactPhone" value="{{addressMsg.contactPhone}}"></input>
+  </view>
+  <view class="cu-form-group">
+		<view class="title">是否设为默认地址</view>
+		<switch name="Default" checked="{{isDefault}}" bindchange="changeStatus"></switch>
+	</view>
+  <view class="padding">
+    <button class="cu-btn bg-red lg" style="width:670rpx" form-type="submit" wx:if="{{!isEmpty}}">修改地址</button>
+    <button class="cu-btn bg-red lg" style="width:670rpx" form-type="submit" wx:else>保存地址</button>
+  </view>
+  <view class="padding-lr" wx:if="{{!isEmpty}}">
+    <button class="cu-btn bg-white lg" style="width:670rpx" bindtap="deleteAdd">删除地址</button>
+  </view>
+</form>

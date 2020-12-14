@@ -1,0 +1,16 @@
+<!--pages/mine/suggest/suggest.wxml-->
+<cu-custom bgColor="bg-gray" isBack="true">
+  <text slot="backText">返回</text>
+  <text slot="content">投诉建议</text>
+</cu-custom>
+
+<form bindsubmit="formSuggest">
+  <view class="cu-form-group margin" style="border-radius:10rpx">
+    <textarea maxlength="150" disabled="{{modalName!=null}}" placeholder="留下你宝贵的建议吧"
+      bindinput="inputNum"
+      style="height:250rpx"><text class="text-gray" style="position:absolute;bottom:0;right:0">{{num}}/{{max}}</text></textarea>
+  </view>
+  <view class="padding-lr">
+    <button class="cu-btn bg-red lg" style="width:690rpx" form-type="submit">提交建议</button>
+  </view>
+</form>

@@ -28,7 +28,8 @@ Page({
     payTime: '',
     isPay: null,
     obj: {},
-    time: '15:00'
+    time: '',
+    cancel: false
   },
   onLoad: function (options) {
     wx.showLoading({
@@ -37,7 +38,10 @@ Page({
 
     let eventChannel = this.getOpenerEventChannel()
     eventChannel.on('submitOrder', data => {
-      const payTime = formatTime(data.payTime)
+      let payTime = null
+      if(data.payTime) {
+        payTime = formatTime(data.payTime)
+      }
       app.culPrice(data.cartList, data.sendPrice)
       this.setData({
         cartList: data.cartList,
@@ -86,10 +90,32 @@ Page({
     })
   },
   cancelOrder() {
-    cancelOrder({
-      orderNumber: this.data.orderNum
-    }).then(res => {
-      console.log(res);
+    wx.showModal({
+      content: '确定取消该订单？',
+      showCancel: true,
+      title: '提示',
+      success: res => {
+        
+        if(res.confirm) {
+          cancelOrder({
+            orderNumber: this.data.orderNum
+          }).then(res => {
+            if(res.data.code === 3204) {
+              wx.showToast({
+                title: '订单取消成功！'
+              })
+              this.setData({
+                cancel: true
+              })
+            } else {
+              wx.showToast({
+                title: '服务器错误，请再次尝试！',
+                icon: 'none'
+              })
+            }
+          })
+        }
+      }
     })
   },
   orderAgain() {
@@ -153,5 +179,8 @@ Page({
         }
       }
     });
+  }, 
+  onUnload() {
+    this.data.cartList = []
   }
 })

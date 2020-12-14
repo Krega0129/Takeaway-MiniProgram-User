@@ -3956,5 +3956,17 @@ scroll-view.cu-steps .cu-item {
 }
 
 .cu-form-group .title {
-  min-width: calc(4em + 30rpx);
+	min-width: calc(4em + 30rpx);
+}
+
+.letter-spacing-sm{
+	letter-spacing: 0.5rpx;
+}
+
+.letter-spacing-lg{
+	letter-spacing: 2rpx;
+}
+
+.letter-spacing-xl{
+	letter-spacing: 2rpx;
 }

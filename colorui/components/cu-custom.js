@@ -35,6 +35,10 @@ Component({
       type: [Boolean, String],
       default: false
     },
+    delta: {
+      type: [Number, String],
+      default: 1
+    },
     url: String
   },
   /**
@@ -51,7 +55,7 @@ Component({
   methods: {
     BackPage() {
       wx.navigateBack({
-        delta: 1
+        delta: this.data.delta
       });
     },
     toHome(){

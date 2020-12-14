@@ -5,7 +5,7 @@ import {
 
 Page({
   data: {
-    code: null,
+    code: null
   },
   onLoad: function (options) {
     let eventChannel = this.getOpenerEventChannel()

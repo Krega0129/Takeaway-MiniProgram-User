@@ -40,8 +40,40 @@ H_config.CHANGE_ORDER_STATUS = '/order/payForOrder'
 // 获取校区
 H_config.GET_CAMPUS = '/campus/selectAllByPage'
 
+const K_config = {}
+
+K_config.STATECODE_SUCCESS = 200
+K_config.STATECODE_getUserOrderByStatus_SUCCESS = 3203
+K_config.STATECODE_getUnpaidOrder_SUCCESS = 3203
+K_config.STATECODE_cancelUnpaidOrder_SUCCESS = 3204
+K_config.STATECODE_selectUserPaidOrder_SUCCESS = 3205
+
+K_config.STATECODE_updateAddress_SUCCESS = 3258
+K_config.STATECODE_updateAddress_FALSE = 3552
+K_config.STATECODE_updateAddressStatus_SUCCESS = 3255
+K_config.STATECODE_addNewAddress_SUCCESS = 3254
+K_config.STATECODE_addNewAddress_FALSE = 3551
+K_config.STATECODE_deleteAddress_SUCCESS = 3257
+K_config.STATECODE_selectAllCampus_SUCCESS = 2213
+
+// 订单接口
+K_config.API_selectUserTotalOrder_URL = '/order/selectUserTotalOrder'
+K_config.API_getUnpaidOrder_URL = '/order/getUnpaidOrder'
+K_config.API_cancelUnpaidOrder_URL = '/order/cancelUnpaidOrder'
+K_config.API_selectUserPaidOrder_URL = '/order/selectUserPaidOrder'
+K_config.API_payForOrder_URL = '/order/payForOrder'
+
+// 地址接口
+K_config.API_getAllAddress_URL = '/address/getAllAddress'
+K_config.API_updateAddress_URL = '/address/updateAddress'
+K_config.API_addNewAddress_URL = '/address/addNewAddress'
+K_config.API_updateAddressStatus_URL = '/address/updateAddressStatus'
+K_config.API_deleteAddress_URL = '/address/deleteAddress'
+K_config.API_selectAllCampus = '/campus/selectAll'
+
 // 改成对象
 export {
   BASE_URL,
-  H_config
+  H_config,
+  K_config
 }

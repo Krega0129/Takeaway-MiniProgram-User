@@ -1,5 +1,5 @@
 <!--pages/WCH/submitOrder/submitOrder.wxml-->
-<cu-custom bgColor="bg-red" isBack="true"></cu-custom>
+<cu-custom bgColor="bg-red" isBack="true" delta="2"></cu-custom>
 
 <view class="bg-white text-center margin-sm padding-bottom">
   <!-- 等待支付 -->
@@ -9,7 +9,7 @@
     <text wx:if="{{cancel}}">订单已取消</text>
   </view>
 
-  <view wx:if="{{!isPay}}">
+  <view wx:if="{{!isPay && !cancel}}">
     <text class="cuIcon-timefill"> 等待支付：</text>
     <text class="text-blue">{{time}}</text>
     <view class="cuIcon-notice text-sm text-gray margin-top-xs">
@@ -33,7 +33,7 @@
 
   <view class="margin-top">
     <!-- 未支付 -->
-    <view class="flex justify-between" style="width: 60%; margin: 0 auto" wx:if="{{!isPay}}" >
+    <view class="flex justify-between" style="width: 60%; margin: 0 auto" wx:if="{{!isPay && !cancel}}" >
       <view style="width: 45%" class="solid line-black padding-xs" bindtap="cancelOrder">取消订单</view>
       <view style="width: 45%" class="padding-xs bg-red" bindtap="pay">去支付</view>
     </view>
@@ -105,7 +105,7 @@
     <view class="flex-sub">订单号码</view>
     <view class="flex-treble">{{orderNum}}</view>
   </view>
-  <view class="flex padding-padding-bottom-sm" wx:if="{{isPay}}">
+  <view class="flex padding-bottom-sm" wx:if="{{isPay}}">
     <view class="flex-sub">支付时间</view>
     <view class="flex-treble">{{payTime}}</view>
   </view>

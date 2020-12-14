@@ -3,7 +3,15 @@
     "pages/WCH/home/home",
     "pages/WCH/location/location",
     "pages/sociality/sociality",
-    "pages/order/order",
+    "pages/orders/orders",
+    "pages/mine/profile/profile",
+    "pages/orderDetails/orderDetails",
+    "pages/mine/addressModify/addressModify",
+    "pages/mine/suggest/suggest",
+    "pages/mine/personInfo/personInfo",
+    "pages/mine/nameChange/nameChange",
+    "pages/mine/phoneChange/phoneChange",
+    "pages/mine/addressList/addressList",
     "pages/profile/profile",
     "pages/WCH/search/search",
     "pages/WCH/storeListPage/storeListPage",
@@ -36,13 +44,13 @@
         "selectedIconPath": "/assets/img/WCH/tabBar/sociality-active.png"
       },
       {
-        "pagePath": "pages/order/order",
+        "pagePath": "pages/orders/orders",
         "text": "订单",
         "iconPath": "/assets/img/WCH/tabBar/order.png",
         "selectedIconPath": "/assets/img/WCH/tabBar/order-active.png"
       },
       {
-        "pagePath": "pages/profile/profile",
+        "pagePath": "pages/mine/profile/profile",
         "text": "我的",
         "iconPath": "/assets/img/WCH/tabBar/profile.png",
         "selectedIconPath": "/assets/img/WCH/tabBar/profile-active.png"

@@ -1,0 +1,7 @@
+/* pages/mine/nameChange/nameChange.wxss */
+.iconShow{
+  display: block;
+}
+.iconHide{
+  display: none;
+}

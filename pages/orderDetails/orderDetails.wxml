@@ -1,0 +1,98 @@
+<!--pages/orderDetails/orderDetails.wxml-->
+
+<cu-custom bgColor="bg-red" isBack="true">
+  <text slot="backText">返回</text>
+  <text slot="content">订单详情</text>
+</cu-custom>
+<view class="bg-red" style="height:100rpx;width:750rpx;position:fixed;z-index:999"><text
+    class="text-bold text-xxl padding-left-lg letter-spacing-lg" style="line-height:100rpx">{{status}}</text>
+</view>
+<view class="margin-lr-lg bg-white shadow shadow-lg margin-bottom" style="margin-top:100rpx">
+  <view class="flex solid-bottom padding justify-around solid-bottom">
+    <!-- <view class="padding-xs text-red" style="width:180rpx;text-align:center" bindtap="showModal"
+      data-target="bottomModalDili">
+      <view class="padding-bottom-sm"><text class="cuIcon-expressman text-xxl  text-bold"></text></view>
+      <text>联系骑手</text>
+    </view> -->
+    <view class="padding-xs text-black" style="width:180rpx;text-align:center" bindtap="showModal"
+      data-target="bottomModalShop">
+      <view class="padding-bottom-sm"><text class="cuIcon-shop text-xxl  text-bold"></text></view>
+      <text>联系商家</text>
+    </view>
+  </view>
+  <view class="padding-lr-sm">
+    <view class="solid-bottom padding-tb-sm"><text class="text-bold text-black"
+        style="font-size:30rpx">{{orderDetails.shopName}}</text></view>
+    <view class="padding-bottom-xl solid-bottom">
+      <view class="padding-top-sm " wx:for="{{orderDetails.commodities}}" wx:key="index">
+        <view class="flex justify-between align-center">
+          <view class="flex justify-start align-center">
+            <view class="cu-avatar radius lg ">
+              <image src="{{item.picture}}" mode="aspectFill" style="width:100%;height:100%"></image>
+            </view>
+            <view class="padding-left-sm">
+              <view>{{item.goodsName}}</view>
+              <view wx:if="{{item.specification}}" class="text-xs text-gray padding-top-xs">{{item.specification}}
+              </view>
+            </view>
+          </view>
+          <view class="flex justify-between align-center" style="width:200rpx">
+            <text class="text-black text-sm ">x{{item.quantity}}</text>
+            <text class="text-bold text-black text-price" style="font-size:30rpx">{{item.unitPrice}}</text></view>
+        </view>
+      </view>
+    </view>
+    <view class="padding-tb solid-bottom text-bold text-black align-center flex justify-between"
+      style="font-size:30rpx"><text>配送费</text><text class="text-price">{{orderDetails.deliveryFee}}</text></view>
+    <view class="padding-tb-sm align-center flex text-bold justify-between" style="height:104rpx">
+      <text class="">实付</text>
+      <text class=" text-price" style="font-size:30rpx">{{orderDetails.totalAmount}}</text>
+    </view>
+    <view>
+      <view class="padding-tb text-black text-bold solid-bottom"><text>配送信息</text></view>
+      <view class=" padding-tb solid-bottom flex justify-between"><text>送达时间</text>
+        <text class="text-gray" wx:if="{{orderDetails.status===5}}">{{orderDetails.completeTime}}</text>
+        <text class="text-gray" wx:else="{{orderDetails.status}}">正在路上</text>
+      </view>
+      <view class="padding-tb flex justify-between solid-bottom">
+        <text class="">收货地址</text>
+        <view class="text-sm text-gray" style="width:300rpx">
+          <view class="padding-bottom-xs">{{orderDetails.diliveryAddress}}</view>
+          <view class="flex justify-between align-end">
+            <text>{{consigneeMsg.name}}</text><text>{{orderDetails.orderNumber}}</text></view>
+        </view>
+      </view>
+    </view>
+    <view>
+      <view class="text-black text-bold solid-bottom padding-tb">订单信息</view>
+      <view class="flex justify-between padding-tb solid-bottom text-gray">
+        <view class="text-black">订单号</view>
+        <view class="flex align-end">
+          <view>{{orderDetails.orderNumber}}</view><text class="margin-lr-sm" style="line-height:40rpx">|</text>
+          <view class="text-red" bindtap="copyMsg">复制</view>
+        </view>
+      </view>
+      <view class="flex justify-between padding-tb ">
+        <view>下单时间</view>
+        <view class="text-gray">{{orderDetails.date}}</view>
+      </view>
+      <view class="flex justify-between padding-tb ">
+        <view>订单备注</view>
+        <view class="text-gray">{{orderDetails.remarks}}</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="cu-modal bottom-modal {{modalName=='bottomModalDili'||modalName=='bottomModalShop'?'show':''}}"
+  bindtap="hideModal">
+  <view class="cu-dialog">
+    <view class="padding-lr-xl padding-tb-sm text-xl">
+      <view class="padding-tb" wx:if="{{modalName=='bottomModalShop'}}">{{orderDetails.businessPhone}}</view>
+      <!-- <view class="padding-tb" wx:elif="{{modalName=='bottomModalShop'}}">{{diliveryMsg.diliverPhoneNumber}}</view> -->
+      <button class="cu-btn bg-red margin-tb-sm lg button-hover" style="width:100%"
+        catchtap="copyPhoneNumber">复制</button>
+    </view>
+  </view>
+</view>
+

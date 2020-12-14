@@ -55,8 +55,30 @@ function showMsg(modelName) {
   
 }
 
+export function loadingOn(loadingContent) {
+  wx.showLoading({
+    title: loadingContent,
+  })
+}
+export function loadingOff() {
+  wx.hideLoading({
+    success: (res) => { },
+  })
+}
+
+export function showToast(showMsg, time) {
+  wx.showToast({
+    title: showMsg,
+    icon: 'none',
+    duration: time
+  })
+}
+
 module.exports = {
   formatTime: formatTime,
   _getMultiData,
-  login
+  login,
+  loadingOn,
+  loadingOff,
+  showToast
 }
