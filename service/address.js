@@ -76,3 +76,11 @@ export function deleteAddress(receiveId){
     }
   })
 }
+
+// 获取校区信息
+export function selectAllCampus(){
+  return request({
+    url:K_config.API_selectAllCampus_URL,
+    method:'GET'
+  })
+}

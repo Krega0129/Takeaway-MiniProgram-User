@@ -48,6 +48,7 @@ K_config.STATECODE_getUnpaidOrder_SUCCESS = 3203
 K_config.STATECODE_cancelUnpaidOrder_SUCCESS = 3204
 K_config.STATECODE_selectUserPaidOrder_SUCCESS = 3205
 
+
 K_config.STATECODE_updateAddress_SUCCESS = 3258
 K_config.STATECODE_updateAddress_FALSE = 3552
 K_config.STATECODE_updateAddressStatus_SUCCESS = 3255
@@ -69,7 +70,7 @@ K_config.API_updateAddress_URL = '/address/updateAddress'
 K_config.API_addNewAddress_URL = '/address/addNewAddress'
 K_config.API_updateAddressStatus_URL = '/address/updateAddressStatus'
 K_config.API_deleteAddress_URL = '/address/deleteAddress'
-K_config.API_selectAllCampus = '/campus/selectAll'
+K_config.API_selectAllCampus_URL = '/campus/selectAll'
 
 // 改成对象
 export {

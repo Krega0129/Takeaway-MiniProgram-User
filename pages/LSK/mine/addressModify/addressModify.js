@@ -8,7 +8,8 @@ import {
   updateAddress,
   updateAddressStatus,
   addNewAddress,
-  deleteAddress
+  deleteAddress,
+  selectAllCampus
 } from '../../../../service/address'
 import {
   K_config
@@ -68,6 +69,16 @@ Page({
       isDefault: e.detail.value
     })
   },
+  // 获取校区信息
+  getCampusMsg:function(){
+    selectAllCampus().then((res)=>{
+      if(res.data.code === K_config.STATECODE_SUCCESS||res.data.code===K_config.STATECODE_selectAllCampus_SUCCESS){
+        this.setData({
+          campus:res.data.data
+        })
+      }
+    })
+  },
   // 保存地址
   formModify: function (e) {
     let { campus, detailedAddress, contactName, contactPhone, sex, Default } = e.detail.value;
@@ -96,9 +107,10 @@ Page({
       showToast('电话格式有误', 1000)
     } else {
       // console.log(campus, detailedAddress, contactName, contactPhone,sex,receiveId,isDefault);
+      let userId = wx.getStorageSync('userId')
       if (!this.data.isEmpty) {
         let receiveId = this.data.addressMsg.receiveId
-        updateAddress(campus, contactName, contactPhone, detailedAddress, isDefault, receiveId, sex).then((res) => {
+        updateAddress(campus, contactName, contactPhone, detailedAddress, isDefault, receiveId, sex ,userId).then((res) => {
           if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_updateAddress_SUCCESS) {
             updateAddressStatus(receiveId, addressStatus).then((res) => {
               if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_updateAddressStatus_SUCCESS) {
@@ -124,7 +136,7 @@ Page({
       }
       else {
         let receiveId = 0
-        addNewAddress(campus, contactName, contactPhone, detailedAddress, isDefault, receiveId, sex).then((res) => {
+        addNewAddress(campus, contactName, contactPhone, detailedAddress, isDefault, receiveId, sex, userId).then((res) => {
           if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_addNewAddress_SUCCESS) {
             loadingOff()
             showToast('新增地址成功', 1000)
