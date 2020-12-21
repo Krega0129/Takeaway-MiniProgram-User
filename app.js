@@ -17,11 +17,12 @@ App({
     }
 
     if(!wx.getStorageSync('address')) {
-      // wx.redirectTo({
-      //   url: '/pages/WCH/location/location?canback=' + 0
-      // })
+      wx.redirectTo({
+        url: '/pages/WCH/location/location?canback=' + 0
+      })
     }
-
+    
+    
     wx.getSystemInfo({
       success: e => {
         this.globalData.StatusBar = e.statusBarHeight;
@@ -197,7 +198,7 @@ App({
   },
   webSocketConnect(uid = 12, identity, lastestOrderDate) {
     wx.connectSocket({
-      url: 'ws://192.168.1.111:58080/ws',
+      url: 'ws://192.168.1.101:58080/ws',
       timeout: 50000,
       header: {
         'content-type': 'application/json'

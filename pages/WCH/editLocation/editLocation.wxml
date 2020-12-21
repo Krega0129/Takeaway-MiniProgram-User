@@ -16,13 +16,13 @@
 
   <view class="cu-form-group solid-bottom line-gray text-black" style="line-height: 38rpx">
     <view style="min-width: 140rpx">宿舍：</view>
-    <input type="text" id="room" bindblur="newRoom" placeholder="请输入你的详细地址" value="{{user.detailedAddress}}" style="font-size: 28rpx;"/>
+    <input type="text" id="room" bindinput="newRoom" placeholder="请输入你的详细地址" value="{{user.detailedAddress}}" style="font-size: 28rpx;"/>
   </view>
  
   <view class="solid-bottom line-gray text-black flex justify-between">
     <view class="flex flex-sub" style="padding: 30rpx 30rpx;">
       <view style="min-width: 140rpx; height: 1.4rem; line-height: 1.4rem">联系人：</view>
-      <input type="text" id="name" bindblur="newName" placeholder="请输入你的姓名" value="{{user.contactName}}" style="font-size: 28rpx;"/>
+      <input type="text" id="name" bindinput="newName" placeholder="请输入你的姓名" value="{{user.contactName}}" style="font-size: 28rpx;"/>
     </view>
     <view class="flex align-center">
       <radio-group bindchange="selectSex">
@@ -35,7 +35,7 @@
   <view class="solid-bottom line-gray text-black flex justify-between">
     <view class="flex flex-sub" style="padding: 30rpx 30rpx;">
       <view style="min-width: 140rpx; height: 1.4rem; line-height: 1.4rem">手机号：</view>
-      <input type="number" id="telNum" bindblur="newTelNum" placeholder="请输入你的手机号" value="{{user.contactPhone}}" style="font-size: 28rpx;"/>
+      <input type="number" id="telNum" bindinput="newTelNum" placeholder="请输入你的手机号" value="{{user.contactPhone}}" style="font-size: 28rpx;"/>
     </view>
   </view>
 </view>

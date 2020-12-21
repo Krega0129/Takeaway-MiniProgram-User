@@ -8,11 +8,13 @@ export default function(options) {
   wx.showLoading({
     title: '加载中...',
   })
+
   if(options.header) {
-    options.header.token = wx.getStorageSync('token')
+    options.header.token = wx.getStorageSync('token') || ''
   } else {
-    header.token = wx.getStorageSync('token')
+    header.token = wx.getStorageSync('token') || ''
   }
+  
   return new Promise((resolve, reject) => {
     wx.request({
       method: options.method || 'get',

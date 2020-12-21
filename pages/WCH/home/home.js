@@ -62,7 +62,7 @@ Page({
     this.setData({
       position: wx.getStorageSync('address') || '定位'
     })
-
+    
     if(wx.getStorageSync('address')) {
       getShopCategory().then(res => {
         let cateList = res.data.data
@@ -75,7 +75,7 @@ Page({
           categoryList: res.data.data || []
         })
       })
-  
+      
       _getMultiData(
         this.data.position,
         this.data.storeList,
@@ -91,13 +91,19 @@ Page({
       })
     } else {
       wx.hideLoading()
-      wx.showToast({
-        title: '请求失败，请刷新重试',
-        icon: 'none'
-      })
+      // wx.showToast({
+      //   title: '请求失败，请刷新重试',
+      //   icon: 'none'
+      // })
     }
   },
   onShow() {
+    if(!wx.getStorageSync('address')) {
+      wx.redirectTo({
+        url: '/pages/WCH/location/location?canback=' + 0
+      })
+    }
+    
     for(let store of this.data.storeList) {
       store.addCart = false
     }
@@ -170,14 +176,15 @@ Page({
   },
   onPullDownRefresh() {
     this.setData({
-      pageNum: 1
+      pageNum: 1,
+      storeList: []
     })
     this.onLoad()
   },
-  test() {
-    test().then(res => {
-      console.log(res);
+  // test() {
+  //   test().then(res => {
+  //     console.log(res);
       
-    })
-  }
+  //   })
+  // }
 })

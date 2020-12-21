@@ -19,7 +19,7 @@
 
 <w-swiper swiperList="{{swiperList}}"></w-swiper>
 
-<button bindtap="test">test</button>
+<!-- <button bindtap="test">test</button> -->
 <!-- <button bindtap="showLogin">登录</button>
 <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNum">获取手机号</button> -->
 

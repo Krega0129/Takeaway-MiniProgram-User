@@ -364,8 +364,20 @@ Page({
   },
   // 跳转到登录页
   toLogin: function () {
-    wx.navigateTo({
-      url: '/pages/WCH/login/login',
+    // wx.navigateTo({
+    //   url: '/pages/WCH/login/login',
+    // })
+
+    wx.login({
+      success: res => {
+        const code = res.code
+        wx.navigateTo({
+          url: '/pages/WCH/login/login',
+          success: res => {
+            res.eventChannel.emit('code',{ code: code })
+          }
+        })
+      }
     })
   },
   /**
@@ -394,6 +406,10 @@ Page({
       })
     } else {
       // this.setUserTotalOrder()
+      this.setData({
+        isLogin: true
+      })
+      
       const that = this
       bus.on('orderMsg', function (orderMsg) {
         const obligationList = that.data.obligationList

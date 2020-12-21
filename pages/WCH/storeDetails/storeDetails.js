@@ -537,9 +537,9 @@ Page({
         })
       }
     }
-    // 更新购物车 this.renewCartList()
+    // 更新购物车 
+    this.renewCartList()
     this.setData({
-      // cartList: app.globalData.cartList,
       goodsCategoryList: this.data.goodsCategoryList,
       totalPrice: app.globalData.totalPrice,
       totalCount: app.globalData.totalCount

@@ -94,9 +94,11 @@ Page({
 
     if(wx.getStorageSync('userId')) {
       getAllAddress({
-        userId: 1
+        userId: wx.getStorageSync('userId')
       }).then(res => {
         let addressList = res.data.data
+        console.log(addressList);
+        
         this.setData({
           locationList: addressList
         })
@@ -284,7 +286,7 @@ Page({
             userId: wx.getStorageSync('userId')
           }, obj)
           let a = app.globalData.cartList.find(item => item.shopId === this.data.shopId)
-          console.log(a);
+          a.foodList = [];
         }else {
           wx.showToast({
             title: res.data.msg,

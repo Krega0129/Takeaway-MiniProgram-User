@@ -86,6 +86,7 @@ Page({
     if(/^1\d{10}$/.test(this.data.user.contactPhone)) {
       if(this.data.addNewAddress) {
         addNewAddress({
+          userId: wx.getStorageSync('userId'),
           campus: this.data.user.campus,
           contactName: this.data.user.contactName,
           sex: this.data.user.sex,
@@ -96,6 +97,7 @@ Page({
             title: res.data.msg,
             icon: 'success'
           })
+          wx.navigateBack()
         })
       } else {
         updateAddress({
