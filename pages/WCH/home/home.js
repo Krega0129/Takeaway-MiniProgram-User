@@ -3,7 +3,8 @@ const BACK_TOP = 500
 const app = getApp()
 
 import { 
-  getShopCategory
+  getShopCategory,
+  test
 } from '../../../service/home'
 
 import {
@@ -97,11 +98,23 @@ Page({
     }
   },
   onShow() {
-    for(let item of app.globalData.cartList) {
-      let shop = this.data.storeList.find(store => store.shopId === item.shopId)
-      console.log(shop);
-      
+    for(let store of this.data.storeList) {
+      store.addCart = false
     }
+    for(let item of app.globalData.cartList) {
+      let shop = this.data.storeList.find(store => (store.shopId === item.shopId) && item.foodList[0])
+      if(shop) {
+        let num = 0;
+        for(let food of item.foodList) {
+          num += food.num
+        }
+        shop.addCart = true
+        shop.num = num
+      } 
+    }
+    this.setData({
+      storeList: this.data.storeList
+    })
   },
   onPageScroll(options) {
     const scrollTop = options.scrollTop
@@ -160,5 +173,11 @@ Page({
       pageNum: 1
     })
     this.onLoad()
+  },
+  test() {
+    test().then(res => {
+      console.log(res);
+      
+    })
   }
 })

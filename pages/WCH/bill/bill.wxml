@@ -124,14 +124,15 @@
   </view>
 </view>
 
-<view class="cu-form-group margin-lr-sm" style="margin-bottom: 140rpx">
+<!-- 餐具数量 -->
+<!-- <view class="cu-form-group margin-lr-sm" style="margin-bottom: 140rpx">
   <view class="title">餐具数量</view>
   <picker bindchange="tableWareChange" value="{{ind}}" range="{{tableWare}}">
     <view class="picker">
       {{ind?tableWare[ind]:'未选择'}}
     </view>
   </picker>
-</view>
+</view> -->
 
 <view class="pos-fix margin-sm round bg-darkGray flex justify-between cu-card text-lg" style="bottom: 0; width: 95%;">
   <view class="padding"><view class="text-price margin-left">{{totalPrice}}</view></view>

@@ -6,7 +6,9 @@ import {
 import {
   getAllAddress,
   orderNewOrder,
-  changeOrderStatus
+  changeOrderStatus,
+  addReceiver,
+  oncePaySharing
 } from '../../../service/bill'
 
 import {
@@ -24,32 +26,6 @@ Page({
     sendPrice: 0,
     chooseLocation: false,
     changeLocation: false,
-    // locationList: [
-    //   {
-    //     id: 0,
-    //     name: '张三',
-    //     sex: '先生',
-    //     telNum: '18319328003',
-    //     school: '广东工业大学生活西区',
-    //     room: '西三433宿舍'
-    //   },
-    //   {
-    //     id: 1,
-    //     name: '李四',
-    //     sex: '先生',
-    //     telNum: '19120333220',
-    //     school: '广东工业大学生活西区',
-    //     room: '西三433宿舍'
-    //   },
-    //   {
-    //     id: 2,
-    //     name: '努尔买买提·哈吉',
-    //     sex: '先生',
-    //     telNum: '17324741847',
-    //     school: '广东工业大学生活西区',
-    //     room: '西三433宿舍'
-    //   }
-    // ],
     // 当前地址
     locationList: [],
     user: {},
@@ -67,8 +43,8 @@ Page({
     // 真实的时间
     realTime: [],
     // 餐具
-    ind: null,
-    tableWare: ['不要餐具', '1份', '2份', '3份'],
+    // ind: null,
+    // tableWare: ['不要餐具', '1份', '2份', '3份'],
     // 用来记录备注信息，以备二次编辑
     remarkObj: null,
     remark: '',
@@ -153,11 +129,12 @@ Page({
       index: e.detail.value
     })
   },
-  tableWareChange(e) {
-    this.setData({
-      ind: e.detail.value
-    })
-  },
+  // 选餐具
+  // tableWareChange(e) {
+  //   this.setData({
+  //     ind: e.detail.value
+  //   })
+  // },
   editRemark() {
     wx.navigateTo({
       url: '/pages/WCH/remarks/remarks',
@@ -305,7 +282,7 @@ Page({
             shopName: obj.shopName,
             totalAmount: obj.totalAmount,
             userId: wx.getStorageSync('userId')
-          })
+          }, obj)
           let a = app.globalData.cartList.find(item => item.shopId === this.data.shopId)
           console.log(a);
         }else {
@@ -317,99 +294,125 @@ Page({
       })
     }
   },
-  pay(data) {
+  /* 
+  *  @parm data：支付订单数据
+  *  @parm parm：分账数据
+  */
+  pay(data, parm) {
     wx.request({
       url: BASE_URL + '/wechatpay/prePay',
       method: 'POST',
       header: { 'content-type': 'application/x-www-form-urlencoded' },
       data: data,
       success: (res) => {
-        console.log(res);
-        changeOrderStatus({
-          orderNumber: data.orderNumber,
-          userId: wx.getStorageSync('userId')
-        }).then(() => {
-          wx.showToast({
-            title: '支付成功！'
-          })
-        })
-        wx.navigateTo({
-          url: '/pages/WCH/submitOrder/submitOrder',
-          success: result => {
-            result.eventChannel.emit('submitOrder', {
-              cartList: this.data.cartList,
-              shopAddress: this.data.storeAddress,
-              user: this.data.user,
-              storeTelNum: this.data.storeTelNum,
-              remark: this.data.remark || '',
-              takeAway: this.data.takeAway,
-              payTime: new Date().getTime(),
-              obj: data,
-              isPay: true
-            })
-          }
-        })
-
-        // if (res.data.prepayId != ''){
-        //   const map = res.data.data.payMap
-        //   wx.requestPayment({
-        //     'appId': map.appId,
-        //     'timeStamp': map.timeStamp,
-        //     'nonceStr': map.nonceStr,
-        //     'package': map.package,
-        //     'signType': 'MD5',
-        //     'paySign': map.paySign,
-        //     'success':  (res) => {
-        //       if(res.errMsg === 'requestPayment:ok') {
-        //         changeOrderStatus({
-        //           orderNumber: data.orderNumber,
-        //           userId: wx.getStorageSync('userId')
-        //         }).then(() => {
-        //           wx.showToast({
-        //             title: '支付成功！'
-        //           })
-        //         })
-        //       }
-        //       wx.navigateTo({
-        //         url: '/pages/WCH/submitOrder/submitOrder',
-        //         success: result => {
-        //           result.eventChannel.emit('submitOrder', {
-        //             cartList: this.data.cartList,
-        //             shopAddress: this.data.storeAddress,
-        //             user: this.data.user,
-        //             storeTelNum: this.data.storeTelNum,
-        //             remark: this.data.remark || '',
-        //             takeAway: this.data.takeAway,
-        //             payTime: new Date(),
-        //             obj: data,
-        //             isPay: true
-        //           })
-        //         }
-        //       })
-        //     },
-        //     'fail': (error) => {
-        //       wx.navigateTo({
-        //         url: '/pages/WCH/submitOrder/submitOrder',
-        //         success: res => {
-        //           // 记录时间
-        //           console.log(data);
-                  
-        //           wx.setStorageSync('time', new Date().getTime() + 900000)
-        //           res.eventChannel.emit('submitOrder', {
-        //             cartList: this.data.cartList,
-        //             shopAddress: this.data.storeAddress,
-        //             user: this.data.user,
-        //             storeTelNum: this.data.storeTelNum,
-        //             remark: this.data.remark || '',
-        //             takeAway: this.data.takeAway,
-        //             obj: data,
-        //             isPay: false
-        //           })
-        //         }
+        // console.log(res);
+        
+        // changeOrderStatus({
+        //   orderNumber: data.orderNumber,
+        //   userId: wx.getStorageSync('userId')
+        // }).then(() => {
+        //   wx.showToast({
+        //     title: '支付成功！'
+        //   })
+        //   app.globalData.cartList.find(item => item.shopId == this.data.shopId).foodList = []
+        //   console.log('清空购物车成功');
+          
+        // }).then(() => {
+        //   wx.navigateTo({
+        //     url: '/pages/WCH/submitOrder/submitOrder',
+        //     success: result => {
+        //       result.eventChannel.emit('submitOrder', {
+        //         cartList: this.data.cartList,
+        //         shopAddress: this.data.storeAddress,
+        //         user: this.data.user,
+        //         storeTelNum: this.data.storeTelNum,
+        //         remark: this.data.remark || '',
+        //         takeAway: this.data.takeAway,
+        //         payTime: new Date().getTime(),
+        //         obj: data,
+        //         isPay: true
         //       })
         //     }
         //   })
-        // }
+        // })
+        
+
+        if (res.data.prepayId != ''){
+          const map = res.data.data.payMap
+          wx.requestPayment({
+            'appId': map.appId,
+            'timeStamp': map.timeStamp,
+            'nonceStr': map.nonceStr,
+            'package': map.package,
+            'signType': 'MD5',
+            'paySign': map.paySign,
+            'success':  (res) => {
+              if(res.errMsg === 'requestPayment:ok') {
+                changeOrderStatus({
+                  orderNumber: data.orderNumber,
+                  userId: wx.getStorageSync('userId')
+                }).then(() => {
+                  wx.showToast({
+                    title: '支付成功！'
+                  })
+                })
+              }
+
+              
+              setTimeout(() => {
+                oncePaySharing({
+                  deliveryFee: parm.deliveryFee,
+                  orderNumber: parm.orderNumber,
+                  shopName: parm.shopName,
+                  totalAmount: parm.totalAmount
+                }).then(result => {
+                  console.log(result);
+                  
+                })
+              }, 90000);
+
+              wx.navigateTo({
+                url: '/pages/WCH/submitOrder/submitOrder',
+                success: result => {
+                  result.eventChannel.emit('submitOrder', {
+                    cartList: this.data.cartList,
+                    shopAddress: this.data.storeAddress,
+                    user: this.data.user,
+                    storeTelNum: this.data.storeTelNum,
+                    remark: this.data.remark || '',
+                    takeAway: this.data.takeAway,
+                    payTime: new Date(),
+                    obj: data,
+                    isPay: true
+                  })
+                }
+              })
+            },
+            'fail': () => {
+              wx.navigateTo({
+                url: '/pages/WCH/submitOrder/submitOrder',
+                success: res => {
+                  // 记录时间
+                  // console.log(data);
+                  
+                  wx.setStorageSync('time', new Date().getTime() + 900000)
+                  res.eventChannel.emit('submitOrder', {
+                    cartList: this.data.cartList,
+                    shopAddress: this.data.storeAddress,
+                    user: this.data.user,
+                    storeTelNum: this.data.storeTelNum,
+                    remark: this.data.remark || '',
+                    takeAway: this.data.takeAway,
+                    obj: data,
+                    isPay: false
+                  })
+                }
+              })
+            }
+          })
+        }
+
+
       },
       fail: () => {
         wx.showToast({

@@ -1,5 +1,7 @@
 
-const BASE_URL = 'http://192.168.1.111:8080'
+const BASE_URL = 'https://192.168.1.107:8888'
+// const BASE_URL = 'http://121.41.229.2:8082'
+// const BASE_URL = 'https://www.lizeqiang.top:8888'
 
 const H_config = {}
 // 登录
@@ -37,8 +39,15 @@ H_config.CANCEL_ORDER = '/order/cancelUnpaidOrder'
 H_config.CHANGE_ORDER_STATUS = '/order/payForOrder'
 
 // DL
-// 获取校区
+// 分页获取校区
 H_config.GET_CAMPUS = '/campus/selectAllByPage'
+// 获取全部校区
+H_config.GET_ALL_COMPUS = '/campus/selectAll'
+
+// 单次请求分账
+H_config.ONCE_PAY_SGARING = '/wechatpay/oncePaySharing'
+// 添加分帐方
+H_config.ADD_RECEIVER = '/wechatpay/addReceiver'
 
 const K_config = {}
 
