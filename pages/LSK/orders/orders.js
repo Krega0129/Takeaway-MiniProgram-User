@@ -25,8 +25,10 @@ Page({
     paidList: [],
     // 监听"全部"的页面信息是否为最新信息
     isFresh: true,
-
-
+    // 监听是否登录
+    isLogin: false,
+    // 全部订单页数
+    pageNum: 1
   },  // 进入详情页
   goToOrderDetails(e) {
     console.log(e);
@@ -69,13 +71,16 @@ Page({
       TabCur: index,
       scrollLeft: (e.currentTarget.dataset.id - 1) * 60
     })
-    if (index === 0) {
-      this.setUserTotalOrder()
-    } else if (index === 1) {
-      this.setUnpaidOrder()
-    } else if (index === 2) {
-      this.setSelectUserPaidOrder()
+    if (wx.getStorageSync('token')) {
+      if (index === 0) {
+        this.setUserTotalOrder()
+      } else if (index === 1) {
+        this.setUnpaidOrder()
+      } else if (index === 2) {
+        this.setSelectUserPaidOrder()
+      }
     }
+
   },
   // 格式化数组
   listArrayFormate: function (res) {
@@ -129,10 +134,11 @@ Page({
   },
   // 获取"全部"订单信息
   setUserTotalOrder: function () {
-    let pageNum = 1
+    let that = this
+    let pageNum = that.data.pageNum
     let size = 10
-    let userId = 12
-    getUserTotalOrder(pageNum, size,userId).then((res) => {
+    let userId = wx.getStorageSync('userId')
+    getUserTotalOrder(pageNum, size, userId).then((res) => {
       loadingOff()
       if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code == K_config.STATECODE_getUserOrderByStatus_SUCCESS) {
         const list = []
@@ -189,7 +195,7 @@ Page({
   },
   // 获取"待付款"订单信息
   setUnpaidOrder() {
-    let userId=12
+    let userId = wx.getStorageSync('userId')
     getUnpaidOrder(userId).then((res) => {
       if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_getUnpaidOrder_SUCCESS) {
         loadingOff()
@@ -225,7 +231,7 @@ Page({
             // deliveryStatus: item.deliveryStatus,
             status: item.status,
             timeStamp: item.timeStamp,
-            countDownStamp:null,
+            countDownStamp: null,
             countDown: '',
           }
           // 遍历商品详情
@@ -257,7 +263,7 @@ Page({
   },
   // 获取"已付款"订单信息
   setSelectUserPaidOrder() {
-    let userId=12
+    let userId = wx.getStorageSync('userId')
     selectUserPaidOrder(userId).then((res) => {
       if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_selectUserPaidOrder_SUCCESS) {
         loadingOff()
@@ -292,14 +298,14 @@ Page({
       let orderTime = item.timeStamp
       let nowTime = new Date().getTime()
       let seconds = (15 * 60 * 1000 + orderTime) - nowTime
-      item.countDownStamp = seconds    
+      item.countDownStamp = seconds
     }
     this.setData({
-      obligationList:obligationList
+      obligationList: obligationList
     })
     this.setCountDown(obligationList)
   },
-  setCountDown(obligationList){
+  setCountDown(obligationList) {
     // for (let item of obligationList) {
     //   let timer= setInterval(() => {
     //     item.countDownStamp-=1000
@@ -325,9 +331,9 @@ Page({
         // setTimeout(()=> {
         //   this.setUnpaidOrder()
         //  }, 1000)
-        list.splice(index-1,1)
+        list.splice(index - 1, 1)
         this.setData({
-          obligationList:list
+          obligationList: list
         })
       }
     })
@@ -356,13 +362,19 @@ Page({
   refreshAllList: function () {
     this.setSelectUserPaidOrder()
   },
+  // 跳转到登录页
+  toLogin: function () {
+    wx.navigateTo({
+      url: '/pages/WCH/login/login',
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setUserTotalOrder()
-    this.setSelectUserPaidOrder()
-    this.setUnpaidOrder()
+    if (wx.getStorageSync('token')) {
+      this.setUserTotalOrder()
+    }
   },
 
   /**
@@ -376,59 +388,68 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    const that = this
-    bus.on('orderMsg', function (orderMsg) {
-      const obligationList = that.data.obligationList
-      let paidList = that.data.paidList
-      let orderNumber = orderMsg.orderNumber
-      console.log(paidList);
-      if (orderMsg.currentStatus === 0) {
-        obligationList.unshift(orderMsg.data)
-        that.getCountDown()
-      }
-      else if (orderMsg.currentStatus === 1 && orderMsg.pastStatus === 0) {
-        let orderItem = paidList.find(res => res.orderNumber = orderNumber)
-        console.log(orderItem);
-        orderItem.statusCode = '待接单'
-      }
-      else if (orderMsg.currentStatus === 2 && orderMsg.pastStatus === 1) {
-        let orderItem = paidList.find(res => res.orderNumber = orderNumber)
-        console.log(orderItem);
-        orderItem.statusCode = '待接单'
-      }
-      else if (orderMsg.currentStatus === 3) {
-        let orderItem = paidList.find(res => res.orderNumber = orderNumber)
-        console.log(orderItem);
-        orderItem.statusCode = '待取货'
-      }
-      else if (orderMsg.currentStatus === 4) {
-        let orderItem = paidList.find(res => res.orderNumber === orderNumber)
-        orderItem.statusCode = '待送达'
-      }
-      else if (orderMsg.currentStatus === 7) {
-        for (let index = 0; index < obligationList.length; index++) {
-          if (orderMsg.orderNumber === obligationList[index].orderNumber) {
-            obligationList.splice(index - 1, 1)
-            return
+    if (!wx.getStorageSync('token')) {
+      this.setData({
+        isLogin: false
+      })
+    } else {
+      // this.setUserTotalOrder()
+      const that = this
+      bus.on('orderMsg', function (orderMsg) {
+        const obligationList = that.data.obligationList
+        let paidList = that.data.paidList
+        let orderNumber = orderMsg.orderNumber
+        console.log(paidList);
+        if (orderMsg.currentStatus === 0) {
+          obligationList.unshift(orderMsg.data)
+          that.getCountDown()
+        }
+        else if (orderMsg.currentStatus === 1 && orderMsg.pastStatus === 0) {
+          let orderItem = paidList.find(res => res.orderNumber = orderNumber)
+          console.log(orderItem);
+          orderItem.statusCode = '待接单'
+        }
+        else if (orderMsg.currentStatus === 2 && orderMsg.pastStatus === 1) {
+          let orderItem = paidList.find(res => res.orderNumber = orderNumber)
+          console.log(orderItem);
+          orderItem.statusCode = '待接单'
+        }
+        else if (orderMsg.currentStatus === 3) {
+          let orderItem = paidList.find(res => res.orderNumber = orderNumber)
+          console.log(orderItem);
+          orderItem.statusCode = '待取货'
+        }
+        else if (orderMsg.currentStatus === 4) {
+          let orderItem = paidList.find(res => res.orderNumber === orderNumber)
+          orderItem.statusCode = '待送达'
+        }
+        else if (orderMsg.currentStatus === 7) {
+          for (let index = 0; index < obligationList.length; index++) {
+            if (orderMsg.orderNumber === obligationList[index].orderNumber) {
+              obligationList.splice(index - 1, 1)
+              return
+            }
           }
         }
-      }
-      that.setData({
-        obligationList: obligationList,
-        paidList: paidList,
-        isFresh: false
+        that.setData({
+          obligationList: obligationList,
+          paidList: paidList,
+          isFresh: false
+        })
+        if (!that.data.isFresh && that.data.TabCur === 0) {
+          showToast('订单信息发生改变，请手动刷新', 2000)
+        }
       })
-      if (!that.data.isFresh && that.data.TabCur === 0) {
-        showToast('订单信息发生改变，请手动刷新', 2000)
-      }
-    })
+    }
+
   },
+
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    bus.remove('orderMsg')
   },
 
   /**
@@ -449,7 +470,12 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    let that = this
+    let pageNum = that.data.pageNum + 1
+    this.setData({
+      pageNum: pageNum
+    })
+    this.setUserTotalOrder()
   },
 
   /**

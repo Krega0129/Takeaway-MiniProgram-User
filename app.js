@@ -17,9 +17,9 @@ App({
     }
 
     if(!wx.getStorageSync('address')) {
-      wx.redirectTo({
-        url: '/pages/WCH/location/location?canback=' + 0
-      })
+      // wx.redirectTo({
+      //   url: '/pages/WCH/location/location?canback=' + 0
+      // })
     }
 
     wx.getSystemInfo({

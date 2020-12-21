@@ -40,13 +40,14 @@ Page({
       //   isDefault:0
       // }
     ],
+    // 判断是否登录
+    isLogin : false
   },
   // 修改地址
   goToAddressModify: function (e) {
     wx.navigateTo({
       url: '../addressModify/addressModify?item='+JSON.stringify(e.currentTarget.dataset.item)
     })
-
   },
   // 新增地址
   addAddress:function(){
@@ -54,9 +55,15 @@ Page({
       url: '../addressModify/addressModify'
     })
   },
+   // 跳转到登录页
+   toLogin: function () {
+    wx.navigateTo({
+      url: '/pages/WCH/login/login',
+    })
+  },
   // 获取地址列表
   setAllAddress:function(){
-    let userId = 1
+    let userId = wx.getStorageSync('userId')
     getAllAddress(userId).then((res)=>{
       loadingOff()
       // console.log(res.data.data);
@@ -85,7 +92,6 @@ Page({
    */
   onLoad: function (options) {
   },
-
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -97,7 +103,12 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.setAllAddress()
+    if(wx.getStorageSync('token')){
+      this.setData({
+        isLogin:true
+      })
+      this.setAllAddress()
+    }
   },
 
   /**

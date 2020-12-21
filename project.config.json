@@ -59,9 +59,8 @@
     "miniprogram": {
       "list": [
         {
-          "id": 0,
-          "name": "pages/WCH/remarks/remarks",
-          "pathName": "pages/WCH/remarks/remarks",
+          "name": "pages/WCH/home/home",
+          "pathName": "pages/WCH/home/home",
           "query": "",
           "scene": null
         },
@@ -97,6 +96,13 @@
           "id": -1,
           "name": "pages/WCH/submitOrder/submitOrder",
           "pathName": "pages/WCH/submitOrder/submitOrder",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/LSK/orders/orders",
+          "pathName": "pages/LSK/orders/orders",
+          "query": "",
           "scene": null
         }
       ]
