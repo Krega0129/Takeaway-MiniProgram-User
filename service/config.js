@@ -1,5 +1,5 @@
 
-const BASE_URL = 'http://192.168.1.111:8080'
+const BASE_URL = 'https://192.168.1.102:8888'
 
 const H_config = {}
 // 登录

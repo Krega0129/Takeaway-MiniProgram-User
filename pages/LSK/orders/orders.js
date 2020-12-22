@@ -28,7 +28,9 @@ Page({
     // 监听是否登录
     isLogin: false,
     // 全部订单页数
-    pageNum: 1
+    pageNum: 1,
+    // 监听是否请求完全部订单信息
+    isRequestAll:false
   },  // 进入详情页
   goToOrderDetails(e) {
     console.log(e);
@@ -141,7 +143,8 @@ Page({
     getUserTotalOrder(pageNum, size, userId).then((res) => {
       loadingOff()
       if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code == K_config.STATECODE_getUserOrderByStatus_SUCCESS) {
-        const list = []
+        const  list = this.data.allList
+        let isRequestAll = false
         for (let item of res.data.data.list) {
           // 遍历订单信息
           const order = {
@@ -186,9 +189,13 @@ Page({
           }
           list.push(order)
         }
+        if(res.data.data.total<=pageNum*size){
+          isRequestAll=true
+        }
         this.setData({
           allList: list,
-          isFresh: true
+          isFresh: true,
+          isRequestAll:isRequestAll
         })
       }
     })
@@ -393,13 +400,17 @@ Page({
         isLogin: false
       })
     } else {
+      this.setData({
+        isLogin: true
+      })
       // this.setUserTotalOrder()
       const that = this
       bus.on('orderMsg', function (orderMsg) {
+        showToast('有订单信息发生改变', 2000)
         const obligationList = that.data.obligationList
         let paidList = that.data.paidList
         let orderNumber = orderMsg.orderNumber
-        console.log(paidList);
+        console.log(orderMsg);
         if (orderMsg.currentStatus === 0) {
           obligationList.unshift(orderMsg.data)
           that.getCountDown()
@@ -413,6 +424,7 @@ Page({
           let orderItem = paidList.find(res => res.orderNumber = orderNumber)
           console.log(orderItem);
           orderItem.statusCode = '待接单'
+          orderItem.status = 2
         }
         else if (orderMsg.currentStatus === 3) {
           let orderItem = paidList.find(res => res.orderNumber = orderNumber)
@@ -475,7 +487,10 @@ Page({
     this.setData({
       pageNum: pageNum
     })
-    this.setUserTotalOrder()
+    if(that.data.TabCur==0 && !that.data.isRequestAll){
+      this.setUserTotalOrder()
+    }
+    
   },
 
   /**

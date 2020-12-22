@@ -195,9 +195,9 @@ App({
     token: null,
     nowLocation: '广东工业大学'
   },
-  webSocketConnect(uid = 12, identity, lastestOrderDate) {
+  webSocketConnect(uid = wx.getStorageSync('userId'), identity, lastestOrderDate) {
     wx.connectSocket({
-      url: 'ws://192.168.1.111:58080/ws',
+      url: 'wss://192.168.1.102:58080/ws',
       timeout: 50000,
       header: {
         'content-type': 'application/json'
@@ -242,7 +242,7 @@ App({
     // const a=JSON.parse(res.data)
       console.log('get',res);
       if(res.data!=="服务器连接成功！"){
-        // console.log(JSON.parse(res.data));
+        console.log(JSON.parse(res.data));
         let orderMsg=JSON.parse(res.data)
         bus.emit('orderMsg',orderMsg)
         // showToast('订单状态改变', 1000)
