@@ -12,10 +12,18 @@ Page({
     position: wx.getStorageSync('address') || '',
     currentPage: 1,
     storeList: [],
-    totalPages: 0,
+    totalPages: 1,
     showEnd: false,
+    toBottom: 100 + 2 * app.globalData.CustomBar,
+    triggered: false
   },
-  onLoad: function (options) {
+  async onLoad(options) {
+    wx.createSelectorQuery().select('.search').boundingClientRect().selectViewport().scrollOffset().exec(res => {
+      this.setData({
+        toBottom: res[0].bottom * 2
+      })
+    })
+
     // 监听acceptDataFromOpenerPage事件，获取上一页面通过eventChannel传送到当前页面的数据
     let eventChannel = this.getOpenerEventChannel()
     eventChannel.on('showStoreList', (data) => {
@@ -30,7 +38,7 @@ Page({
       })
     })
 
-    _getMultiData(
+    await _getMultiData(
       this.data.position,
       this.data.storeList,
       {
@@ -43,6 +51,8 @@ Page({
         storeList: res.storeList,
         totalPages: res.totalPages
       })
+    }).then(() => {
+      wx.hideLoading()
     })
   },
   onShow() {
@@ -73,7 +83,22 @@ Page({
       }
     })
   },
-  onReachBottom: function () {
+  onShareAppMessage: function () {
+
+  },
+  focusSearch() {
+    let pages = getCurrentPages()
+    
+    // 判断前一页是否是搜索页面，是则直接返回，否则跳转搜索页面
+    if('pages/WCH/search/search' === pages[pages.length - 2].route) {
+      wx.navigateBack()
+    }else {
+      wx.redirectTo({
+        url: '/pages/WCH/search/search',
+      })
+    }
+  },
+  scrollToBottom() {
     if(this.data.currentPage < this.data.totalPages) {
       _getMultiData(
         this.data.position,
@@ -94,19 +119,16 @@ Page({
       })
     }
   },
-  onShareAppMessage: function () {
-
-  },
-  focusSearch() {
-    let pages = getCurrentPages()
-    
-    // 判断前一页是否是搜索页面，是则直接返回，否则跳转搜索页面
-    if('pages/WCH/search/search' === pages[pages.length - 2].route) {
-      wx.navigateBack()
-    }else {
-      wx.redirectTo({
-        url: '/pages/WCH/search/search',
+  onRefresh() {
+    this.data.storeList = []
+    this.setData({
+      currentPage: 1,
+      totalPages: 1
+    })
+    this.onLoad().then(() => {
+      this.setData({
+        triggered: false
       })
-    }
+    })
   }
 })

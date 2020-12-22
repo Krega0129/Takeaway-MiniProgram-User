@@ -26,7 +26,7 @@ Page({
     takeAway: true,
     orderNum: null,
     payTime: '',
-    isPay: null,
+    isPay: true,
     obj: {},
     time: '',
     cancel: false
@@ -179,5 +179,10 @@ Page({
         }
       }
     });
+  },
+  toHome() {
+    wx.reLaunch({
+      url: '/pages/WCH/home/home',
+    })
   }
 })

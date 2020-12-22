@@ -253,7 +253,7 @@
   <view class="text-left" style="width: 60%; padding-left: 200rpx; line-height: 100rpx">
     <text class="text-price text-white">{{totalPrice}}</text>
     <view class="text-sm" style="margin-top: -60rpx">
-      <text>另需配送费<text class="text-price">2</text>/可自提</text>
+      <text>另需配送费<text class="text-price">{{sendPrice}}</text>/可自提</text>
     </view>
   </view>
   <view class="pos-ab bg-{{cartList[0]?'red':'grey'}} text-xl" style="right: 0; top: 0; height: 100%; line-height: 130rpx; width: 260rpx" bindtap="bill">去结算</view>

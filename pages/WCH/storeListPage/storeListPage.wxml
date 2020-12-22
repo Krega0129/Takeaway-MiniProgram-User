@@ -15,27 +15,49 @@
   </view>
 </view>
 <!-- 占位 -->
-<view class="cu-bar search"></view>
+<view class="cu-bar search">
+  <view class="search-form radius" bindtap="focusSearch">
+    <text class="cuIcon-search"></text>
+    <text class="text-gray">搜索美食</text>
+  </view>
+  <view class="action">
+    <text class="cuIcon-search"></text>
+    <text>搜索</text>
+  </view>
+</view>
 
-<view class="cu-card article no-card margin-lr-xs margin-bottom-xs radius" bindtap="showStoreDetails" data-shopInfo="{{item}}" wx:for="{{storeList}}" wx:key="index" lower-threshold="{{0}}">
-  <view class="cu-item">
-    <view class="content">
-      <view class="pos-re margin-top">
-        <image src="{{item.shopHead}}" mode="aspectFill" style="width: 200rpx; height: 6.4em"></image>
-        <view class="cu-tag badge" wx:if="{{item.addCart}}">{{item.num}}</view>
-      </view>
-      <view class="desc">
-        <view class="title text-cut" style="font-size: 40rpx">{{item.shopName}}</view>
-        <view class="text-gray margin-left">
-          起送 <text class="text-price">{{item.minPrice ? item.minPrice : 0}}</text>
-          配送 <text class="text-price">{{item.sentPrice ? item.sentPrice : 0}}</text>
+<scroll-view
+  scroll-y 
+  style="height:calc(100vh - {{toBottom}}rpx);"
+  refresher-enabled="{{true}}"
+  refresher-threshold="{{100}}"
+  lower-threshold="{{20}}"
+  bindscrolltolower	="scrollToBottom"
+  refresher-default-style="white"
+  refresher-background="#f1f1f1"
+  refresher-triggered="{{triggered}}"
+  bindrefresherrefresh="onRefresh"
+  >
+  <view class="cu-card article no-card margin-lr-xs margin-bottom-xs radius" bindtap="showStoreDetails" data-shopInfo="{{item}}" wx:for="{{storeList}}" wx:key="index" lower-threshold="{{0}}">
+    <view class="cu-item">
+      <view class="content">
+        <view class="pos-re margin-top">
+          <image src="{{item.shopHead}}" mode="aspectFill" style="width: 200rpx; height: 6.4em"></image>
+          <view class="cu-tag badge" wx:if="{{item.addCart}}">{{item.num}}</view>
         </view>
-        <view>
-          <view class="dp-in-bk text-cut bg-orange light margin-left" style="max-width: 380rpx">“ {{item.shopIntroduce}} ”</view>
+        <view class="desc">
+          <view class="title text-cut" style="font-size: 40rpx">{{item.shopName}}</view>
+          <view class="text-gray margin-left">
+            起送 <text class="text-price">{{item.minPrice ? item.minPrice : 0}}</text>
+            配送 <text class="text-price">{{item.sentPrice ? item.sentPrice : 0}}</text>
+          </view>
+          <view>
+            <view class="dp-in-bk text-cut bg-orange light margin-left" style="max-width: 380rpx">“ {{item.shopIntroduce}} ”</view>
+          </view>
         </view>
       </view>
     </view>
   </view>
-</view>
+</scroll-view>
 
 <view class="padding-sm text-center text-gray" wx:if="{{showEnd}}">--------- 我可是有底线的 ---------</view>

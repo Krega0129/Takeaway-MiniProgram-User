@@ -13,12 +13,13 @@ Page({
     shopId: null,
     totalPrice: app.globalData.totalPrice,
     totalCount: app.globalData.totalCount,
+    sendPrice: Number(wx.getStorageSync('sendPrice')),
     storeName: '店家名称',
     storeDesc: '商家简介',
     storeImgURL: '',
     storeAddress: '商家地址',
     storeTelNum: '',
-    storeNotice: '商家公告商家公告商家公告商家公告商家公告商家公告商家公告商家公告商家公告商家公告',
+    storeNotice: '暂无公告',
     TabCur: 0,
     TabIndex: 0,
     tabTitleList: ['点餐', '商家'],
@@ -38,219 +39,9 @@ Page({
     // 购物车列表
     // cartList: app.globalData.cartList,
     cartList: [],
-    // 后台获取的信息
-    // goodsCategoryList: [
-    //   {
-    //     categoryId: 0,
-    //     categoryName: '热销',
-    //     foodsList: [
-    //       {
-    //         id: 0,
-    //         name: '手打牛丸',
-    //         intro: '好吃好吃好吃好吃好吃好吃好吃好吃好吃',
-    //         monthSells: 1000,
-    //         specification: [{
-    //           specName: '分量',
-    //           id: 0,
-    //           specId: 11,
-    //           list: [
-    //             {
-    //               attrbuteName: '小份',
-    //               specId: 11,
-    //               attrbuteId: 23,
-    //               attrbutePrice: 0,
-    //               check: true
-    //             },
-    //             {
-    //               attrbuteName: '中份',
-    //               specId: 11,
-    //               attrbuteId: 24,
-    //               attrbutePrice: 2,
-    //               check: false
-    //             },
-    //             {
-    //               attrbuteName: '大份',
-    //               specId: 11,
-    //               attrbuteId: 25,
-    //               attrbutePrice: 4,
-    //               check: false
-    //             }
-    //           ]
-    //         },
-    //         {
-    //           specName: '糖分',
-    //           id: 1,
-    //           specId: 12,
-    //           list: [
-    //             {
-    //               attrbuteName: '无糖',
-    //               specId: 12,
-    //               attrbuteId: 32,
-    //               check: false
-    //             },
-    //             {
-    //               attrbuteName: '少糖',
-    //               specId: 12,
-    //               attrbuteId: 33,
-    //               check: false
-    //             },
-    //             {
-    //               attrbuteName: '半糖',
-    //               specId: 12,
-    //               attrbuteId: 34,
-    //               check: false
-    //             },
-    //             {
-    //               attrbuteName: '全糖',
-    //               specId: 12,
-    //               attrbuteId: 35,
-    //               check: true
-    //             }
-    //           ]
-    //         },
-    //         {
-    //           specName: '冰量',
-    //           id: 2,
-    //           specId: 13,
-    //           list: [
-    //             {
-    //               attrbuteName: '去冰',
-    //               specId: 13,
-    //               attrbuteId: 43,
-    //               check: false
-    //             },
-    //             {
-    //               attrbuteName: '少冰',
-    //               specId: 13,
-    //               attrbuteId: 44,
-    //               check: false
-    //             },
-    //             {
-    //               attrbuteName: '多冰',
-    //               specId: 13,
-    //               attrbuteId: 45,
-    //               check: true
-    //             }
-    //           ]
-    //         }],
-    //         price: 10,
-    //         // 规格字符串
-    //         specStr: '',
-    //         num: 0
-    //       },
-    //       {
-    //         id: 1,
-    //         name: '鸡扒饭',
-    //         intro: '还行还行还行还行还行还行还行还行还行',
-    //         monthSells: 999,
-    //         price: 12,
-    //         num: 0
-    //       },
-    //       {
-    //         id: 2,
-    //         name: '猛男炒饭',
-    //         intro: '也就那样也就那样也就那样也就那样也就那样',
-    //         monthSells: 888,
-    //         specification: [{
-    //           specName: '分量',
-    //           id: 5,
-    //           specId: 16,
-    //           list: [
-    //             {
-    //               attrbuteName: '小份',
-    //               specId: 16,
-    //               attrbuteId: 66,
-    //               attrbutePrice: 0,
-    //               check: true
-    //             },
-    //             {
-    //               attrbuteName: '中份',
-    //               specId: 16,
-    //               attrbuteId: 67,
-    //               attrbutePrice: 2,
-    //               check: false
-    //             },
-    //             {
-    //               attrbuteName: '大份',
-    //               specId: 16,
-    //               attrbuteId: 68,
-    //               attrbutePrice: 4,
-    //               check: false
-    //             }
-    //           ]
-    //         }],
-    //         price: 9,
-    //         // 规格字符串
-    //         specStr: '',
-    //         num: 0
-    //       },
-    //     ]
-    //   },
-    //   {
-    //     categoryId: 1,
-    //     categoryName: '全球美食',
-    //     foodsList: [
-    //       {
-    //         id: 3,
-    //         name: '鸭血粉丝',
-    //         intro: '好吃好吃好吃好吃好吃好吃好吃好吃好吃',
-    //         monthSells: 1000,
-    //         price: 10,
-    //         num: 0
-    //       },
-    //       {
-    //         id: 4,
-    //         name: '关东煮',
-    //         intro: '还行还行还行还行还行还行还行还行还行',
-    //         monthSells: 999,
-    //         price: 12,
-    //         num: 0
-    //       },
-    //       {
-    //         id: 5,
-    //         name: '鸡肉卷',
-    //         intro: '也就那样也就那样也就那样也就那样也就那样',
-    //         monthSells: 888,
-    //         price: 9,
-    //         num: 0
-    //       }
-    //     ]
-    //   },
-    //   {
-    //     categoryId: 2,
-    //     categoryName: '特色菜系',
-    //     foodsList: [
-    //       {
-    //         id: 6,
-    //         name: '章鱼丸子',
-    //         intro: '好吃好吃好吃好吃好吃好吃好吃好吃好吃',
-    //         monthSells: 1000,
-    //         price: 10,
-    //         num: 0
-    //       },
-    //       {
-    //         id: 7,
-    //         name: '鸡蛋灌饼',
-    //         intro: '还行还行还行还行还行还行还行还行还行',
-    //         monthSells: 999,
-    //         price: 12,
-    //         num: 0
-    //       },
-    //       {
-    //         id: 8,
-    //         name: '炒粉',
-    //         intro: '也就那样也就那样也就那样也就那样也就那样',
-    //         monthSells: 888,
-    //         price: 9,
-    //         num: 0
-    //       },
-    //     ]
-    //   }
-    // ],
-    // 商品的规格显示
-    
+    // 商品信息
     goodsCategoryList: [],
-
+    // 规格当前商品规格
     specificationList: [],
     // 垂直导航的标题
     list: [],

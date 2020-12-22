@@ -3,43 +3,49 @@ import {
   getCampus
 } from '../../../service/home'
 
-const app = getApp()
+const BACK_TOP = 500
 
 Page({
   data: {
+    toBottom: 260,
+    triggered: false,
     nowLocation: '',
     currentPage: 1,
-    // schoolList: ['广东工业大学', '广州大学', '华南理工大学', '中山大学', '暨南大学', '清华大学', '北京大学', '广美', '人大', '上交大', '复旦大学', '厦门大学', '浙江大学', '广东工业大学', '广州大学', '华南理工大学', '中山大学', '暨南大学', '清华大学', '北京大学', '广美', '人大', '上交大', '复旦大学', '厦门大学', '浙江大学'],
     schoolList: [],
     canBack: 1,
-    totalPages: 1
+    totalPages: 1,
+    showEnd: false,
+    showBackTop: false
   },
-  onLoad: function (options) {
-    this.setData({
-      canBack: Number(options.canback)
+  async onLoad(options) {
+    wx.createSelectorQuery().select('.address').boundingClientRect().selectViewport().scrollOffset().exec(res => {
+      this.setData({
+        toBottom: res[0].bottom * 2,
+        canBack: Number(options ? options.canback : this.data.canBack),
+        nowLocation: wx.getStorageSync('address') || '未定位'
+      })
     })
     // 获取第一页
     this._getCampus(1)
-    this.setData({
-      nowLocation: wx.getStorageSync('address') || '未定位'
-    })
   },
   _getCampus(currentPage) {
-    getCampus({
-      pageNum: currentPage,
-      pageSize: 15
-    }).then(res => {
-      let list = res.data.data.list
-      let campusList = []
-      for(let campus of list) {
-        campusList.push(campus.campusName)
-      }
-      this.data.totalPages = res.data.data.totalPages
-      this.data.schoolList.push(...campusList)
-      this.setData({
-        schoolList: this.data.schoolList
+    if(currentPage <= this.data.totalPages) {
+      getCampus({
+        pageNum: currentPage,
+        pageSize: 15
+      }).then(res => {
+        wx.hideLoading()
+        this.data.totalPages = res.data.data.total
+        this.data.schoolList.push(...res.data.data.list)
+        this.setData({
+          schoolList: this.data.schoolList
+        })
       })
-    })
+    } else {
+      this.setData({
+        showEnd: true
+      })
+    }
   },
   cancelLocate() {
     wx.navigateBack()
@@ -52,13 +58,13 @@ Page({
   reLocate(e) {
     // 提示框
     wx.showModal({
-      content: '将' + e.currentTarget.dataset.location + '设置为当前位置？',
+      content: '将' + e.currentTarget.dataset.location.campusName + '设置为当前位置？',
       showCancel: true,
       title: '提示',
       success: (res) => {
         if(res.confirm) {
-          // app.globalData.nowLocation = e.currentTarget.dataset.location
-          wx.setStorageSync('address', e.currentTarget.dataset.location)
+          wx.setStorageSync('address', e.currentTarget.dataset.location.campusName)
+          wx.setStorageSync('sendPrice', Number(e.currentTarget.dataset.location.campusCost).toFixed(2))
           // 修改当前定位
           this.setData({
             nowLocation: wx.getStorageSync('address')
@@ -68,6 +74,29 @@ Page({
           })
         }
       }
+    })
+  },
+  onPageScroll(options) {
+    const scrollTop = options.scrollTop
+    const flag = scrollTop >= BACK_TOP
+
+    if(flag !== this.data.showBackTop) {
+      this.setData({
+        showBackTop: flag
+      })
+    }
+  },
+  onRefresh() {
+    this.data.schoolList = []
+    this.setData({
+      triggered: true,
+      currentPage: 1,
+      showEnd: false
+    })
+    this.onLoad().then(() => {
+      this.setData({
+        triggered: false
+      })
     })
   }
 })

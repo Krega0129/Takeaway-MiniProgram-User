@@ -4,7 +4,7 @@ const header = {
   'Content-Type': "application/json"
 }
 
-export default function(options) {
+export default async function(options) {
   wx.showLoading({
     title: '加载中...',
   })
@@ -22,10 +22,7 @@ export default function(options) {
       data: options.data || {},
       header: options.header || header,
       success: resolve,
-      fail: reject,
-      complete: () => {
-        wx.hideLoading()
-      }
+      fail: reject
     })
   })
 }

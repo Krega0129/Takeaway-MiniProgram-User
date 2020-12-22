@@ -35,6 +35,7 @@ Page({
       type: 'image',
       url: 'http://p0.meituan.net/codeman/daa73310c9e57454dc97f0146640fd9f69772.jpg'
     }],
+    triggered: false,
     categoryList: [],
     storeList: [],
     showBackTop: false,
@@ -50,14 +51,22 @@ Page({
       '../../../assets/img/WCH/category/tea-milk.png'
     ],
     totalPages: 1,
+    toBottom: 100 + 2 * app.globalData.CustomBar,
     showEnd: false
   },
-  onLoad() {
+  async onLoad() {
     wx.stopPullDownRefresh()
 
     wx.showLoading({
       title: '加载中...'
     })
+
+    wx.createSelectorQuery().select('.search').boundingClientRect().selectViewport().scrollOffset().exec(res => {
+      this.setData({
+        toBottom: res[0].bottom * 2
+      })
+    })
+    
 
     this.setData({
       position: wx.getStorageSync('address') || '定位'
@@ -76,7 +85,7 @@ Page({
         })
       })
       
-      _getMultiData(
+      await _getMultiData(
         this.data.position,
         this.data.storeList,
         {
@@ -155,7 +164,7 @@ Page({
       }
     })
   },
-  onReachBottom() {
+  scrollToBottom() {
     if(this.data.pageNum < this.data.totalPages) {
       _getMultiData(
         this.data.position,
@@ -174,17 +183,22 @@ Page({
       })
     }
   },
-  onPullDownRefresh() {
+  onRefresh() {
+    this.data.storeList = [],
     this.setData({
+      triggered: true,
       pageNum: 1,
-      storeList: []
+      showEnd: false
     })
-    this.onLoad()
-  },
+    this.onLoad().then(() => {
+      this.setData({
+        triggered: false
+      })
+    })
+  }
   // test() {
   //   test().then(res => {
   //     console.log(res);
-      
   //   })
   // }
 })
