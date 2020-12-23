@@ -125,6 +125,7 @@ Page({
   onLoad: function (options) {    
       loadingOn('加载中')
       const orderDetails =JSON.parse(options.item)
+      console.log(orderDetails);
       let status=''
       if(orderDetails.status===0){
         status='订单待支付'

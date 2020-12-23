@@ -10,13 +10,15 @@ Page({
    * 页面的初始数据
    */
   data: {
-    toTop:200,
+    toTop:null,
     isTriggered:false,
     TabCur: 0,
     scrollLeft: 0,
     modalName: '',
     currentType: 'all',
     TabName: ["全部", "待付款", "已付款"],
+    // 模态框绑定对应订单index
+    listIndex:null,
     // 状态数组
     statusCode: ['allList', 'obligationList', 'paidList'],
     // 全部订单
@@ -33,7 +35,9 @@ Page({
     pageNum: 1,
     // 监听是否请求完全部订单信息
     isRequestAll:false
-  },  // 进入详情页
+  },
+
+  // 进入详情页
   goToOrderDetails(e) {
     console.log(e);
     wx.navigateTo({
@@ -43,7 +47,8 @@ Page({
   // 打开模态框
   showModal(e) {
     this.setData({
-      modalName: e.currentTarget.dataset.target
+      modalName: e.currentTarget.dataset.target, 
+      listIndex:e.currentTarget.dataset.index
     })
   },
   // 关闭模态框
@@ -53,11 +58,12 @@ Page({
     })
   },
   // 复制号码
-  copyPhoneNumber() {
+  copyPhoneNumber(e) {
+    console.log(e);
     let that = this;
     wx.setClipboardData({
       //准备复制的数据
-      data: that.data.allList.businessPhone,
+      data: e.currentTarget.dataset.phone,
       success: function (res) {
         wx.showToast({
           title: '内容已复制',
@@ -399,7 +405,12 @@ Page({
     if (wx.getStorageSync('token')) {
       this.setUserTotalOrder()
     }
-  },
+    wx.createSelectorQuery().select('.scrollTop').boundingClientRect().selectViewport().scrollOffset().exec(res => {
+      this.setData({
+        toTop: res[0].bottom * 2
+      })
+    })
+   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
