@@ -26,6 +26,15 @@
   </view>
 </view>
 
+<view class="cu-modal {{showImg?'show':''}}" style="z-index: 3000">
+  <view class="cu-dialog">
+    <view class="bg-img" style="background-image: url('{{imgUrl}}'); height: 400rpx; background-size: 100% 100%"></view>
+    <view class="action pos-fix text-center round" style="bottom: 50%; left: 50%; margin-left: -25rpx; transform: translateY(300rpx); height: 50rpx; width: 50rpx; background: rgba(0,0,0,.5); line-height: 50rpx" bindtap="hideImg">
+      <text class="cuIcon-close text-white"></text>
+    </view>
+  </view>
+</view>
+
 <scroll-view 
   scroll-y 
   style="height:calc(100vh - {{toBottom}}rpx);"
@@ -39,7 +48,12 @@
   bindrefresherrefresh="onRefresh"
   >
 
-  <w-swiper swiperList="{{swiperList}}"></w-swiper>
+  <swiper class="screen-swiper square-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
+    <swiper-item wx:for="{{swiperList}}" wx:key="index" data-url="{{item.url}}" bindtap="tapBanner">
+      <image src="{{item.url}}" mode="aspectFill" wx:if="{{item.type=='image'}}"></image>
+      <video src="{{item.url}}" autoplay loop muted show-play-btn="{{false}}" controls="{{false}}" objectFit="cover" wx:if="{{item.type=='video'}}"></video>
+    </swiper-item>
+  </swiper>
 
   <!-- <button bindtap="test">test</button> -->
   <!-- <button bindtap="showLogin">登录</button>

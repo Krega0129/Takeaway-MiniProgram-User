@@ -1,5 +1,4 @@
-
-// const BASE_URL = 'https://192.168.1.102:8888'
+// const BASE_URL = 'https://192.168.1.107:8888'
 // const BASE_URL = 'http://121.41.229.2:8082'
 const BASE_URL = 'https://www.lizeqiang.top:8888'
 

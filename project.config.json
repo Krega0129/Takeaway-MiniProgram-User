@@ -36,7 +36,7 @@
     "minifyWXSS": true
   },
   "compileType": "miniprogram",
-  "libVersion": "2.13.1",
+  "libVersion": "2.13.0",
   "appid": "wxb2dfbd203ddd200f",
   "projectname": "Takeaway-User",
   "debugOptions": {

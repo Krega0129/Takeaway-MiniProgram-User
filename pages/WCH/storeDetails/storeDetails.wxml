@@ -250,7 +250,7 @@
   <view class="cuIcon-cartfill round bg-white pos-ab text-sl" style="width: 140rpx; height: 140rpx; top: -70rpx; left: 50rpx; line-height: 140rpx;" catchtap="showCartList">
     <view class="round bg-red pos-ab" style="width: 40rpx; height: 40rpx; font-size: 30rpx; line-height: 40rpx; top: 0; right: 10rpx;" wx:if="{{totalCount > 0}}">{{totalCount}}</view>
   </view>
-  <view class="text-left" style="width: 60%; padding-left: 200rpx; line-height: 100rpx">
+  <view class="text-left" style="width: 60%; padding-left: 180rpx; line-height: 100rpx">
     <text class="text-price text-white">{{totalPrice}}</text>
     <view class="text-sm" style="margin-top: -60rpx">
       <text>另需配送费<text class="text-price">{{sendPrice}}</text>/可自提</text>

@@ -235,7 +235,7 @@ Page({
         shopId: this.data.shopId,
         // shopId: 1,
         shopName: this.data.shopName,
-        shopPicture: this.data.imgUrl || 'a',
+        shopPicture: this.data.imgUrl || '',
         totalAmount: this.data.totalPrice,
         totalQuantity: this.data.totalCount,
         userId: wx.getStorageSync('userId')
@@ -255,7 +255,7 @@ Page({
         let num = item.count ? item.count : item.num
         let food = {
           goodsName: item.name,
-          picture: item.imgUrl || 'a',
+          picture: item.imgUrl || '',
           quantity: num,
           specification: item.spec,
           totalPrice: num * item.price,

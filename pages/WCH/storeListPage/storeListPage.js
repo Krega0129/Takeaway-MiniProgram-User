@@ -52,6 +52,7 @@ Page({
         totalPages: res.totalPages
       })
     }).then(() => {
+      this.onShow()
       wx.hideLoading()
     })
   },
