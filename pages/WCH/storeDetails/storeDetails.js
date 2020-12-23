@@ -71,7 +71,8 @@ Page({
           storeDesc: shopInfo.shopIntroduce,
           storeAddress: shopInfo.detailAddress,
           storeImgURL: BASE_URL + '/' + shopInfo.shopHead,
-          storeTelNum: shopInfo.contactPhone
+          storeTelNum: shopInfo.contactPhone,
+          sendPrice: wx.getStorageSync('sendPrice')
         })
       }).then(() => {
         // 获取商品信息

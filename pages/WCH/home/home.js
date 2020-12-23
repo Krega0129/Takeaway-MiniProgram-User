@@ -35,6 +35,8 @@ Page({
       type: 'image',
       url: 'http://p0.meituan.net/codeman/daa73310c9e57454dc97f0146640fd9f69772.jpg'
     }],
+    imgUrl: '',
+    showImg: false,
     triggered: false,
     categoryList: [],
     storeList: [],
@@ -66,7 +68,6 @@ Page({
         toBottom: res[0].bottom * 2
       })
     })
-    
 
     this.setData({
       position: wx.getStorageSync('address') || '定位'
@@ -84,7 +85,6 @@ Page({
           categoryList: res.data.data || []
         })
       })
-      
       await _getMultiData(
         this.data.position,
         this.data.storeList,
@@ -194,6 +194,17 @@ Page({
       this.setData({
         triggered: false
       })
+    })
+  },
+  tapBanner(e) {
+    this.setData({
+      showImg: true,
+      imgUrl: e.currentTarget.dataset.url
+    })
+  },
+  hideImg() {
+    this.setData({
+      showImg: false
     })
   }
   // test() {

@@ -179,7 +179,7 @@ App({
     })
   },
   onShow() {
-    this.webSocketConnect()
+    // this.webSocketConnect()
   },
   globalData: {
     StatusBar: null,
