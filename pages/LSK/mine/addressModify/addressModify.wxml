@@ -7,10 +7,10 @@
   <!-- 校区选择 -->
   <view class="cu-form-group ">
     <view class="title">收货地址</view>
-    <picker mode="selector" bindchange="CampusChange" value="{{campusIndex!=null?campus[campusIndex].campusName:addressMsg.campus}}" range="{{campus}}" range-key="name"
+    <picker mode="selector" bindchange="CampusChange" value="{{campus[campusIndex].campusName}}" range="{{campus}}" range-key="campusName"
       data-id="{{campusIndex}}" name="campus" >
       <view class="picker">
-        {{campusIndex||isEmpty?campus[campusIndex].campusName:addressMsg.campus}}
+        {{campus[campusIndex].campusName}}
       </view>
     </picker>
   </view>

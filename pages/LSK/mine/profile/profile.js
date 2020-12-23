@@ -13,12 +13,27 @@ Page({
       { icon: '', itemName: '骑手招聘' },
       { icon: '', itemName: '投诉建议' }
     ],
-
+    isLogin:false
   },
   toPersonInfo() {
-    wx.navigateTo({
+    if(this.data.isLogin){
+      wx.navigateTo({
       url: '/pages/LSK/mine/personInfo/personInfo',
     })
+    }
+    else{
+      wx.login({
+        success: res => {
+          const code = res.code
+          wx.navigateTo({
+            url: '/pages/WCH/login/login',
+            success: res => {
+              res.eventChannel.emit('code',{ code: code })
+            }
+          })
+        }
+      })
+    }
   },
   toAddressList() {
     wx.navigateTo({
@@ -54,13 +69,17 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+onShow: function () {
+  if (!wx.getStorageSync('token')) {
     this.setData({
-      name: app.globalData.name,
-      phoneNumber:app.globalData.phoneNumber,
-      imgUrl:app.globalData.head
+      isLogin: false
     })
-  },
+  } else {
+    this.setData({
+      isLogin: true
+    })
+  }
+},
 
   /**
    * 生命周期函数--监听页面隐藏

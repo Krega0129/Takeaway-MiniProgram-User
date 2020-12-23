@@ -10,6 +10,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    toTop:200,
+    isTriggered:false,
     TabCur: 0,
     scrollLeft: 0,
     modalName: '',
@@ -28,7 +30,9 @@ Page({
     // 监听是否登录
     isLogin: false,
     // 全部订单页数
-    pageNum: 1
+    pageNum: 1,
+    // 监听是否请求完全部订单信息
+    isRequestAll:false
   },  // 进入详情页
   goToOrderDetails(e) {
     console.log(e);
@@ -141,7 +145,8 @@ Page({
     getUserTotalOrder(pageNum, size, userId).then((res) => {
       loadingOff()
       if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code == K_config.STATECODE_getUserOrderByStatus_SUCCESS) {
-        const list = []
+        const  list = this.data.allList
+        let isRequestAll = false
         for (let item of res.data.data.list) {
           // 遍历订单信息
           const order = {
@@ -186,9 +191,14 @@ Page({
           }
           list.push(order)
         }
+        if(res.data.data.total<=pageNum*size){
+          isRequestAll=true
+        }
         this.setData({
+          isTriggered:false,
           allList: list,
-          isFresh: true
+          isFresh: true,
+          isRequestAll:isRequestAll
         })
       }
     })
@@ -251,9 +261,10 @@ Page({
           list.push(order)
         }
         this.setData({
+          isTriggered:false,
           obligationList: list
         })
-        this.getCountDown()
+        // this.getCountDown()
       }
       else {
         loadingOff()
@@ -269,6 +280,7 @@ Page({
         loadingOff()
         let list = this.listArrayFormate(res)
         this.setData({
+          isTriggered:false,
           paidList: list
         })
       }
@@ -359,9 +371,9 @@ Page({
     return statusCode
   },
   // 手动刷新"全部"订单
-  refreshAllList: function () {
-    this.setSelectUserPaidOrder()
-  },
+  // refreshAllList: function () {
+  //   this.setSelectUserPaidOrder()
+  // },
   // 跳转到登录页
   toLogin: function () {
     // wx.navigateTo({
@@ -405,6 +417,9 @@ Page({
         isLogin: false
       })
     } else {
+      this.setData({
+        isLogin: true
+      })
       // this.setUserTotalOrder()
       this.setData({
         isLogin: true
@@ -412,10 +427,11 @@ Page({
       
       const that = this
       bus.on('orderMsg', function (orderMsg) {
+        showToast('有订单信息发生改变', 2000)
         const obligationList = that.data.obligationList
         let paidList = that.data.paidList
         let orderNumber = orderMsg.orderNumber
-        console.log(paidList);
+        console.log(orderMsg);
         if (orderMsg.currentStatus === 0) {
           obligationList.unshift(orderMsg.data)
           that.getCountDown()
@@ -429,6 +445,7 @@ Page({
           let orderItem = paidList.find(res => res.orderNumber = orderNumber)
           console.log(orderItem);
           orderItem.statusCode = '待接单'
+          orderItem.status = 2
         }
         else if (orderMsg.currentStatus === 3) {
           let orderItem = paidList.find(res => res.orderNumber = orderNumber)
@@ -474,24 +491,38 @@ Page({
   onUnload: function () {
 
   },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
+ /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
-    let that = this
-    let pageNum = that.data.pageNum + 1
+ 
+  toLoading:function(){
+      if(this.data.TabCur==0&&!this.data.isRequestAll){
+        let pageNum=++this.data.pageNum
+          this.setData({
+            pageNum:pageNum
+          })
+          this.setUserTotalOrder()
+      }
+  },
+ /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+ 
+  toRefresh: function () {
     this.setData({
-      pageNum: pageNum
+      isTriggered:true
     })
-    this.setUserTotalOrder()
+    if(this.data.TabCur===0){
+      this.data.allList=[]
+      this.setData({
+        pageNum:1
+      })
+      this.setUserTotalOrder()
+    }else if(this.data.TabCur===1){
+        this.setUnpaidOrder()
+    }else if(this.data.TabCur===2){
+        this.setSelectUserPaidOrder()
+    }
   },
 
   /**

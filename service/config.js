@@ -63,7 +63,7 @@ K_config.STATECODE_updateAddressStatus_SUCCESS = 3255
 K_config.STATECODE_addNewAddress_SUCCESS = 3254
 K_config.STATECODE_addNewAddress_FALSE = 3551
 K_config.STATECODE_deleteAddress_SUCCESS = 3257
-K_config.STATECODE_selectAllCampus_SUCCESS = 2213
+K_config.STATECODE_selectAllCampus_SUCCESS = 3200
 
 // 订单接口
 K_config.API_selectUserTotalOrder_URL = '/order/selectUserTotalOrder'
@@ -78,7 +78,7 @@ K_config.API_updateAddress_URL = '/address/updateAddress'
 K_config.API_addNewAddress_URL = '/address/addNewAddress'
 K_config.API_updateAddressStatus_URL = '/address/updateAddressStatus'
 K_config.API_deleteAddress_URL = '/address/deleteAddress'
-K_config.API_selectAllCampus_URL = '/campus/selectAll'
+K_config.API_selectAllCampus_URL = '/campus/selectAllCampusName'
 
 // 改成对象
 export {
