@@ -23,7 +23,7 @@ Page({
     imgUrl: null,
     cartList: [],
     totalPrice: 0,
-    sendPrice: 0,
+    sendPrice: Number(wx.getStorageSync('sendPrice')),
     chooseLocation: false,
     changeLocation: false,
     // 当前地址
@@ -96,9 +96,8 @@ Page({
       getAllAddress({
         userId: wx.getStorageSync('userId')
       }).then(res => {
+        wx.hideLoading()
         let addressList = res.data.data
-        console.log(addressList);
-        
         this.setData({
           locationList: addressList
         })
@@ -109,7 +108,7 @@ Page({
 
   },
   takeAway() {
-    this.data.sendPrice = 2
+    this.data.sendPrice = Number(wx.getStorageSync('sendPrice'))
     app.culPrice(this.data.cartList, this.data.sendPrice)
     this.setData({
       takeAway: true,
@@ -278,6 +277,7 @@ Page({
         obj.userId = wx.getStorageSync('userId')
         // 下单成功
         if(res.statusCode === 200 && res.data.code === 3201) {
+          wx.hideLoading()
           this.pay({
             deliveryFee: obj.deliveryFee,
             orderNumber: obj.orderNumber,
@@ -337,7 +337,6 @@ Page({
         //     }
         //   })
         // })
-        
 
         if (res.data.prepayId != ''){
           const map = res.data.data.payMap

@@ -8,12 +8,25 @@
   <text class="cuIcon-locationfill"></text>
   <text>当前定位：{{nowLocation}}</text>
 </view>
-<view class="cuIcon-notice margin-bottom-xs margin-left text-gray text-sm"> 选择校区后才能正常使用</view>
+<view class="cuIcon-notice padding-bottom-xs margin-left text-gray text-sm address"> 选择校区后才能正常使用</view>
 
-<scroll-view scroll-y style="max-height: calc(100vh - 260rpx)" bindscrolltolower='scrollToLower'>
+<scroll-view 
+  scroll-y 
+  style="height: calc(100vh - {{toBottom}}rpx)"
+  refresher-enabled="{{true}}"
+  refresher-threshold="{{100}}"
+  lower-threshold="{{20}}"
+  refresher-default-style="white"
+  refresher-background="#f1f1f1"
+  refresher-triggered="{{triggered}}"
+  bindrefresherrefresh="onRefresh"
+  >
   <view class="cu-list menu">
     <view class="cu-item bg-white" wx:for="{{schoolList}}" wx:key="index" data-location="{{item}}" bindtap="reLocate">
-      <text class="cuIcon-location"> {{item}}</text>
+      <text class="cuIcon-location"> {{item.campusName}}</text>
     </view>
   </view>
+
+  <w-to-top-btn wx:if="{{showBackTop}}"></w-to-top-btn>
+  <view class="padding-sm text-center text-gray" wx:if="{{showEnd}}">--------- 我可是有底线的 ---------</view>
 </scroll-view>

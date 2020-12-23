@@ -13,7 +13,8 @@ Page({
     showSearchTip: false,
     showHistory: false,
     timer: true,
-    inputText: ''
+    inputText: '',
+    tim: null
   },
   onLoad: function (options) {
     
@@ -57,7 +58,7 @@ Page({
     })
   },
   searchFood(e) {
-    let tim = setTimeout(() => {
+    setTimeout(() => {
       this.data.timer = true
     }, 500)
     if(this.data.timer) {
@@ -115,31 +116,28 @@ Page({
       inputText: e.detail.value
     })
 
-    if(e.detail.value) {
-      searchTip({
-        address: wx.getStorageSync('address') || '',
-        word: e.detail.value
-      }).then(res => {
-        this.setData({
-          storeList: res.data.data.shopName,
-          foodList: res.data.data.commodityName
-        })
-      })
-    } else {
-      this.setData({
-        storeList: [],
-        foodList: []
-      })
-    }
+    clearTimeout(this.data.timer)
 
-    // if(!e.detail.value) {
-    //   this.setData({
-    //     showSearchTip: false
-    //   })
-    // } else {
-    //   this.setData({
-    //     showSearchTip: true
-    //   })
-    // }
+    this.data.timer = setTimeout(() => {
+      if(e.detail.value) {
+        searchTip({
+          address: wx.getStorageSync('address') || '',
+          word: e.detail.value
+        }).then(res => {
+          this.setData({
+            storeList: res.data.data.shopName,
+            foodList: res.data.data.commodityName
+          })
+        }).then(() => {
+          wx.hideLoading()
+        })
+      } else {
+        this.setData({
+          storeList: [],
+          foodList: []
+        })
+        wx.hideLoading()
+      }
+    }, 500)
   }
 })
