@@ -1,5 +1,6 @@
 
-const BASE_URL = 'https://192.168.1.102:8888'
+// const BASE_URL = 'https://192.168.1.102:8888'
+const BASE_URL = 'https://www.lizeqiang.top:8888/'
 
 const H_config = {}
 // 登录
@@ -37,8 +38,15 @@ H_config.CANCEL_ORDER = '/order/cancelUnpaidOrder'
 H_config.CHANGE_ORDER_STATUS = '/order/payForOrder'
 
 // DL
-// 获取校区
+// 分页获取校区
 H_config.GET_CAMPUS = '/campus/selectAllByPage'
+// 获取全部校区
+H_config.GET_ALL_COMPUS = '/campus/selectAll'
+
+// 单次请求分账
+H_config.ONCE_PAY_SGARING = '/wechatpay/oncePaySharing'
+// 添加分帐方
+H_config.ADD_RECEIVER = '/wechatpay/addReceiver'
 
 const K_config = {}
 
@@ -55,7 +63,7 @@ K_config.STATECODE_updateAddressStatus_SUCCESS = 3255
 K_config.STATECODE_addNewAddress_SUCCESS = 3254
 K_config.STATECODE_addNewAddress_FALSE = 3551
 K_config.STATECODE_deleteAddress_SUCCESS = 3257
-K_config.STATECODE_selectAllCampus_SUCCESS = 2213
+K_config.STATECODE_selectAllCampus_SUCCESS = 3200
 
 // 订单接口
 K_config.API_selectUserTotalOrder_URL = '/order/selectUserTotalOrder'
@@ -70,7 +78,7 @@ K_config.API_updateAddress_URL = '/address/updateAddress'
 K_config.API_addNewAddress_URL = '/address/addNewAddress'
 K_config.API_updateAddressStatus_URL = '/address/updateAddressStatus'
 K_config.API_deleteAddress_URL = '/address/deleteAddress'
-K_config.API_selectAllCampus_URL = '/campus/selectAll'
+K_config.API_selectAllCampus_URL = '/campus/selectAllCampusName'
 
 // 改成对象
 export {

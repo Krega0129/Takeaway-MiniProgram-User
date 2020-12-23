@@ -9,7 +9,7 @@ import {
   updateAddressStatus,
   addNewAddress,
   deleteAddress,
-  selectAllCampus
+  selectAllCampusName
 } from '../../../../service/address'
 import {
   K_config
@@ -21,12 +21,12 @@ Page({
    */
   data: {
     campus: [
-      { name: '广东工业大学', id: 0 },
-      { name: '中山大学', id: 1 },
-      { name: '广东外语外贸大学', id: 2 },
-      { name: '华南理工大学', id: 3 },
-      { name: '广州大学', id: 4 },
-      { name: '广州中医药大学', id: 5 }
+      // { name: '广东工业大学', id: 0 },
+      // { name: '中山大学', id: 1 },
+      // { name: '广东外语外贸大学', id: 2 },
+      // { name: '华南理工大学', id: 3 },
+      // { name: '广州大学', id: 4 },
+      // { name: '广州中医药大学', id: 5 }
     ],
     // 地址信息
     addressMsg: {},
@@ -71,11 +71,17 @@ Page({
   },
   // 获取校区信息
   getCampusMsg:function(){
-    selectAllCampus().then((res)=>{
+    selectAllCampusName().then((res)=>{
       if(res.data.code === K_config.STATECODE_SUCCESS||res.data.code===K_config.STATECODE_selectAllCampus_SUCCESS){
         this.setData({
           campus:res.data.data
         })
+        const campusIndex=this.data.campus.findIndex((res)=>res.campusName===this.data.addressMsg.campus)
+        if(campusIndex!==-1){
+          this.setData({
+            campusIndex:campusIndex
+          })
+        }
       }
     })
   },
@@ -112,7 +118,7 @@ Page({
         let receiveId = this.data.addressMsg.receiveId
         updateAddress(campus, contactName, contactPhone, detailedAddress, isDefault, receiveId, sex ,userId).then((res) => {
           if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_updateAddress_SUCCESS) {
-            updateAddressStatus(receiveId, addressStatus).then((res) => {
+            updateAddressStatus(receiveId, addressStatus,userId).then((res) => {
               if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_updateAddressStatus_SUCCESS) {
                 loadingOff()
                 showToast('地址更新成功', 1000)
@@ -219,7 +225,8 @@ Page({
   // 删除地址
   deleteAdd: function () {
     let receiveId = this.data.addressMsg.receiveId
-    deleteAddress(receiveId).then((res) => {
+    let userId=wx.getStorageSync('userId')
+    deleteAddress(receiveId,userId).then((res) => {
       loadingOff()
       if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_deleteAddress_SUCCESS) {
         showToast('删除地址成功', 1000)
@@ -284,7 +291,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.getCampusMsg()
   },
 
   /**

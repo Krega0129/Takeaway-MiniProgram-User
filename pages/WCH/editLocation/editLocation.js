@@ -5,6 +5,10 @@ import {
   addNewAddress,
 } from '../../../service/bill'
 
+import {
+  getAllCampus
+} from '../../../service/home'
+
 Page({
   data: {
     user: {},
@@ -14,12 +18,23 @@ Page({
     locationIndex: null,
     // 选择的学校
     index: null,
-    schoolList: ['广东工业大学', '清华大学', '北京大学'],
+    // schoolList: ['广东工业大学', '清华大学', '北京大学'],
+    schoolList: [],
     // 是否是新增地址
     addNewAddress: false
   },
   onLoad: function (options) {
-
+    getAllCampus().then(res => {
+      const list = res.data.data
+      let schoolList = []
+      for(let school of list) {
+        schoolList.push(school.campusName)
+      }
+      this.data.schoolList.push(...schoolList)
+      this.setData({
+        schoolList: this.data.schoolList
+      })
+    })
   },
   onReady: function () {
 
@@ -71,6 +86,7 @@ Page({
     if(/^1\d{10}$/.test(this.data.user.contactPhone)) {
       if(this.data.addNewAddress) {
         addNewAddress({
+          userId: wx.getStorageSync('userId'),
           campus: this.data.user.campus,
           contactName: this.data.user.contactName,
           sex: this.data.user.sex,
@@ -81,6 +97,7 @@ Page({
             title: res.data.msg,
             icon: 'success'
           })
+          wx.navigateBack()
         })
       } else {
         updateAddress({

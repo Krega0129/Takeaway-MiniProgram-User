@@ -10,6 +10,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    toTop:200,
+    isTriggered:false,
     TabCur: 0,
     scrollLeft: 0,
     modalName: '',
@@ -193,6 +195,7 @@ Page({
           isRequestAll=true
         }
         this.setData({
+          isTriggered:false,
           allList: list,
           isFresh: true,
           isRequestAll:isRequestAll
@@ -258,9 +261,10 @@ Page({
           list.push(order)
         }
         this.setData({
+          isTriggered:false,
           obligationList: list
         })
-        this.getCountDown()
+        // this.getCountDown()
       }
       else {
         loadingOff()
@@ -276,6 +280,7 @@ Page({
         loadingOff()
         let list = this.listArrayFormate(res)
         this.setData({
+          isTriggered:false,
           paidList: list
         })
       }
@@ -366,13 +371,25 @@ Page({
     return statusCode
   },
   // 手动刷新"全部"订单
-  refreshAllList: function () {
-    this.setSelectUserPaidOrder()
-  },
+  // refreshAllList: function () {
+  //   this.setSelectUserPaidOrder()
+  // },
   // 跳转到登录页
   toLogin: function () {
-    wx.navigateTo({
-      url: '/pages/WCH/login/login',
+    // wx.navigateTo({
+    //   url: '/pages/WCH/login/login',
+    // })
+
+    wx.login({
+      success: res => {
+        const code = res.code
+        wx.navigateTo({
+          url: '/pages/WCH/login/login',
+          success: res => {
+            res.eventChannel.emit('code',{ code: code })
+          }
+        })
+      }
     })
   },
   /**
@@ -404,6 +421,10 @@ Page({
         isLogin: true
       })
       // this.setUserTotalOrder()
+      this.setData({
+        isLogin: true
+      })
+      
       const that = this
       bus.on('orderMsg', function (orderMsg) {
         showToast('有订单信息发生改变', 2000)
@@ -470,27 +491,38 @@ Page({
   onUnload: function () {
 
   },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
+ /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
-    let that = this
-    let pageNum = that.data.pageNum + 1
+ 
+  toLoading:function(){
+      if(this.data.TabCur==0&&!this.data.isRequestAll){
+        let pageNum=++this.data.pageNum
+          this.setData({
+            pageNum:pageNum
+          })
+          this.setUserTotalOrder()
+      }
+  },
+ /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+ 
+  toRefresh: function () {
     this.setData({
-      pageNum: pageNum
+      isTriggered:true
     })
-    if(that.data.TabCur==0 && !that.data.isRequestAll){
+    if(this.data.TabCur===0){
+      this.data.allList=[]
+      this.setData({
+        pageNum:1
+      })
       this.setUserTotalOrder()
+    }else if(this.data.TabCur===1){
+        this.setUnpaidOrder()
+    }else if(this.data.TabCur===2){
+        this.setSelectUserPaidOrder()
     }
-    
   },
 
   /**

@@ -27,6 +27,10 @@ Page({
         showSearchTip: false
       })
     }
+    this.setData({
+      storeList: [],
+      foodList: []
+    })
   },
   search() {
     let list = wx.getStorageSync('searchFoodHistoryList')

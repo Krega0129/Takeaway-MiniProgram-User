@@ -20,7 +20,10 @@
 <view class="cu-card article no-card margin-lr-xs margin-bottom-xs radius" bindtap="showStoreDetails" data-shopInfo="{{item}}" wx:for="{{storeList}}" wx:key="index" lower-threshold="{{0}}">
   <view class="cu-item">
     <view class="content">
-      <image src="{{item.shopHead}}" mode="aspectFill" style="width: 200rpx; height: 6.4em" class="margin-top"></image>
+      <view class="pos-re margin-top">
+        <image src="{{item.shopHead}}" mode="aspectFill" style="width: 200rpx; height: 6.4em"></image>
+        <view class="cu-tag badge" wx:if="{{item.addCart}}">{{item.num}}</view>
+      </view>
       <view class="desc">
         <view class="title text-cut" style="font-size: 40rpx">{{item.shopName}}</view>
         <view class="text-gray margin-left">

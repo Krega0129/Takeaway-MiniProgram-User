@@ -147,7 +147,7 @@
     </view>
     <view class="cu-bar bg-white justify-between">
       <view class="text-gray text-xs margin-left">
-        <text class="text-price text-red text-xl text-bold margin-right">{{foodDetails.price + (foodDetails.attrbutePrice ? foodDetails.attrbutePrice : 0)}}</text>
+        <text class="text-price text-red text-xl text-bold margin-right">{{foodDetails.price + (foodDetails.attributePrice ? foodDetails.attributePrice : 0)}}</text>
         月售：{{foodDetails.monthSells}}
       </view>
       <view class="action">

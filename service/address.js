@@ -18,7 +18,7 @@ export function getAllAddress(userId){
 }
 
 // 修改地址信息
-export function updateAddress(campus,contactName,contactPhone,detailedAddress,isDefault,receiveId,sex){
+export function updateAddress(campus,contactName,contactPhone,detailedAddress,isDefault,receiveId,sex,userId){
   return request({
     url: K_config.API_updateAddress_URL,
     method:'POST',
@@ -36,7 +36,7 @@ export function updateAddress(campus,contactName,contactPhone,detailedAddress,is
 }
 
 // 更改默认地址
-export function updateAddressStatus(receiveId,addressStatus){
+export function updateAddressStatus(receiveId,addressStatus,userId){
   return request({
     url:K_config.API_updateAddressStatus_URL,
     method:'POST',
@@ -67,18 +67,19 @@ export function addNewAddress(campus,contactName,contactPhone,detailedAddress,is
 }
 
 // 删除地址
-export function deleteAddress(receiveId){
+export function deleteAddress(receiveId,userId ){
   return request({
     url:K_config.API_deleteAddress_URL,
     method:'GET',
     data:{
-      receiveId
+      receiveId,
+      userId 
     }
   })
 }
 
 // 获取校区信息
-export function selectAllCampus(){
+export function selectAllCampusName(){
   return request({
     url:K_config.API_selectAllCampus_URL,
     method:'GET'

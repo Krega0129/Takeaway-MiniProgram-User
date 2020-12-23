@@ -67,3 +67,24 @@ export function changeOrderStatus(data) {
     }
   })
 }
+
+export function addReceiver() {
+  return request({
+    url: H_config.ADD_RECEIVER,
+    method: 'post',
+    header: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
+}
+
+export function oncePaySharing(data) {
+  return request({
+    url: H_config.ONCE_PAY_SGARING,
+    method: 'post',
+    data: data,
+    header: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
+}

@@ -416,7 +416,24 @@ Page({
     
   },
   onShow() {
+    // 更新购物车
+    if(app.globalData.cartList.find(item => item.shopId === this.data.shopId))
+      this.data.cartList = app.globalData.cartList.find(item => item.shopId === this.data.shopId).foodList
 
+    // 支付完后返回
+    if(!this.data.cartList[0]) {
+      for(let item of this.data.goodsCategoryList) {
+        for(let food of item.foodsList) {
+          food.num = 0
+        }
+      }
+      app.culPrice(this.data.cartList)
+      this.setData({
+        totalCount: app.globalData.totalCount,
+        goodsCategoryList: this.data.goodsCategoryList,
+        totalPrice: app.globalData.totalPrice
+      })
+    }
   },
   renewCartList() {
     let foodList= app.globalData.cartList.find(item => item.shopId === this.data.shopId)
@@ -504,7 +521,7 @@ Page({
         if(!tag) {
           // 嵌入shopId
           foodInfo.shopId = this.data.shopId
-
+          // foodInfo.attrbutePrice = attributePrice
           app.addToCart(foodInfo, tag)
         } else {
           foodInfo.num++
@@ -520,14 +537,14 @@ Page({
         })
       }
     }
-    // 更新购物车
+    // 更新购物车 
     this.renewCartList()
     this.setData({
-      // cartList: app.globalData.cartList,
       goodsCategoryList: this.data.goodsCategoryList,
       totalPrice: app.globalData.totalPrice,
       totalCount: app.globalData.totalCount
     })
+   
   },
   // 添加无规格商品 / 在购物车添加无规格商品
   addGoods(e) {
@@ -808,7 +825,10 @@ Page({
         specificationList: this.data.specificationList
       })
     }
-    this.data.foodDetails.attrbutePrice = 0
+
+    // this.data.foodDetails.attributePrice = 0
+    this.culAttrPrice()
+
     this.setData({
       foodDetails: this.data.foodDetails,
       foodId: e.currentTarget.dataset.id,
@@ -840,10 +860,13 @@ Page({
     }
 
     this.data.specificationList[index].list[ind].check = !this.data.specificationList[index].list[ind].check
+
+    this.culAttrPrice()
+    // this.data.specificationList[index].list[ind].check = !this.data.specificationList[index].list[ind].check
     // 差价
-    if(this.data.specificationList[index].list[ind].attrbutePrice != null) {
-      this.data.foodDetails.attrbutePrice = this.data.specificationList[index].list[ind].attrbutePrice
-    }
+    // if(this.data.specificationList[index].list[ind].attributePrice != null) {
+    //   this.data.foodDetails.attributePrice = this.data.specificationList[index].list[ind].attributePrice
+    // }
     
     this.setData({
       foodDetails: this.data.foodDetails,
@@ -881,5 +904,16 @@ Page({
     this.setData({
       goodsCategoryList: this.data.goodsCategoryList
     })
+  },
+  culAttrPrice() {
+    let price = 0;
+    for(let attr of this.data.specificationList){
+      for(let apr of attr.list) {
+        if(apr.check) {
+          price += apr.attributePrice
+        }
+      }
+    }
+    this.data.foodDetails.attributePrice = price
   }
 })

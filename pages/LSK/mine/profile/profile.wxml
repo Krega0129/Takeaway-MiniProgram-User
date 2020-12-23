@@ -7,10 +7,15 @@
     <view class="padding-tb-xl flex justify-between align-center">
       <view class=" flex align-center">
         <view class="cu-avatar radius xl" style="background-image:url({{imgUrl}});background-size:cover"></view>
-        <view class="margin-left-xl">
-          <view class="margin-bottom-sm text-bold text-xl">{{name}}</view>
-          <view class="text-sm">{{phoneNumber}}</view>
-        </view>
+        <block>
+          <view class="margin-left-xl" wx:if="{{!isLogin}}">
+            <view class="text-bold text-xl">请先登录</view>
+          </view>
+          <view class="margin-left-xl" wx:else>
+            <view class="margin-bottom-sm text-bold text-xl">{{name}}</view>
+            <view class="text-sm">{{phoneNumber}}</view>
+          </view>
+        </block>
       </view>
       <view><text class="cuIcon-right text-xxl"></text></view>
     </view>

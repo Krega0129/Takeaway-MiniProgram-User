@@ -20,10 +20,17 @@ export function getShopDetail(data) {
   })
 }
 
+// 分页查校区
 export function getCampus(data) {
   return request({
     url: H_config.GET_CAMPUS,
     data: data
+  })
+}
+
+export function getAllCampus() {
+  return request({
+    url: H_config.GET_ALL_COMPUS
   })
 }
 
@@ -39,6 +46,16 @@ export function searchTip(data) {
     url: H_config.SEARCH,
     method: 'post',
     data: data,
+    header: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
+}
+
+export function test() {
+  return request({
+    url: '/wechatpay/addReceiver',
+    method: 'post',
     header: {
       'Content-Type': 'application/x-www-form-urlencoded'
     }

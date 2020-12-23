@@ -26,8 +26,8 @@ Page({
   },
   _getCampus(currentPage) {
     getCampus({
-      currentPage: currentPage,
-      rows: 15
+      pageNum: currentPage,
+      pageSize: 15
     }).then(res => {
       let list = res.data.data.list
       let campusList = []

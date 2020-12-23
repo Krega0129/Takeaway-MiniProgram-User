@@ -37,7 +37,7 @@
   },
   "compileType": "miniprogram",
   "libVersion": "2.13.1",
-  "appid": "wx3f6fe20d6c3ea467",
+  "appid": "wxb2dfbd203ddd200f",
   "projectname": "Takeaway-User",
   "debugOptions": {
     "hidedInDevtools": []
@@ -103,6 +103,17 @@
           "name": "pages/LSK/orders/orders",
           "pathName": "pages/LSK/orders/orders",
           "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/LSK/mine/addressList/addressList",
+          "pathName": "pages/LSK/mine/addressList/addressList",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/LSK/mine/profile/profile",
+          "pathName": "pages/LSK/mine/profile/profile",
           "scene": null
         }
       ]

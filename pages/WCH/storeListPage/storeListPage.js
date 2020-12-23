@@ -45,6 +45,25 @@ Page({
       })
     })
   },
+  onShow() {
+    for(let store of this.data.storeList) {
+      store.addCart = false
+    }
+    for(let item of app.globalData.cartList) {
+      let shop = this.data.storeList.find(store => (store.shopId === item.shopId) && item.foodList[0])
+      if(shop) {
+        let num = 0;
+        for(let food of item.foodList) {
+          num += food.num
+        }
+        shop.addCart = true
+        shop.num = num
+      } 
+    }
+    this.setData({
+      storeList: this.data.storeList
+    })
+  },
   showStoreDetails(e) {
     const shopInfo = e.currentTarget.dataset.shopinfo
     wx.navigateTo({
