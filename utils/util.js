@@ -6,6 +6,10 @@ import {
 import {
   getMultiData
 } from '../service/home'
+import {
+  prePay,
+  changeOrderStatus
+} from '../service/bill'
 
 const formatTime = d => {
   const date = new Date(d)
@@ -33,12 +37,19 @@ async function _getMultiData(position, storeList, {pageNum, category, keyWord}) 
     pageNum: pageNum,
     pageSize: 10
   }).then(res => {
-    const shopList = res.data.data
-    for(let item of shopList.list) {
-      item.shopHead = BASE_URL + '/' + item.shopHead
+    if(res && res.data && res.data.code === H_config.STATECODE_getMultiData_SUCCESS) {
+      const shopList = res.data.data
+      if(shopList.list) {
+        for(let item of shopList.list) {
+          item.shopHead = BASE_URL + '/' + item.shopHead
+        }
+        storeList.push(...shopList.list)
+      }
+      totalPages = shopList.totalPages
+    } else {
+      wx.hideLoading()
+      showToast('网络异常！')
     }
-    storeList.push(...shopList.list)
-    totalPages = shopList.totalPages
   })
 
   return {storeList, totalPages}
@@ -46,14 +57,10 @@ async function _getMultiData(position, storeList, {pageNum, category, keyWord}) 
 
 function login(data) {
   return request({
-    url: H_config.LOGIN,
+    url: H_config.API_login_URL,
     data: data,
     method: 'post'
   })
-}
-
-function showMsg(modelName) {
-  
 }
 
 export function loadingOn(loadingContent) {
@@ -71,7 +78,98 @@ export function showToast(showMsg, time) {
   wx.showToast({
     title: showMsg,
     icon: 'none',
-    duration: time
+    duration: time || 1000
+  })
+}
+
+export function pay(data) {
+  prePay(data).then(res => {
+    if(res && res.data && res.data.code === H_config.STATECODE_prePay_SUCCESS) {
+      if (res.data.prepayId != ''){
+        const map = res.data.data.payMap
+        wx.requestPayment({
+          'appId': map.appId,
+          'timeStamp': map.timeStamp,
+          'nonceStr': map.nonceStr,
+          'package': map.package,
+          'signType': 'MD5',
+          'paySign': map.paySign,
+          'success':  (res) => {
+            if(res.errMsg === 'requestPayment:ok') {
+              changeOrderStatus({
+                orderNumber: data.orderNumber,
+                userId: wx.getStorageSync('userId')
+              }).then(res => {
+                if(res && res.data && res.data.code === H_config.STATECODE_changeOrderStatus_SUCCESS) {
+                  wx.showToast({
+                    title: '支付成功！'
+                  })
+                  wx.navigateTo({
+                    url: '/pages/WCH/submitOrder/submitOrder',
+                    success: result => {
+                      result.eventChannel.emit('submitOrder', {
+                        cartList: this.data.cartList,
+                        shopAddress: this.data.storeAddress,
+                        user: this.data.user,
+                        storeTelNum: this.data.storeTelNum,
+                        remark: this.data.remark || '',
+                        takeAway: this.data.takeAway,
+                        payTime: new Date(),
+                        obj: data,
+                        isPay: true
+                      })
+                    }
+                  })
+                } else {
+                  showToast('支付失败！：' + res.data.msg)
+                }
+              })
+            }
+
+            // 分账
+            // setTimeout(() => {
+            //   oncePaySharing({
+            //     deliveryFee: parm.deliveryFee,
+            //     orderNumber: parm.orderNumber,
+            //     shopName: parm.shopName,
+            //     totalAmount: parm.totalAmount
+            //   }).then(result => {
+            //     console.log(result);
+            //   })
+            // }, 90000);
+          },
+          'fail': () => {
+            let pages = getCurrentPages()
+            const currentPage = pages[pages.length - 1]
+            if(currentPage.route && currentPage.route !== 'pages/WCH/submitOrder/submitOrder') {
+              wx.navigateTo({
+                url: '/pages/WCH/submitOrder/submitOrder',
+                success: res => {
+                  // 记录时间
+                  wx.setStorageSync('time', new Date().getTime() + 900000)
+                  res.eventChannel.emit('submitOrder', {
+                    cartList: this.data.cartList,
+                    shopAddress: this.data.storeAddress,
+                    user: this.data.user,
+                    storeTelNum: this.data.storeTelNum,
+                    remark: this.data.remark || '',
+                    takeAway: this.data.takeAway,
+                    obj: data,
+                    isPay: false
+                  })
+                }
+              })
+            } else {
+              wx.hideLoading()
+            }
+          }
+        })
+      }
+    } else {
+      showToast('下单失败，请重试！')
+    }
+  }).catch(err => {
+    console.log(err);
   })
 }
 
@@ -81,5 +179,6 @@ module.exports = {
   login,
   loadingOn,
   loadingOff,
-  showToast
+  showToast,
+  pay
 }

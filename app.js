@@ -1,5 +1,4 @@
 //app.js
-import { showToast } from './service/config'
 import  bus  from './utils/bus'
 App({
   onLaunch: function () {
@@ -9,9 +8,6 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
 
-    if(!wx.getStorageSync('searchSchoolHistoryList')) {
-      wx.setStorageSync('searchSchoolHistoryList', [])
-    }
     if(!wx.getStorageSync('searchFoodHistoryList')) {
       wx.setStorageSync('searchFoodHistoryList', [])
     }
@@ -22,6 +18,9 @@ App({
       })
     }
     
+    if(wx.getStorageSync('userId')) {
+      this.webSocketConnect()
+    }
     
     wx.getSystemInfo({
       success: e => {
@@ -31,8 +30,6 @@ App({
         this.globalData.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
       },
     })
-
-    // 获取用户信息
   },
   addToCart(obj, tag, bool) {
     // 1.判断是否已经添加进来
@@ -92,95 +89,6 @@ App({
     this.globalData.totalPrice = this.globalData.totalPrice + (sendPrice || 0)
     this.globalData.totalPrice = this.globalData.totalPrice.toFixed(2)
   },
-
-  // login(e) {
-  //   if (e.detail.errMsg == "getUserInfo:ok")//判断用户是否授权
-  //    {
-  //     const encryptedData = e.detail.encryptedData;
-  //     const iv = e.detail.iv;
-  //     wx.showLoading({
-  //       title: '正在登录中...',
-  //       icon: 'loading',
-  //       mask: true
-  //     })
-  //     wx.login({ 
-  //       success: (res) => {
-  //         console.log(encryptedData);
-  //         console.log(iv);
-          
-  //         console.log(res.code);
-          
-  //         if (res.code) {
-  //           const code = res.code;
-
-  //             wx.request({
-  //             url: 'http://192.168.1.100:8080/driverinfo/getOpenId', //访问后端,定义对应的url
-  //             data: {
-  //               encryptedData: encryptedData,
-  //               iv: iv,
-  //               code: code
-  //             },
-  //             method: 'POST',
-  //             header: {
-  //               'Content-Type': 'application/x-www-form-urlencoded'
-  //             },
-  //             success: (res) => {
-  //             //解密成功后 获取自己服务器返回的结果
-  //             console.log(res);
-  //             this.globalData.openId = res.data.data.openId
-  //             this.globalData.sessionKey = res.data.data.sessionKey
-  //               // if (res.data.code > 0) {
-  //               wx.hideLoading();
-  //               //   wx.setStorageSync('token', res.data.userInfo.accessToken);
-  //               //   wx.setStorageSync('mid', res.data.userInfo.id);
-  //               //   wx.setStorageSync('nickName', res.data.userInfo.nickName);
-  //               //   wx.setStorageSync('avatarUrl', res.data.userInfo.avatarUrl);
-  //               //   wx.setStorageSync('status', res.data.userInfo.status);
-  //               //   wx.reLaunch({//关闭所有页面，打开到应用内的某个页面
-  //               //     url: "/pages/WCH/home/home"
-  //               //   })
-  //               // }else {
-  //               //   console.log('解密失败')
-  //               // }
-  //             },
-  //             fail: function(res) {
-  //               console.log(res);
-  //             }
-  //           })
-            
-  //         }
-  //       },
-  //       fail: function () {
-  //         console.log("启用wx.login函数，失败！");
-  //       },
-  //     })
-  //    }
-  // },
-  getPhoneNumber(e) {
-    console.log(e);
-    wx.request({
-      url: 'http://192.168.1.100:8080/driverinfo/getPhoneNumber',
-      data: {
-        encryptedData: e.detail.encryptedData,
-        iv: e.detail.iv,
-        openId: this.globalData.openId,
-        sessionKey: this.globalData.sessionKey
-      },
-      method: 'POST',
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      success: function(res) {
-        console.log(res);
-      },
-      fail: function(err) {
-        console.log(err);
-      }
-    })
-  },
-  onShow() {
-    // this.webSocketConnect()
-  },
   globalData: {
     StatusBar: null,
     userInfo: null,
@@ -193,12 +101,11 @@ App({
     // 总数量
     totalCount: 0,
     phoneNum: null,
-    token: null,
-    nowLocation: '广东工业大学'
+    token: null
   },
   webSocketConnect(uid = wx.getStorageSync('userId'), identity, lastestOrderDate) {
     wx.connectSocket({
-      url: 'wss://192.168.1.102:58080/ws',
+      url: 'wss://www.lizeqiang.top:58080/ws',
       timeout: 50000,
       header: {
         'content-type': 'application/json'
@@ -241,12 +148,9 @@ App({
   webGetSocketMessage() {      
     wx.onSocketMessage((res) => {
     // const a=JSON.parse(res.data)
-      console.log('get',res);
       if(res.data!=="服务器连接成功！"){
-        console.log(JSON.parse(res.data));
         let orderMsg=JSON.parse(res.data)
         bus.emit('orderMsg',orderMsg)
-        // showToast('订单状态改变', 1000)
       }
     })
   },

@@ -6,7 +6,7 @@ import {
 
 export function getMultiData(data) {
   return request({
-    url: H_config.GET_MULTI_DATA,
+    url: H_config.API_getMultiData_URL,
     method: 'post',
     data: data
   })
@@ -14,7 +14,7 @@ export function getMultiData(data) {
 
 export function getShopDetail(data) {
   return request({
-    url: H_config.GET_SHOP_DETAIL,
+    url: H_config.API_getShopDetails_URL,
     method: 'post',
     data: data
   })
@@ -23,39 +23,29 @@ export function getShopDetail(data) {
 // 分页查校区
 export function getCampus(data) {
   return request({
-    url: H_config.GET_CAMPUS,
+    url: H_config.API_getCampus_URL,
     data: data
   })
 }
 
 export function getAllCampus() {
   return request({
-    url: H_config.GET_ALL_COMPUS
+    url: H_config.API_getAllCampus_URL
   })
 }
 
 export function getShopCategory(data) {
   return request({
-    url: H_config.GET_SHOP_CATEGORY,
+    url: H_config.API_getShopCategory_URL,
     data: data
   })
 }
 
 export function searchTip(data) {
   return request({
-    url: H_config.SEARCH,
+    url: H_config.API_autoComplete_URL,
     method: 'post',
     data: data,
-    header: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
-  })
-}
-
-export function test() {
-  return request({
-    url: '/wechatpay/addReceiver',
-    method: 'post',
     header: {
       'Content-Type': 'application/x-www-form-urlencoded'
     }

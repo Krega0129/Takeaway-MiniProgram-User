@@ -18,13 +18,16 @@ Page({
     triggered: false
   },
   async onLoad(options) {
+    wx.showLoading({
+      title: '加载中...'
+    })
+
     wx.createSelectorQuery().select('.search').boundingClientRect().selectViewport().scrollOffset().exec(res => {
       this.setData({
         toBottom: res[0].bottom * 2
       })
     })
 
-    // 监听acceptDataFromOpenerPage事件，获取上一页面通过eventChannel传送到当前页面的数据
     let eventChannel = this.getOpenerEventChannel()
     eventChannel.on('showStoreList', (data) => {
       this.setData({
@@ -43,18 +46,22 @@ Page({
       this.data.storeList,
       {
         pageNum: 1,
-        category: this.data.categoryName,
+        category: this.data.category,
         keyWord: this.data.keyWord
       }
     ).then(res => {
+      console.log(res);
+      
       this.setData({
         storeList: res.storeList,
-        totalPages: res.totalPages
+        totalPages: res.totalPages || 1
       })
     }).then(() => {
       this.onShow()
-      wx.hideLoading()
+    }).catch(err => {
+      console.log(err);
     })
+    wx.hideLoading()
   },
   onShow() {
     for(let store of this.data.storeList) {
@@ -84,9 +91,6 @@ Page({
       }
     })
   },
-  onShareAppMessage: function () {
-
-  },
   focusSearch() {
     let pages = getCurrentPages()
     
@@ -106,7 +110,7 @@ Page({
         this.data.storeList,
         {
           pageNum: ++this.data.currentPage,
-          category: this.data.categoryName,
+          category: this.data.category,
           keyWord: this.data.keyWord
         }
       ).then(() => {

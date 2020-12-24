@@ -5,7 +5,7 @@ import {
 
 export function getShopDetail(data) {
   return request({
-    url: H_config.GET_SHOP_DETAIL,
+    url: H_config.API_getShopDetails_URL,
     method: 'post',
     data: data,
     header: {
@@ -16,7 +16,7 @@ export function getShopDetail(data) {
 
 export function getShopInfo(data) {
   return request({
-    url: H_config.GET_SHOP_INFO,
+    url: H_config.API_getShopInfo_URL,
     method: 'post',
     data: data,
     header: {
