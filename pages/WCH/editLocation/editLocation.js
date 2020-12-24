@@ -46,18 +46,10 @@ Page({
           schoolList: this.data.schoolList
         })
       }
-<<<<<<< HEAD
-      this.data.schoolList.push(...schoolList)
-      this.setData({
-        schoolList: this.data.schoolList
-      })
-      wx.hideLoading()
-=======
     }).then(() => {
       wx.hideLoading()
     }).catch(err => {
       console.log(err);
->>>>>>> 6f9784b2e54a582113d726d2d7578e4064a2dc99
     })
   },
   onShow: function () {

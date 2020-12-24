@@ -50,7 +50,7 @@ export function orderNewOrder(data) {
 export function cancelOrder(data) {
   return request({
     url: H_config.API_cancelUnpaidOrder_URL,
-    data: data, 
+    data: data,
     method: 'post',
     header: {
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -90,7 +90,6 @@ export function oncePaySharing(data) {
   })
 }
 
-<<<<<<< HEAD
 export function refundOrder(data) {
   return request({
     url: K_config.API_refund_URL,
@@ -98,15 +97,17 @@ export function refundOrder(data) {
     data: data,
     header: {
       'Content-Type': 'application/x-www-form-urlencoded'
-=======
+    }
+  })
+}
+
 export function prePay(data) {
   return request({
     url: H_config.API_prePay_URL,
     method: 'post',
     data: data,
-    header: { 
-      'content-type': 'application/x-www-form-urlencoded' 
->>>>>>> 6f9784b2e54a582113d726d2d7578e4064a2dc99
+    header: {
+      'content-type': 'application/x-www-form-urlencoded'
     }
   })
 }
