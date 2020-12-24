@@ -1,7 +1,8 @@
 <!--pages/profile/address/address.wxml-->
 <cu-custom bgColor="bg-gray" isBack="true">
   <text slot="backText">返回</text>
-  <text slot="content">编辑收货地址</text>
+  <text slot="content" wx:if="{{!isEmpty}}">编辑收货地址</text>
+  <text slot="content" wx:if="{{isEmpty}}">新增地址</text>
 </cu-custom>
 <form bindsubmit="formModify">
   <!-- 校区选择 -->
@@ -10,7 +11,7 @@
     <picker mode="selector" bindchange="CampusChange" value="{{campus[campusIndex].campusName}}" range="{{campus}}" range-key="campusName"
       data-id="{{campusIndex}}" name="campus" >
       <view class="picker">
-        {{campus[campusIndex].campusName}}
+        {{isEmpty?'请选择收货地址':campus[campusIndex].campusName}}
       </view>
     </picker>
   </view>

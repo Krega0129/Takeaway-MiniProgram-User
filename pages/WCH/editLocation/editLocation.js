@@ -34,6 +34,7 @@ Page({
       this.setData({
         schoolList: this.data.schoolList
       })
+      wx.hideLoading()
     })
   },
   onReady: function () {

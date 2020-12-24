@@ -62,3 +62,11 @@ export function payForOrder() {
     method: 'GET'
   })
 }
+
+export function updateOrderStatus(data) {
+  return request({
+    url: K_config.API_updateOrderStatus_URL,
+    method: 'POST',
+    data
+  })
+}

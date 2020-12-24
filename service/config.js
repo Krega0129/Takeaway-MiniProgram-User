@@ -1,6 +1,6 @@
 // const BASE_URL = 'https://192.168.1.107:8888'
-// const BASE_URL = 'http://121.41.229.2:8082'
-const BASE_URL = 'https://www.lizeqiang.top:8888'
+const BASE_URL = 'https://172.20.10.3:8888'
+// const BASE_URL = 'https://www.lizeqiang.top:8888'
 
 const H_config = {}
 // 登录
@@ -55,6 +55,9 @@ K_config.STATECODE_getUserOrderByStatus_SUCCESS = 3203
 K_config.STATECODE_getUnpaidOrder_SUCCESS = 3203
 K_config.STATECODE_cancelUnpaidOrder_SUCCESS = 3204
 K_config.STATECODE_selectUserPaidOrder_SUCCESS = 3205
+K_config.STATECODE_refund_SUCCESS = 3200
+K_config.STATECODE_updateOrderStatus_SUCCESS = 3206
+
 
 
 K_config.STATECODE_updateAddress_SUCCESS = 3258
@@ -71,6 +74,9 @@ K_config.API_getUnpaidOrder_URL = '/order/getUnpaidOrder'
 K_config.API_cancelUnpaidOrder_URL = '/order/cancelUnpaidOrder'
 K_config.API_selectUserPaidOrder_URL = '/order/selectUserPaidOrder'
 K_config.API_payForOrder_URL = '/order/payForOrder'
+K_config.API_refund_URL = '/wechatpay/refund'
+K_config.API_updateOrderStatus_URL = '/order/updateOrderStatus'
+
 
 // 地址接口
 K_config.API_getAllAddress_URL = '/address/getAllAddress'

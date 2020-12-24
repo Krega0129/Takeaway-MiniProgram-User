@@ -1,7 +1,8 @@
 import request from './network'
 
 import {
-  H_config
+  H_config,
+  K_config
 } from './config'
 
 export function getAllAddress(data) {
@@ -81,6 +82,17 @@ export function addReceiver() {
 export function oncePaySharing(data) {
   return request({
     url: H_config.ONCE_PAY_SGARING,
+    method: 'post',
+    data: data,
+    header: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
+}
+
+export function refundOrder(data) {
+  return request({
+    url: K_config.API_refund_URL,
     method: 'post',
     data: data,
     header: {

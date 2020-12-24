@@ -1,7 +1,6 @@
 // pages/profile/address/address.js
 import {
   loadingOn,
-  loadingOff,
   showToast
 } from '../../../../utils/util'
 import {
@@ -39,7 +38,8 @@ Page({
     listId: null,
     // 是否为默认地址
     isDefault: true,
-    isEmpty: true
+    // 是否为新增地址
+    isEmpty: true,
   },
   // 校区选择
   CampusChange: function (e) {
@@ -73,6 +73,7 @@ Page({
   getCampusMsg:function(){
     selectAllCampusName().then((res)=>{
       if(res.data.code === K_config.STATECODE_SUCCESS||res.data.code===K_config.STATECODE_selectAllCampus_SUCCESS){
+        wx.hideLoading()
         this.setData({
           campus:res.data.data
         })
@@ -120,7 +121,7 @@ Page({
           if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_updateAddress_SUCCESS) {
             updateAddressStatus(receiveId, addressStatus,userId).then((res) => {
               if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_updateAddressStatus_SUCCESS) {
-                loadingOff()
+                wx.hideLoading()
                 showToast('地址更新成功', 1000)
                 setTimeout(function () {
                   wx.navigateBack({
@@ -131,9 +132,11 @@ Page({
             })
           }
           else if (res.data.code === K_config.STATECODE_updateAddress_FALSE) {
+            wx.hideLoading()
             showToast('更新地址失败', 1000)
           }
-          else {
+          else {              
+            wx.hideLoading()
             setTimeout(function () {
               showToast('请求错误', 1000)
             }, 5000);
@@ -144,7 +147,7 @@ Page({
         let receiveId = 0
         addNewAddress(campus, contactName, contactPhone, detailedAddress, isDefault, receiveId, sex, userId).then((res) => {
           if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_addNewAddress_SUCCESS) {
-            loadingOff()
+            wx.hideLoading()
             showToast('新增地址成功', 1000)
             setTimeout(function () {
               wx.navigateBack({
@@ -227,14 +230,14 @@ Page({
     let receiveId = this.data.addressMsg.receiveId
     let userId=wx.getStorageSync('userId')
     deleteAddress(receiveId,userId).then((res) => {
-      loadingOff()
       if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_deleteAddress_SUCCESS) {
-        showToast('删除地址成功', 1000)
         setTimeout(function () {
           wx.navigateBack({
             delta: 1
           });
         }, 1000);
+        loadingOn('加载中')
+        showToast('删除地址成功', 1000)
       }
       else {
         showToast('请求出错', 2000)
@@ -268,7 +271,7 @@ Page({
       isEmpty: false
     })
     setTimeout(function () {
-      loadingOff()
+      wx.hideLoading()
     }, 500)
   },
   /**
@@ -277,6 +280,11 @@ Page({
   onLoad: function (options) {
     if (Object.keys(options).length !== 0) {
       this.setAddressMsg(options.item)
+    }
+    else{
+      this.setData({
+        isEmpty:true
+      })
     }
   },
 

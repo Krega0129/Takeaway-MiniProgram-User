@@ -3,7 +3,7 @@
   <text slot="content">订单</text>
 </cu-custom>
 <!-- 导航栏 -->
-<scroll-view class="bg-white nav" style="position:fixed;z-index:100">
+<scroll-view class="bg-white nav scrollTop" style="position:fixed;z-index:100">
   <view class="flex text-center">
     <view class="cu-item flex-sub {{index==TabCur?'text-orange cur':''}}" wx:for="{{TabName}}" wx:key="index"
       bindtap="tabSelect" data-id="{{index}}">
@@ -77,16 +77,14 @@
               </view>
               <view class="margin-left solids-bottom padding-tb-sm"><text class="text-xs">{{item.generateTime}}</text>
               </view>
-              <view class="padding-left padding-tb-sm text-sm text-bold"><text decode="{{true}}">{{item.commodities[0].goodsName}}&emsp;
-                等共&ensp;{{item.commodities.length}}&ensp;件</text><text
+              <view class="padding-left padding-tb-sm text-sm text-bold"><text decode="{{true}}">{{item.commodities[0].goodsName}}&emsp;等共&ensp;{{item.commodities.length}}&ensp;件</text><text
                   class="fr text-sm text-bold text-price">{{item.totalAmount}}</text></view>
               <view class=" padding-top-sm flex justify-end">
                 <view><button class="cu-btn button-hover " role="button" aria-disable="false" style="width:200rpx"
                     catchtap="cancelOrder" data-target="Modal" data-id="{{index}}" data-orderNumber="{{item.orderNumber}}"
                     wx:if="{{countDown.length!=0}}" catchtap="cancelOrder">取消订单</button></view>
                 <view class="padding-left-sm"><button class="cu-btn button-hover " role="button" aria-disable="false"
-                    style="width:200rpx" catchtap="payOrder" data-target="Modal"
-                    data-id="{{index}}">支付订单{{item.countDown}}</button>
+                    style="width:200rpx" catchtap="payOrder" data-index="{{index}}">支付订单{{item.countDown}}</button>
                 </view>
               </view>
             </view>
@@ -111,7 +109,7 @@
                 <view class=""><button class="cu-btn button-hover " role="button" aria-disable="false" style="width:180rpx"
                     catchtap="showModal" data-target="Modal">联系商家</button></view>
                 <view class="padding-left-sm"><button class="cu-btn button-hover " role="button" aria-disable="false"
-                    style="width:180rpx" catchtap="" data-target="Modal" wx:if="{{item.status==1}}">退款</button></view>
+                    style="width:180rpx" catchtap="refund" data-index="{{index}}" wx:if="{{item.status==1}}">退款</button></view>
               </view>
             </view>
           </view>

@@ -1,6 +1,8 @@
-import { getUserTotalOrder, getUnpaidOrder, cancelUnpaidOrder, selectUserPaidOrder } from '../../../service/order';
+import { getUserTotalOrder, getUnpaidOrder, cancelUnpaidOrder, selectUserPaidOrder,updateOrderStatus } from '../../../service/order';
+import {changeOrderStatus,oncePaySharing,refundOrder} from '../../../service/bill';
 import { loadingOff, showToast } from '../../../utils/util';
 import {
+  BASE_URL,
   K_config
 } from '../../../service/config'
 let app = getApp()
@@ -65,9 +67,7 @@ Page({
       //准备复制的数据
       data: e.currentTarget.dataset.phone,
       success: function (res) {
-        wx.showToast({
-          title: '内容已复制',
-        });
+        showToast('内容已复制',1000)
         that.setData({
           modalName: null
         })
@@ -83,6 +83,12 @@ Page({
     })
     if (wx.getStorageSync('token')) {
       if (index === 0) {
+        if(this.data.pageNum!=1){
+          this.setData({
+            pageNum:1,
+            allList:[]
+          })
+        }
         this.setUserTotalOrder()
       } else if (index === 1) {
         this.setUnpaidOrder()
@@ -149,7 +155,6 @@ Page({
     let size = 10
     let userId = wx.getStorageSync('userId')
     getUserTotalOrder(pageNum, size, userId).then((res) => {
-      loadingOff()
       if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code == K_config.STATECODE_getUserOrderByStatus_SUCCESS) {
         const  list = this.data.allList
         let isRequestAll = false
@@ -206,6 +211,11 @@ Page({
           isFresh: true,
           isRequestAll:isRequestAll
         })
+        wx.hideLoading()
+      }
+      else{
+        wx.hideLoading()
+        showToast('请求失败',2000)
       }
     })
   },
@@ -214,8 +224,6 @@ Page({
     let userId = wx.getStorageSync('userId')
     getUnpaidOrder(userId).then((res) => {
       if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_getUnpaidOrder_SUCCESS) {
-        loadingOff()
-        showToast('订单刷新成功', 1000)
         const list = []
         for (let item of res.data.data) {
           // 遍历订单信息
@@ -270,10 +278,11 @@ Page({
           isTriggered:false,
           obligationList: list
         })
+        wx.hideLoading()
         // this.getCountDown()
       }
       else {
-        loadingOff()
+        wx.hideLoading()
         showToast('请求失败', 2000)
       }
     })
@@ -283,12 +292,15 @@ Page({
     let userId = wx.getStorageSync('userId')
     selectUserPaidOrder(userId).then((res) => {
       if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_selectUserPaidOrder_SUCCESS) {
-        loadingOff()
         let list = this.listArrayFormate(res)
         this.setData({
           isTriggered:false,
           paidList: list
         })
+        wx.hideLoading()
+      }else{
+        wx.hideLoading()
+        showToast('请求失败',2000)
       }
     })
   },
@@ -396,6 +408,154 @@ Page({
           }
         })
       }
+    })  
+  },
+  //支付订单 
+  payOrder:function(e){
+    const index=e.currentTarget.dataset.index
+    const order=this.data.obligationList[index]
+    this.pay({
+      deliveryFee: order.deliveryFee,
+      orderNumber: order.orderNumber,
+      shopName: order.shopName,
+      totalAmount: order.totalAmount,
+      userId: order.userId
+    }, order)
+  },
+  // 微信支付请求
+  pay(data, parm) {
+    wx.request({
+      url: BASE_URL + '/wechatpay/prePay',
+      method: 'POST',
+      header: { 'content-type': 'application/x-www-form-urlencoded' },
+      data: data,
+      success: (res) => {
+        if (res.data.prepayId != ''){
+          const map = res.data.data.payMap
+          wx.requestPayment({
+            'appId': map.appId,
+            'timeStamp': map.timeStamp,
+            'nonceStr': map.nonceStr,
+            'package': map.package,
+            'signType': 'MD5',
+            'paySign': map.paySign,
+            'success':  (res) => {
+              if(res.errMsg === 'requestPayment:ok') {
+                changeOrderStatus({
+                  orderNumber: data.orderNumber,
+                  userId: wx.getStorageSync('userId')
+                }).then(() => {
+                  wx.showToast({
+                    title: '支付成功！'
+                  })
+                })
+                this.setUnpaidOrder()
+              }
+              // setTimeout(() => {
+              //   oncePaySharing({
+              //     deliveryFee: parm.deliveryFee,
+              //     orderNumber: parm.orderNumber,
+              //     shopName: parm.shopName,
+              //     totalAmount: parm.totalAmount
+              //   }).then(result => {
+              //     console.log(result);
+              //   })
+              // }, 90000);
+              // wx.navigateTo({
+              //   url: '/pages/WCH/submitOrder/submitOrder',
+              //   success: result => {
+              //     result.eventChannel.emit('submitOrder', {
+              //       cartList: this.data.cartList,
+              //       shopAddress: this.data.storeAddress,
+              //       user: this.data.user,
+              //       storeTelNum: this.data.storeTelNum,
+              //       remark: this.data.remark || '',
+              //       takeAway: this.data.takeAway,
+              //       payTime: new Date(),
+              //       obj: data,
+              //       isPay: true
+              //     })
+              //   }
+              // })
+            },
+            'fail': () => {
+              showToast('支付异常',2000)
+              // wx.navigateTo({
+              //   url: '/pages/WCH/submitOrder/submitOrder',
+              //   success: res => {
+              //     // 记录时间
+              //     // console.log(data);
+              //     wx.setStorageSync('time', new Date().getTime() + 900000)
+              //     res.eventChannel.emit('submitOrder', {
+              //       cartList: this.data.cartList,
+              //       shopAddress: this.data.storeAddress,
+              //       user: this.data.user,
+              //       storeTelNum: this.data.storeTelNum,
+              //       remark: this.data.remark || '',
+              //       takeAway: this.data.takeAway,
+              //       obj: data,
+              //       isPay: false
+              //     })
+              //   }
+              // })
+            }
+          })
+        }
+
+
+      },
+      fail: () => {
+        wx.showToast({
+          title: '支付异常，请重新尝试！',
+          icon: 'none'
+        })
+      }
+    });
+  },
+  // 退款
+  refund:function(e) {
+    let orderList=[]
+    if(this.data.TabCur===0){
+      orderList=this.data.allList
+    }else if(this.data.TabCur===2){
+      orderList=this.data.paidList
+    }
+    const index=e.currentTarget.dataset.index
+    const orderMsg=orderList[index]
+    wx.showActionSheet({
+      itemList:['不想点了','点错单了','昌辉屎忽鬼','锴爷起飞','其他原因'],
+      success:(res)=>{
+        let  itemList=['不想点了','点错单了','昌辉屎忽鬼','锴爷起飞','其他原因']
+        const tapIndex=res.tapIndex
+        const refundDesc=itemList[tapIndex]
+        // console.log(orderMsg);
+        refundOrder({
+          deliveryFee:orderMsg.deliveryFee,
+          orderNumber:orderMsg.orderNumber,
+          refundDesc:refundDesc,
+          shopName:orderMsg.shopName,
+          totalAmount:orderMsg.totalAmount
+        }).then((res)=>{
+          if(res.data.code===K_config.STATECODE_refund_SUCCESS){
+            wx.hideLoading()
+            console.log('111',orderMsg);
+            updateOrderStatus({
+              id:orderMsg.id,
+              orderId:orderMsg.orderId,
+              orderNumber:orderMsg.orderNumber,
+              status:orderMsg.status
+            }).then((res)=>{
+              wx.hideLoading()
+              if(res.data.code===K_config.STATECODE_updateOrderStatus_SUCCESS){
+                showToast('退款成功',2000)
+                this.setUnpaidOrder()
+              }else{
+                showToast('退款失败，当前状态不允许修改',2000)
+              }
+            })
+          }
+        })
+      }
     })
   },
   /**
@@ -406,6 +566,7 @@ Page({
       this.setUserTotalOrder()
     }
     wx.createSelectorQuery().select('.scrollTop').boundingClientRect().selectViewport().scrollOffset().exec(res => {
+      // console.log(res); 
       this.setData({
         toTop: res[0].bottom * 2
       })
@@ -480,9 +641,6 @@ Page({
           paidList: paidList,
           isFresh: false
         })
-        if (!that.data.isFresh && that.data.TabCur === 0) {
-          showToast('订单信息发生改变，请手动刷新', 2000)
-        }
       })
     }
 

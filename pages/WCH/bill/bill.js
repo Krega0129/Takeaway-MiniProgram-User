@@ -337,7 +337,6 @@ Page({
         //     }
         //   })
         // })
-
         if (res.data.prepayId != ''){
           const map = res.data.data.payMap
           wx.requestPayment({
@@ -358,20 +357,17 @@ Page({
                   })
                 })
               }
-
-              
-              setTimeout(() => {
-                oncePaySharing({
-                  deliveryFee: parm.deliveryFee,
-                  orderNumber: parm.orderNumber,
-                  shopName: parm.shopName,
-                  totalAmount: parm.totalAmount
-                }).then(result => {
-                  console.log(result);
+              // setTimeout(() => {
+              //   oncePaySharing({
+              //     deliveryFee: parm.deliveryFee,
+              //     orderNumber: parm.orderNumber,
+              //     shopName: parm.shopName,
+              //     totalAmount: parm.totalAmount
+              //   }).then(result => {
+              //     console.log(result);
                   
-                })
-              }, 90000);
-
+              //   })
+              // }, 90000);
               wx.navigateTo({
                 url: '/pages/WCH/submitOrder/submitOrder',
                 success: result => {
