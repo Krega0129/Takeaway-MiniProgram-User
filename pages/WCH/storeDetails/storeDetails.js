@@ -4,8 +4,9 @@ import {
   getShopDetail
 } from '../../../service/shop'
 import {
-  BASE_URL
+  BASE_URL, H_config
 } from '../../../service/config'
+import { showToast } from '../../../utils/util';
 const app = getApp()
 
 Page({
@@ -23,7 +24,6 @@ Page({
     TabCur: 0,
     TabIndex: 0,
     tabTitleList: ['点餐', '商家'],
-    showBottomDialog: false,
     showStoreIntro: false,
     showFoodDetails: false,
     showCartList: false,
@@ -64,107 +64,113 @@ Page({
       getShopInfo({
         shopId: this.data.shopId
       }).then(res => {
-        const shopInfo = res.data.data
+        if(res && res.data && res.data.code === H_config.STATECODE_getShopInfo_SUCCESS) {
+          const shopInfo = res.data.data
         
-        this.setData({
-          storeName: shopInfo.shopName,
-          storeDesc: shopInfo.shopIntroduce,
-          storeAddress: shopInfo.detailAddress,
-          storeImgURL: BASE_URL + '/' + shopInfo.shopHead,
-          storeTelNum: shopInfo.contactPhone,
-          sendPrice: wx.getStorageSync('sendPrice')
-        })
+          this.setData({
+            storeName: shopInfo.shopName,
+            storeDesc: shopInfo.shopIntroduce,
+            storeAddress: shopInfo.detailAddress,
+            storeImgURL: BASE_URL + '/' + shopInfo.shopHead,
+            storeTelNum: shopInfo.contactPhone,
+            sendPrice: wx.getStorageSync('sendPrice')
+          })
+        } else {
+          showToast('网络异常')
+        }
+        wx.hideLoading()
       }).then(() => {
         // 获取商品信息
         getShopDetail({
           shopId: this.data.shopId
         }).then(res => {
-          let List = res.data.data
+          if(res && res.data && res.data.code === H_config.STATECODE_getShopDetails_SUCCESS) {
+            let List = res.data.data
 
-          // 处理后台返回的数据
-          for(let item of List) {
-
-            let foodList = {
-              categoryId: null,
-              categoryName: null,
-              foodsList: []
-            }
-
-            foodList.categoryId = item.categoryId
-            foodList.categoryName = item.categoryName
-
-            for(let food of item.dates) {
-
-              // foodItem
-              let foodListItem = {
-                id: null,
-                name: null,
-                intro: null,
-                monthSells: null,
-                specification: [],
-                price: null,
-                // 规格字符串
-                specStr: '',
-                num: 0
+            // 处理后台返回的数据
+            for(let item of List) {
+              let foodList = {
+                categoryId: null,
+                categoryName: null,
+                foodsList: []
               }
 
-              foodListItem.id = food.commodityId
-              foodListItem.shopId = food.shopId
-              foodListItem.name = food.commodityName
-              foodListItem.imgUrl = BASE_URL + '/' + food.commodityPhoto
-              foodListItem.price = food.commodityPrice
-              foodListItem.intro = food.commodityDetail
-              foodListItem.monthSells = 999
-              // 有规格
-              if(food.specs.length) {
-                for(let specs of food.specs) {
-                  if(specs) {
-                    // 规格
-                    let specListItem = {
-                      specName: null,
-                      id: null,
-                      specId: null,
-                      list: []
-                    }
+              foodList.categoryId = item.categoryId
+              foodList.categoryName = item.categoryName
 
-                    specListItem.specName = specs.specName
-                    specListItem.id = specs.specCommodityId
-                    specListItem.specId = specs.specId
-                    
-                    for(let list of specs.attributes) {
-                      // 规格列表
-                      let spec = {
-                        attributeName: null,
+              for(let food of item.dates) {
+                // foodItem
+                let foodListItem = {
+                  id: null,
+                  name: null,
+                  intro: null,
+                  monthSells: null,
+                  specification: [],
+                  price: null,
+                  // 规格字符串
+                  specStr: '',
+                  num: 0
+                }
+
+                foodListItem.id = food.commodityId
+                foodListItem.shopId = food.shopId
+                foodListItem.name = food.commodityName
+                foodListItem.imgUrl = BASE_URL + '/' + food.commodityPhoto
+                foodListItem.price = food.commodityPrice
+                foodListItem.intro = food.commodityDetail
+                foodListItem.monthSells = 999
+                // 有规格
+                if(food.specs.length) {
+                  for(let specs of food.specs) {
+                    if(specs) {
+                      // 规格
+                      let specListItem = {
+                        specName: null,
+                        id: null,
                         specId: null,
-                        attributeId: null,
-                        attributePrice: 0,
-                        check: false
+                        list: []
                       }
 
-                      spec.attributeName = list.attributeName
-                      // spec.specId = list.specId
-                      spec.attributePrice = list.attributePrice ? list.attributePrice : 0
-                      // spec.attributeIid = list.attributeId
+                      specListItem.specName = specs.specName
+                      specListItem.id = specs.specCommodityId
+                      specListItem.specId = specs.specId
+                      
+                      for(let list of specs.attributes) {
+                        // 规格列表
+                        let spec = {
+                          attributeName: null,
+                          specId: null,
+                          attributeId: null,
+                          attributePrice: 0,
+                          check: false
+                        }
 
-                      // 压入规格列表
-                      specListItem.list.push(spec)
-                      specListItem.list[0].check = true
+                        spec.attributeName = list.attributeName
+                        spec.attributePrice = list.attributePrice ? list.attributePrice : 0
+
+                        // 压入规格列表
+                        specListItem.list.push(spec)
+                        specListItem.list[0].check = true
+                      }
+
+                      // 压入规格
+                      foodListItem.specification.push(specListItem)
                     }
-
-                    // 压入规格
-                    foodListItem.specification.push(specListItem)
                   }
                 }
+                // 压入食物
+                foodList.foodsList.push(foodListItem)
               }
-              // 压入食物
-              foodList.foodsList.push(foodListItem)
+              this.data.goodsCategoryList.push(foodList)
             }
-            this.data.goodsCategoryList.push(foodList)
+            
+            this.setData({
+              goodsCategoryList: this.data.goodsCategoryList
+            })
+          } else {
+            showToast('网络异常')
           }
-          
-          this.setData({
-            goodsCategoryList: this.data.goodsCategoryList
-          })
+          wx.hideLoading()
         }).then(() => {
           // 加载购物车
           if(this.data.cartList[0]) {
@@ -181,7 +187,6 @@ Page({
             this.setData({
               totalCount: app.globalData.totalCount,
               goodsCategoryList: this.data.goodsCategoryList,
-              // cartList: this.data.cartList,
               totalPrice: app.globalData.totalPrice
             })
           }
@@ -203,9 +208,6 @@ Page({
         wx.hideLoading()
       })
     })
-  },
-  onReady() {
-    
   },
   onShow() {
     // 更新购物车
@@ -241,6 +243,17 @@ Page({
       showStoreIntro: true
     })
   },
+  // copyPhoneNum() {
+  //   wx.setClipboardData({
+  //     //准备复制的数据
+  //     data: this.data.storeTelNum,
+  //     success() {
+  //       wx.showToast({
+  //         title: '复制成功',
+  //       });
+  //     }
+  //   })
+  // },
   hideStoreIntro() {
     this.setData({
       showStoreIntro: false
@@ -340,21 +353,15 @@ Page({
   },
   // 添加无规格商品 / 在购物车添加无规格商品
   addGoods(e) {
-    
     // 选中的商品
     const goodsItem = e.currentTarget.dataset.food ? e.currentTarget.dataset.food : this.data.foodDetails
-    
     // 规格
     const tag = goodsItem.spec
-    
     let foodInfo = null
-
     // 改变对象里的数据
     for(let item of this.data.goodsCategoryList) {
       foodInfo = item.foodsList.find(item => item.id === goodsItem.id)
       if(foodInfo) {
-        // foodInfo.num++
-        
         // 嵌入shopId
         foodInfo.shopId = this.data.shopId
         if(!this.data.foodDetails) {
@@ -367,7 +374,6 @@ Page({
     }
     this.renewCartList()
     this.setData({
-      // cartList: app.globalData.cartList,
       goodsCategoryList: this.data.goodsCategoryList,
       totalPrice: app.globalData.totalPrice,
       totalCount: app.globalData.totalCount,
@@ -421,40 +427,9 @@ Page({
       }
     }
 
-    // // 有规格，购物车对象
-    // if(goodsItem.spec) {
-    //   cartFood = app.globalData.cartList.find(item => item.id === goodsItem.id && item.spec === goodsItem.spec)
-    // }
-    // else {
-    //   cartFood = app.globalData.cartList.find(item => item.id === goodsItem.id)
-    // }
-
-    // for(let item of this.data.goodsCategoryList) {
-    //   // 商品列表对象
-    //   foodInfo = item.foodsList.find(item => item.id === goodsItem.id)
-    //   if(foodInfo && (foodInfo.num > 0 || foodInfo.count > 0) ) {
-    //     if(cartFood.count) {
-    //       cartFood.count--
-    //     }
-    //     foodInfo.num--
-    //     // 同步相同商品不同规格的总数量
-    //     for(let food of app.globalData.cartList) {
-    //       if(food.id === foodInfo.id) {
-    //         food.num = foodInfo.num
-    //       }
-    //     }
-    //     // 数量为0，删除商品
-    //     if(cartFood.num <= 0 || cartFood.count <= 0) {
-    //       const index = app.globalData.cartList.indexOf(cartFood)
-    //       app.globalData.cartList.splice(index, 1)
-    //     }
-    //   }
-    // }
-
     app.culPrice(this.data.cartList)
     this.renewCartList()
     this.setData({
-      // cartList: app.globalData.cartList,
       goodsCategoryList: this.data.goodsCategoryList,
       totalPrice: app.globalData.totalPrice,
       totalCount: app.globalData.totalCount,
@@ -462,8 +437,23 @@ Page({
     })
   },
   callStore() {
-    this.setData({
-      showBottomDialog: true
+    wx.showActionSheet({
+      itemList: [this.data.storeTelNum],
+      success: res => {
+        if(res.tapIndex === 0) {
+          wx.setClipboardData({
+            data: this.data.storeTelNum,
+            success() {
+              wx.showToast({
+                title: '复制成功',
+              });
+            },
+            fail:() => {
+              showToast('复制失败')
+            }
+          })
+        }
+      }
     })
   },
   hiddenBottomDialog() {
@@ -507,32 +497,17 @@ Page({
     const goodsItem = e.currentTarget.dataset.food
     let cartFood = null
     // 在购物车中查找
-    // if(goodsItem.spec) cartFood = app.globalData.cartList.find(item => item.id === goodsItem.id && item.spec === goodsItem.spec)
-    // else cartFood = app.globalData.cartList.find(item => item.id === goodsItem.id)
-
     if(goodsItem.spec) cartFood = this.data.cartList.find(item => item.id === goodsItem.id && item.spec === goodsItem.spec)
     else cartFood = this.data.cartList.find(item => item.id === goodsItem.id)
 
     let foodInfo = null
     // 用于splice删除购物车商品
-    // const index = app.globalData.cartList.indexOf(cartFood)
     const index = this.data.cartList.indexOf(cartFood)
 
     for(let item of this.data.goodsCategoryList) {
       foodInfo = item.foodsList.find(item => item.id === cartFood.id)
 
       if(foodInfo) {
-        // app.globalData.cartList.splice(index, 1)
-        // this.data.cartList.splice(index, 1)
-        // 同步相同商品不同规格的总数量
-        // for(let food of app.globalData.cartList) {
-        //   if(food.id === cartFood.id) {
-        //     food.num = cartFood.num - cartFood.count
-        //     foodInfo.num = food.num
-        //   } else {
-        //     foodInfo.num = 0
-        //   }
-        // }
         let num = cartFood.num - cartFood.count
         for(let food of this.data.cartList) {
           if(food.id === cartFood.id) {
@@ -548,7 +523,6 @@ Page({
     }
     this.renewCartList()
     this.setData({
-      // cartList: app.globalData.cartList,
       totalPrice: app.globalData.totalPrice,
       totalCount: app.globalData.totalCount,
       goodsCategoryList: this.data.goodsCategoryList
@@ -597,7 +571,7 @@ Page({
             shopName: this.data.storeName,
             storeAddress: this.data.storeAddress, 
             storeTelNum: this.data.storeTelNum, 
-            imgUrl: this.data.imgUrl,
+            imgUrl: this.data.storeImgURL,
             cartList: this.data.cartList,
             totalPrice: this.data.totalPrice,
             totalCount: this.data.totalCount
@@ -618,14 +592,12 @@ Page({
       })
     }
 
-    // this.data.foodDetails.attributePrice = 0
     this.culAttrPrice()
 
     this.setData({
       foodDetails: this.data.foodDetails,
       foodId: e.currentTarget.dataset.id,
       showSpecification: true
-      
     })
   },
   closeSpecification() {
@@ -638,12 +610,6 @@ Page({
     const index = e.currentTarget.dataset.index
     // 数组中第几个规格
     const ind = e.currentTarget.dataset.ind
-    // 规格列表
-    // let list = e.currentTarget.dataset.list
-
-    // let tag = e.currentTarget.dataset.item
-    // console.log(tag);
-    
 
     // 单选
     for(let item of this.data.specificationList[index].list) {
@@ -654,11 +620,6 @@ Page({
     this.data.specificationList[index].list[ind].check = !this.data.specificationList[index].list[ind].check
 
     this.culAttrPrice()
-    // this.data.specificationList[index].list[ind].check = !this.data.specificationList[index].list[ind].check
-    // 差价
-    // if(this.data.specificationList[index].list[ind].attributePrice != null) {
-    //   this.data.foodDetails.attributePrice = this.data.specificationList[index].list[ind].attributePrice
-    // }
     
     this.setData({
       foodDetails: this.data.foodDetails,
@@ -674,7 +635,6 @@ Page({
     for(let item of this.data.goodsCategoryList) {
       list = item.foodsList.find(it => it.id === this.data.foodId)
       if(list) {
-        // console.log(list);
         let tagList = {}
         for(let tag of this.data.specificationList) {
           // tag是每个规格对象

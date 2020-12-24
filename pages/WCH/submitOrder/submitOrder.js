@@ -2,7 +2,7 @@
 const app = getApp()
 
 import {
-  BASE_URL
+  H_config
 } from '../../../service/config'
 
 import {
@@ -10,7 +10,9 @@ import {
 } from '../../../service/bill'
 
 import {
-  formatTime
+  formatTime,
+  showToast,
+  pay
 } from '../../../utils/util'
 
 Page({
@@ -26,7 +28,7 @@ Page({
     takeAway: true,
     orderNum: null,
     payTime: '',
-    isPay: true,
+    isPay: null,
     obj: {},
     time: '',
     cancel: false
@@ -58,34 +60,42 @@ Page({
         payTime: payTime,
         obj: data.obj
       })
-    })
-
-    let t = setInterval(() => {
-      let time = wx.getStorageSync('time') - new Date().getTime()
-      time -= 1000
-      time = formatTime(time).split(' ')[1].substring(3, 8)
-      this.setData({
-        time: time
-      })
-      if(time <= 0) {
-        clearInterval(t)
+      if(!data.isPay) {
+        let t = setInterval(() => {
+          let time = wx.getStorageSync('time') - new Date().getTime()
+          time -= 1000
+          if(time <= 0) {
+            this.setData({
+              cancel: true
+            })
+            clearInterval(t)
+          }
+          time = formatTime(time).split(' ')[1].substring(3, 8)
+          this.setData({
+            time: time
+          })
+        }, 1000)
       }
-    }, 1000)
-  },
-  onReady: function () {
-    wx.hideLoading()
-  },
-  onShow: function () {
-
+      wx.hideLoading()
+    })
   },
   callShop() {
     wx.showActionSheet({
       itemList: [this.data.storeTelNum],
-      success: res => {
-        console.log(res);
-      },
-      fail: msg => {
-        console.log(msg);
+      success: (res) => {
+        if(res.tapIndex === 0) {
+          wx.setClipboardData({
+            data: this.data.storeTelNum,
+            success() {
+              wx.showToast({
+                title: '复制成功',
+              });
+            },
+            fail: () => {
+              showToast('复制失败')
+            }
+          })
+        }
       }
     })
   },
@@ -95,12 +105,11 @@ Page({
       showCancel: true,
       title: '提示',
       success: res => {
-        
         if(res.confirm) {
           cancelOrder({
             orderNumber: this.data.orderNum
           }).then(res => {
-            if(res.data.code === 3204) {
+            if(res && res.data && res.data.code === H_config.STATECODE_cancelUnpaidOrder_SUCCESS) {
               wx.showToast({
                 title: '订单取消成功！'
               })
@@ -108,10 +117,7 @@ Page({
                 cancel: true
               })
             } else {
-              wx.showToast({
-                title: '服务器错误，请再次尝试！',
-                icon: 'none'
-              })
+              showToast('服务器错误，请再次尝试！')
             }
           })
         }
@@ -123,62 +129,8 @@ Page({
       delta: 2
     })
   },
-  pay() {
-    wx.request({
-      url: BASE_URL + '/wechatpay/prePay',
-      method: 'POST',
-      header: { 'content-type': 'application/x-www-form-urlencoded' },
-      data: this.data.obj,
-      success: (res) => {
-        if (res.data.prepayId != ''){
-          const map = res.data.data.payMap
-          wx.requestPayment({
-            'appId': map.appId,
-            'timeStamp': map.timeStamp,
-            'nonceStr': map.nonceStr,
-            'package': map.package,
-            'signType': 'MD5',
-            'paySign': map.paySign,
-            'success': () => {
-              if (res.data.prepayId != ''){
-                const map = res.data.data.payMap
-                wx.requestPayment({
-                  'appId': map.appId,
-                  'timeStamp': map.timeStamp,
-                  'nonceStr': map.nonceStr,
-                  'package': map.package,
-                  'signType': 'MD5',
-                  'paySign': map.paySign,
-                  'success':  (paymentRes) => {
-                    wx.redirectTo({
-                      url: '/pages/WCH/submitOrder/submitOrder',
-                      success: result => {
-                        result.eventChannel.emit('submitOrder', {
-                          cartList: this.data.cartList,
-                          shopAddress: this.data.storeAddress,
-                          user: this.data.user,
-                          storeTelNum: this.data.storeTelNum,
-                          remark: this.data.remark || '',
-                          takeAway: this.data.takeAway,
-                          obj: data,
-                          isPay: true
-                        })
-                      }
-                    })
-                  },
-                  fail: (error) => {
-                    
-                  }
-                })
-              }
-            },
-            'fail': function (error) {
-              console.log(error)
-            }
-          })
-        }
-      }
-    });
+  toPay() {
+    pay.call(this, this.data.obj)
   },
   toHome() {
     wx.reLaunch({

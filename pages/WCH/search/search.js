@@ -16,9 +16,6 @@ Page({
     inputText: '',
     tim: null
   },
-  onLoad: function (options) {
-    
-  },
   onShow: function() {
     if(wx.getStorageSync('searchFoodHistoryList') && wx.getStorageSync('searchFoodHistoryList')[0]) {
       this.setData({
@@ -115,7 +112,6 @@ Page({
     this.setData({
       inputText: e.detail.value
     })
-
     clearTimeout(this.data.timer)
 
     this.data.timer = setTimeout(() => {
@@ -130,6 +126,8 @@ Page({
           })
         }).then(() => {
           wx.hideLoading()
+        }).catch(err => {
+          console.log(err);
         })
       } else {
         this.setData({

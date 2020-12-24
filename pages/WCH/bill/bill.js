@@ -1,18 +1,17 @@
 // pages/WCH/bill/bill.js
 import {
-  BASE_URL
+  H_config
 } from '../../../service/config'
 
 import {
   getAllAddress,
-  orderNewOrder,
-  changeOrderStatus,
-  addReceiver,
-  oncePaySharing
+  orderNewOrder
 } from '../../../service/bill'
 
 import {
-  formatTime
+  formatTime,
+  showToast,
+  pay
 } from '../../../utils/util'
 
 const app = getApp()
@@ -52,7 +51,7 @@ Page({
   onLoad: function (options) {
     let eventChannel = this.getOpenerEventChannel()
     eventChannel.on('emitStoreAddress', data => {
-      app.culPrice(data.cartList, this.data.sendPrice)
+      app.culPrice(data.cartList, Number(wx.getStorageSync('sendPrice')))
       this.setData({
         shopId: data.shopId,
         shopName: data.shopName,
@@ -78,11 +77,9 @@ Page({
     }
 
     this.setData({
-      picker: this.data.picker
+      picker: this.data.picker,
+      sendPrice: Number(wx.getStorageSync('sendPrice'))
     })
-  },
-  onReady: function () {
-
   },
   onShow: function () {
     let eventChannel = this.getOpenerEventChannel()
@@ -91,37 +88,21 @@ Page({
         remark: data.remark
       })
     })
-
-    if(wx.getStorageSync('userId')) {
-      getAllAddress({
-        userId: wx.getStorageSync('userId')
-      }).then(res => {
-        wx.hideLoading()
-        let addressList = res.data.data
-        this.setData({
-          locationList: addressList
-        })
-      })
-    }
-  },
-  onShareAppMessage: function () {
-
+    this._getAllAddress()
   },
   takeAway() {
-    this.data.sendPrice = Number(wx.getStorageSync('sendPrice'))
-    app.culPrice(this.data.cartList, this.data.sendPrice)
+    app.culPrice(this.data.cartList, Number(wx.getStorageSync('sendPrice')))
     this.setData({
       takeAway: true,
-      sendPrice: this.data.sendPrice,
+      sendPrice: Number(wx.getStorageSync('sendPrice')),
       totalPrice: app.globalData.totalPrice
     })
   },
   selfTake() {
-    this.data.sendPrice = 0
-    app.culPrice(this.data.cartList, this.data.sendPrice)
+    app.culPrice(this.data.cartList)
     this.setData({
       takeAway: false,
-      sendPrice: this.data.sendPrice,
+      sendPrice: 0,
       totalPrice: app.globalData.totalPrice
     })
   },
@@ -146,14 +127,33 @@ Page({
       }
     })
   },
+  _getAllAddress() {
+    getAllAddress({
+      userId: wx.getStorageSync('userId')
+    }).then(res => {
+      if(res && res.data && res.data.code === H_config.STATECODE_getAllAddress_SUCCESS) {
+        let addressList = res.data.data
+        this.setData({
+          locationList: addressList
+        })
+      }
+      wx.hideLoading()
+    })
+  },
   changeLocation() {
     if(wx.getStorageSync('userId')) {
+      this._getAllAddress()
       this.setData({
         changeLocation: true
       })
     } else {
-      wx.login({
-        success: res => {
+      this.login()
+    }
+  },
+  login() {
+    wx.login({
+      success: res => {
+        if(res.errMsg == "login:ok") {
           const code = res.code
           wx.navigateTo({
             url: '/pages/WCH/login/login',
@@ -161,9 +161,11 @@ Page({
               res.eventChannel.emit('code',{ code: code })
             }
           })
+        } else {
+          showToast('网络异常，请重试！',)
         }
-      })
-    }
+      }
+    })
   },
   cancleChangeLocation() {
     this.setData({
@@ -201,29 +203,13 @@ Page({
   order() {
     // 检查手机号码格式
     if(!this.data.takeAway && !/^1\d{10}$/.test(this.data.userTel)) {
-      wx.showToast({
-        title: '手机号格式错误，请重新填写!',
-        icon: 'none',
-      })
+      showToast('手机号格式错误，请重新填写!')
     // 检查是否授权
     } else if(!wx.getStorageSync('token')) {
-      wx.login({
-        success: res => {
-          const code = res.code
-          wx.navigateTo({
-            url: '/pages/WCH/login/login',
-            success: res => {
-              res.eventChannel.emit('code',{ code: code })
-            }
-          })
-        }
-      })
+      this.login()
     // 检查是否选择收货地址
     } else if(this.data.takeAway && !this.data.chooseLocation) {
-      wx.showToast({
-        title: '请先选择收货地址!',
-        icon: 'none'
-      })
+      showToast('请先选择收货地址!')
     } else {
       // 整个订单大对象
       const order = {
@@ -233,7 +219,6 @@ Page({
         remarks: this.data.remark,
         shopAddress: this.data.storeAddress,
         shopId: this.data.shopId,
-        // shopId: 1,
         shopName: this.data.shopName,
         shopPicture: this.data.imgUrl || '',
         totalAmount: this.data.totalPrice,
@@ -259,7 +244,7 @@ Page({
           quantity: num,
           specification: item.spec,
           totalPrice: num * item.price,
-          unitPrice: item.price
+          unitPrice: item.price + (item.attrPrice ? item.attrPrice : 0)
         }
         order.orderCommodities.push(food)
       }
@@ -273,29 +258,26 @@ Page({
       }
 
       orderNewOrder(order).then(res => {
-        const obj = res.data.data
-        obj.userId = wx.getStorageSync('userId')
         // 下单成功
-        if(res.statusCode === 200 && res.data.code === 3201) {
+        if(res && res.data && res.data.code === H_config.STATECODE_orderNewOrder_SUCCESS) {
+          const obj = res.data.data
           wx.hideLoading()
-          this.pay({
+          pay.call(this, {
             deliveryFee: obj.deliveryFee,
             orderNumber: obj.orderNumber,
             shopName: obj.shopName,
             totalAmount: obj.totalAmount,
             userId: wx.getStorageSync('userId')
-          }, obj)
-          let a = app.globalData.cartList.find(item => item.shopId === this.data.shopId)
-          a.foodList = [];
-        }else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none'
           })
+          let oldCart = app.globalData.cartList.find(item => item.shopId === this.data.shopId)
+          oldCart.foodList = [];
+        }else {
+          showToast(res.data.msg)
         }
       })
     }
   },
+<<<<<<< HEAD
   /* 
   *  @parm data：支付订单数据
   *  @parm parm：分账数据
@@ -419,4 +401,6 @@ Page({
       }
     });
   },
+=======
+>>>>>>> 6f9784b2e54a582113d726d2d7578e4064a2dc99
 })

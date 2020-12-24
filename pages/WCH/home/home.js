@@ -3,13 +3,14 @@ const BACK_TOP = 500
 const app = getApp()
 
 import { 
-  getShopCategory,
-  test
+  getShopCategory
 } from '../../../service/home'
 
 import {
-  _getMultiData
+  _getMultiData,
+  showToast
 } from '../../../utils/util'
+import { H_config } from '../../../service/config'
 
 Page({
   data: {
@@ -37,6 +38,7 @@ Page({
     }],
     imgUrl: '',
     showImg: false,
+    sendPrice: Number(wx.getStorageSync('sendPrice')),
     triggered: false,
     categoryList: [],
     storeList: [],
@@ -57,8 +59,6 @@ Page({
     showEnd: false
   },
   async onLoad() {
-    wx.stopPullDownRefresh()
-
     wx.showLoading({
       title: '加载中...'
     })
@@ -74,36 +74,38 @@ Page({
     })
     
     if(wx.getStorageSync('address')) {
-      getShopCategory().then(res => {
-        let cateList = res.data.data
-        let i = 0
-        for(let item of cateList) {
-          item.img = this.data.cateImgList[i]
-          i++
+      await getShopCategory().then(res => {
+        if(res && res.data && res.data.code  === H_config.STATECODE_getShopCategory_SUCCESS) {
+          let cateList = res.data.data
+          let i = 0
+          for(let item of cateList) {
+            item.img = this.data.cateImgList[i++]
+          }
+          this.data.categoryList = res.data.data || []
+        } else {
+          wx.hideLoading()
+          showToast('网络异常')
         }
-        this.setData({
-          categoryList: res.data.data || []
+      }).then(() => {
+        _getMultiData(
+          this.data.position,
+          this.data.storeList,
+          {
+            pageNum: 1
+          }
+        ).then((res) => {
+          this.setData({
+            storeList: res.storeList || [],
+            categoryList: this.data.categoryList,
+            totalPages: res.totalPages
+          })
+          wx.hideLoading()
+        }).catch(err => {
+          showToast('网络异常！')
         })
-      })
-      await _getMultiData(
-        this.data.position,
-        this.data.storeList,
-        {
-          pageNum: 1
-        }
-      ).then((res) => {
-        this.setData({
-          storeList: res.storeList || [],
-          totalPages: res.totalPages
-        })
-        wx.hideLoading()
       })
     } else {
       wx.hideLoading()
-      // wx.showToast({
-      //   title: '请求失败，请刷新重试',
-      //   icon: 'none'
-      // })
     }
   },
   onShow() {
@@ -128,7 +130,8 @@ Page({
       } 
     }
     this.setData({
-      storeList: this.data.storeList
+      storeList: this.data.storeList,
+      sendPrice: Number(wx.getStorageSync('sendPrice')) ? Number(wx.getStorageSync('sendPrice')).toFixed(2) : Number(wx.getStorageSync('sendPrice'))
     })
   },
   onPageScroll(options) {
@@ -150,7 +153,6 @@ Page({
     wx.navigateTo({
       url: '/pages/WCH/storeListPage/storeListPage',
       success(res) {
-        // 通过eventChannel向被打开页面传送数据
         res.eventChannel.emit('showStoreList', {title: e.currentTarget.dataset.title})
       }
     })
@@ -172,10 +174,12 @@ Page({
         {
           pageNum: ++this.data.pageNum
         }
-      ).then(() => {
-        this.setData({
-          storeList: this.data.storeList
-        })
+      ).then(res => {
+        if(res && res.data && res.data.code === H_config.STATECODE_getMultiData_SUCCESS) {
+          this.setData({
+            storeList: this.data.storeList
+          })
+        }
       })
     } else {
       this.setData({
@@ -207,9 +211,4 @@ Page({
       showImg: false
     })
   }
-  // test() {
-  //   test().then(res => {
-  //     console.log(res);
-  //   })
-  // }
 })

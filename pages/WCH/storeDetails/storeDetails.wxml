@@ -235,16 +235,6 @@
   </view>
 </view>
 
-<!-- 电话底部弹窗 -->
-<view class="cu-modal bottom-modal {{showBottomDialog?'show':''}}">
-  <view class="cu-dialog">
-    <view class="padding-xl">
-      <text class="text-green text-xl text-bold">{{storeTelNum}}</text>
-    </view>
-    <view class="padding-xl" bindtap="hiddenBottomDialog">取消</view>
-  </view>
-</view>
-
 <!-- 底部结算栏 -->
 <view class="pos-fix bg-black text-center" style="bottom: 0; height: 130rpx; width: 100%; z-index: 2000" wx:if="{{TabIndex == 0}}">
   <view class="cuIcon-cartfill round bg-white pos-ab text-sl" style="width: 140rpx; height: 140rpx; top: -70rpx; left: 50rpx; line-height: 140rpx;" catchtap="showCartList">

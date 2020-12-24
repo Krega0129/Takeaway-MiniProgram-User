@@ -6,12 +6,22 @@ import {
 } from '../../../service/bill'
 
 import {
+  H_config
+} from '../../../service/config'
+
+import {
+  showToast
+} from '../../../utils/util'
+
+import {
   getAllCampus
 } from '../../../service/home'
 
 Page({
   data: {
-    user: {},
+    user: {
+      sex: 1
+    },
     changeSchool: false,
     hasChange: false,
     // 修改第几个地址
@@ -25,20 +35,30 @@ Page({
   },
   onLoad: function (options) {
     getAllCampus().then(res => {
-      const list = res.data.data
-      let schoolList = []
-      for(let school of list) {
-        schoolList.push(school.campusName)
+      if(res && res.data && res.data.code === H_config.STATECODE_getAllCampus_SUCCESS) {
+        const list = res.data.data
+        let schoolList = []
+        for(let school of list) {
+          schoolList.push(school.campusName)
+        }
+        this.data.schoolList.push(...schoolList)
+        this.setData({
+          schoolList: this.data.schoolList
+        })
       }
+<<<<<<< HEAD
       this.data.schoolList.push(...schoolList)
       this.setData({
         schoolList: this.data.schoolList
       })
       wx.hideLoading()
+=======
+    }).then(() => {
+      wx.hideLoading()
+    }).catch(err => {
+      console.log(err);
+>>>>>>> 6f9784b2e54a582113d726d2d7578e4064a2dc99
     })
-  },
-  onReady: function () {
-
   },
   onShow: function () {
     let eventChannel = this.getOpenerEventChannel()
@@ -67,9 +87,6 @@ Page({
   selectSex(e) {
     this.data.user.sex = e.detail.value
     this.data.hasChange = true
-    this.setData({
-      user: this.data.user
-    })
   },
   newName(e) {
     this.data.hasChange = true
@@ -94,41 +111,49 @@ Page({
           contactPhone: this.data.user.contactPhone,
           detailedAddress: this.data.user.detailedAddress
         }).then(res => {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'success'
-          })
-          wx.navigateBack()
-        })
-      } else {
-        updateAddress({
-          receiveId: this.data.user.receiveId,
-          campus: this.data.user.campus,
-          contactName: this.data.user.contactName,
-          contactPhone: this.data.user.contactPhone,
-          sex: this.data.user.sex,
-          detailedAddress: this.data.user.detailedAddress,
-          receiveId: this.data.user.receiveId
-        }).then(res => {
-          // 修改成功后
-          if(res.data.code === 3258) {
+          if(res && res.data && res.data.code === H_config.STATECODE_addNewAddress_SUCCESS) {
             wx.showToast({
-              title: res.data.msg,
-              icon: 'success'
+              title: '新增地址成功！',
+              duration: 1000
             })
-            wx.navigateBack()
+            setTimeout(() => {
+              wx.navigateBack()
+            }, 500)
           } else {
-            wx.showToast({
-              title: res.data.msg
-            })
+            showToast('新增地址失败，请重试！')
           }
         })
+      } else {
+        if(this.data.hasChange) {
+          updateAddress({
+            userId: wx.getStorageSync('userId'),
+            receiveId: this.data.user.receiveId,
+            campus: this.data.user.campus,
+            contactName: this.data.user.contactName,
+            contactPhone: this.data.user.contactPhone,
+            sex: this.data.user.sex,
+            detailedAddress: this.data.user.detailedAddress,
+            receiveId: this.data.user.receiveId
+          }).then(res => {
+            // 修改成功后
+            if(res && res.data && res.data.code === H_config.STATECODE_updateAddress_SUCCESS) {
+              wx.showToast({
+                title: '修改地址成功',
+                duration: 1000
+              })
+              setTimeout(() => {
+                wx.navigateBack()
+              }, 500)
+            } else {
+              showToast('修改失败，请重试！') 
+            }
+          })
+        } else {
+          wx.navigateBack()
+        }
       }
     } else {
-      wx.showToast({
-        title: '请输入正确的手机号码！',
-        icon: 'none'
-      })
+      showToast('请输入正确的手机号码！')
     }
   },
   deleteLocation() {
@@ -142,10 +167,18 @@ Page({
           deleteAddress({
             receiveId: this.data.user.receiveId
           }).then(res => {
-            // 删除地址后的操作
+            if(res && res.data && res.data.code === H_config.STATECODE_deleteAddress_SUCCESS) {
+              wx.showToast({
+                title: '删除地址成功！',
+                duration: 1000
+              })
+              setTimeout(() => {
+                wx.navigateBack()
+              }, 500)
+            } else {
+              showToast('删除失败，请重试！')
+            }
           })
-          
-          wx.navigateBack()
         }
       }
     })

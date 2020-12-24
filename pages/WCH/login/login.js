@@ -29,17 +29,25 @@ Page({
       }).then(res => {
         const id = res.data.data.id
         const token = res.data.data.token
-        if(res.data.code === 3252) {
+        if(res.data.code === 3252 || res.data.code === 3251) {
           wx.setStorageSync('token', token)
           wx.setStorageSync('userId', id)
           wx.hideLoading()
-          wx.navigateBack()
+          wx.showToast({
+            title: '登录成功',
+            duration: 1000
+          })
+          setTimeout(() => {
+            wx.navigateBack()
+          })
         } else {
           wx.showToast({
             title: res.data.msg,
             icon: 'none'
           })
         }
+      }).catch(err => {
+        console.log(err);
       })
     }
   }

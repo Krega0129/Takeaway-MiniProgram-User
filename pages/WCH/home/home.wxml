@@ -80,7 +80,7 @@
           <view class="title text-cut" style="font-size: 40rpx">{{item.shopName}}</view>
           <view class="text-gray margin-left">
             起送 <text class="text-price">{{item.minPrice ? item.minPrice : 0}}</text>
-            配送 <text class="text-price">{{item.sentPrice ? item.sentPrice : 0}}</text>
+            配送 <text class="text-price">{{sendPrice}}</text>
           </view>
           <view>
             <view class="dp-in-bk text-cut bg-orange light margin-left" style="max-width: 380rpx">“ {{item.shopIntroduce}} ”</view>
@@ -91,6 +91,8 @@
   </view>
 
   <w-to-top-btn wx:if="{{showBackTop}}"></w-to-top-btn>
+
+  <!-- <view wx:if="{{!storeList[0]}}" class="text-center padding">暂无商家</view> -->
 
   <view class="padding-sm text-center text-gray" wx:if="{{showEnd}}">--------- 我可是有底线的 ---------</view>
 
