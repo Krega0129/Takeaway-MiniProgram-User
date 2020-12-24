@@ -11,6 +11,14 @@
     </view>
   </view>
 </scroll-view>
+<scroll-view class="bg-white nav">
+  <view class="flex text-center">
+    <view class="cu-item flex-sub {{index==TabCur?'text-orange cur':''}}" wx:for="{{TabName}}" wx:key="index"
+      bindtap="tabSelect" data-id="{{index}}">
+      {{item}}
+    </view>
+  </view>
+</scroll-view>
 <scroll-view
   scroll-y
   style="height:calc(100vh - {{toTop}}rpx)"
@@ -30,7 +38,7 @@
       </view>
     </view>
     <view class="grid col-1" wx:else>
-      <view class="padding-lr-sm  bg-gray" style="margin-top:80rpx">
+      <view class="padding-lr-sm  bg-gray">
         <block wx:if="{{statusCode[TabCur]==='allList'}}">
           <view class="padding bg-white radius flex margin-top-sm" bindtap="goToOrderDetails" wx:for="{{allList}}"
             wx:key="index" data-id="{{index}}" data-item="{{item}}">
@@ -44,12 +52,11 @@
               </view>
               <view class="margin-left solids-bottom padding-tb-sm"><text class="text-xs">{{item.date}}</text>
               </view>
-              <view class="padding-left padding-tb-sm text-sm text-bold"><text>{{item.commodities[0].goodsName}}
-                </text><text>等共</text><text>{{item.commodities.length}}件</text><text
+              <view class="padding-left padding-tb-sm text-sm text-bold"><text decode="{{true}}">{{item.commodities[0].goodsName}}&emsp;等共&ensp;{{item.commodities.length}}&ensp;件</text><text
                   class="fr text-sm text-bold text-price">{{item.totalAmount}}</text></view>
               <view class="flex justify-end padding-top-sm">
                 <view class=""><button class="cu-btn button-hover " role="button" aria-disable="false" style="width:180rpx"
-                    catchtap="showModal" data-target="Modal">联系商家</button>
+                    catchtap="showModal" data-target="Modal" data-index="{{index}}">联系商家</button>
                 </view>
               </view>
             </view>
@@ -70,8 +77,8 @@
               </view>
               <view class="margin-left solids-bottom padding-tb-sm"><text class="text-xs">{{item.generateTime}}</text>
               </view>
-              <view class="padding-left padding-tb-sm text-sm text-bold"><text>{{item.commodities[0].goodsName}}
-                </text><text>等共</text><text>{{item.commodities.length}}件</text><text
+              <view class="padding-left padding-tb-sm text-sm text-bold"><text decode="{{true}}">{{item.commodities[0].goodsName}}&emsp;
+                等共&ensp;{{item.commodities.length}}&ensp;件</text><text
                   class="fr text-sm text-bold text-price">{{item.totalAmount}}</text></view>
               <view class=" padding-top-sm flex justify-end">
                 <view><button class="cu-btn button-hover " role="button" aria-disable="false" style="width:200rpx"
@@ -98,7 +105,7 @@
               </view>
               <view class="margin-left solids-bottom padding-tb-sm"><text class="text-xs">{{item.date}}</text>
               </view>
-              <view class="padding-left padding-tb-sm text-sm text-bold"><text>{{item.commodities[0].goodsName}}</text><text>等共</text><text>{{item.commodities.length}}件</text><text
+              <view class="padding-left padding-tb-sm text-sm text-bold"><text decode="{{true}}">{{item.commodities[0].goodsName}}&emsp;等共&ensp;{{item.commodities.length}}&ensp;件</text><text
                   class="fr text-sm text-bold text-price">{{item.totalAmount}}</text></view>
               <view class="flex justify-end padding-top-sm">
                 <view class=""><button class="cu-btn button-hover " role="button" aria-disable="false" style="width:180rpx"
@@ -117,9 +124,24 @@
 <view class="cu-modal {{modalName=='Modal'?'show':''}}" bindtap="hideModal">
   <view class="cu-dialog">
     <view class="padding-lr-xl padding-tb-sm text-xl">
-      <view class="padding-tb">{{allList.businessPhone}}</view>
-      <button class="cu-btn bg-red margin-tb-sm lg button-hover" style="width:100%"
-        catchtap="copyPhoneNumber">复制</button>
+      <block wx:if="{{TabCur===0}}">
+        <view class="padding-tb">{{allList[listIndex].businessPhone}}</view>
+        <button class="cu-btn bg-red margin-tb-sm lg button-hover" style="width:100%"
+          catchtap="copyPhoneNumber" data-phone="{{allList[listIndex].businessPhone}}">复制
+        </button>
+    </block>
+     <block wx:elif="{{TabCur===1}}">
+       <view class="padding-tb">{{obligationList[listIndex].businessPhone}}</view>
+        <button class="cu-btn bg-red margin-tb-sm lg button-hover" style="width:100%"
+          catchtap="copyPhoneNumber" data-phone="{{obligationList[listIndex].businessPhone}}">复制
+        </button>
+      </block>
+      <block wx:if="{{TabCur===2}}">
+        <view class="padding-tb">{{paidList[listIndex].businessPhone}}</view>
+        <button class="cu-btn bg-red margin-tb-sm lg button-hover" style="width:100%"
+          catchtap="copyPhoneNumber" data-phone="{{paidList[listIndex].businessPhone}}">复制
+        </button>
+      </block>
     </view>
   </view>
 </view>
