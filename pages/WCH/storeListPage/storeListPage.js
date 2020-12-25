@@ -29,16 +29,19 @@ Page({
     })
 
     let eventChannel = this.getOpenerEventChannel()
-    eventChannel.on('showStoreList', (data) => {
-      this.setData({
-        category: data.title,
-        position: wx.getStorageSync('address')
+    await new Promise((resolve) => {
+      eventChannel.on('showStoreList', (data) => {
+        this.setData({
+          category: data.title,
+          position: wx.getStorageSync('address')
+        })
       })
-    })
-    eventChannel.on('showSearchList', (data) => {
-      this.setData({
-        keyWord: data.title
+      eventChannel.on('showSearchList', (data) => {
+        this.setData({
+          keyWord: data.title
+        })
       })
+      resolve()
     })
 
     await _getMultiData(
@@ -50,8 +53,6 @@ Page({
         keyWord: this.data.keyWord
       }
     ).then(res => {
-      console.log(res);
-      
       this.setData({
         storeList: res.storeList,
         totalPages: res.totalPages || 1
