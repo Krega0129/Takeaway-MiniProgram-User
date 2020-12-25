@@ -84,7 +84,7 @@ Page({
           this.data.categoryList = res.data.data || []
         } else {
           wx.hideLoading()
-          showToast('网络异常')
+          showToast('网络异常!')
         }
       }).then(() => {
         _getMultiData(

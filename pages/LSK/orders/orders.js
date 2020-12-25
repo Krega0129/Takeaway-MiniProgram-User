@@ -36,7 +36,9 @@ Page({
     // 全部订单页数
     pageNum: 1,
     // 监听是否请求完全部订单信息
-    isRequestAll:false
+    isRequestAll:false,
+    // 监听目前所在的tab栏index
+    nowIndex:null
   },
 
   // 进入详情页
@@ -82,13 +84,8 @@ Page({
       scrollLeft: (e.currentTarget.dataset.id - 1) * 60
     })
     if (wx.getStorageSync('token')) {
-      if (index === 0) {
-        if(this.data.pageNum!=1){
-          this.setData({
-            pageNum:1,
-            allList:[]
-          })
-        }
+      if (index === 0 && index != this.data.nowIndex) {  
+          this.data.pageNum=1
         this.setUserTotalOrder()
       } else if (index === 1) {
         this.setUnpaidOrder()
@@ -150,13 +147,16 @@ Page({
   },
   // 获取"全部"订单信息
   setUserTotalOrder: function () {
+    if(this.data.pageNum==1){
+      this.data.allList=[]
+    }
     let that = this
     let pageNum = that.data.pageNum
-    let size = 10
+    let size = 5
     let userId = wx.getStorageSync('userId')
     getUserTotalOrder(pageNum, size, userId).then((res) => {
       if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code == K_config.STATECODE_getUserOrderByStatus_SUCCESS) {
-        const  list = this.data.allList
+        const  list = []
         let isRequestAll = false
         for (let item of res.data.data.list) {
           // 遍历订单信息
@@ -205,11 +205,13 @@ Page({
         if(res.data.data.total<=pageNum*size){
           isRequestAll=true
         }
+        this.data.allList.push(...list)
         this.setData({
           isTriggered:false,
-          allList: list,
+          allList: this.data.allList,
           isFresh: true,
-          isRequestAll:isRequestAll
+          isRequestAll:isRequestAll,
+          nowIndex:0
         })
         wx.hideLoading()
       }
@@ -276,7 +278,8 @@ Page({
         }
         this.setData({
           isTriggered:false,
-          obligationList: list
+          obligationList: list,
+          nowIndex:1
         })
         wx.hideLoading()
         // this.getCountDown()
@@ -295,7 +298,8 @@ Page({
         let list = this.listArrayFormate(res)
         this.setData({
           isTriggered:false,
-          paidList: list
+          paidList: list,
+          nowIndex:2
         })
         wx.hideLoading()
       }else{
@@ -548,7 +552,7 @@ Page({
               wx.hideLoading()
               if(res.data.code===K_config.STATECODE_updateOrderStatus_SUCCESS){
                 showToast('退款成功',2000)
-                this.setUnpaidOrder()
+                this.setSelectUserPaidOrder()
               }else{
                 showToast('退款失败，当前状态不允许修改',2000)
               }

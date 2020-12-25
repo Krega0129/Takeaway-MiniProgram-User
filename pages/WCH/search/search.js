@@ -2,6 +2,10 @@
 const app = getApp()
 
 import {
+  H_config
+} from '../../../service/config'
+
+import {
   searchTip
 } from '../../../service/home'
 
@@ -120,12 +124,12 @@ Page({
           address: wx.getStorageSync('address') || '',
           word: e.detail.value
         }).then(res => {
-          this.setData({
-            storeList: res.data.data.shopName,
-            foodList: res.data.data.commodityName
-          })
-        }).then(() => {
-          wx.hideLoading()
+          if(res.data.code === H_config.STATECODE_autoComplete_SUCCESS) {
+            this.setData({
+              storeList: res.data.data.shopName,
+              foodList: res.data.data.commodityName
+            })
+          }
         }).catch(err => {
           console.log(err);
         })
@@ -134,7 +138,6 @@ Page({
           storeList: [],
           foodList: []
         })
-        wx.hideLoading()
       }
     }, 500)
   }

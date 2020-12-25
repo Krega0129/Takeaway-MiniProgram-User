@@ -1,6 +1,7 @@
 import request from './network'
 
 import {
+  BASE_URL,
   H_config
 } from './config'
 
@@ -42,12 +43,16 @@ export function getShopCategory(data) {
 }
 
 export function searchTip(data) {
-  return request({
-    url: H_config.API_autoComplete_URL,
-    method: 'post',
-    data: data,
-    header: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
+  return new Promise((resolve, reject) => {
+    wx.request({
+      method: 'post',
+      url: BASE_URL + H_config.API_autoComplete_URL,
+      data: data,
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      success: resolve,
+      fail: reject
+    })
   })
 }

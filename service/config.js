@@ -1,5 +1,5 @@
-// const BASE_URL = 'https://192.168.1.107:8888'
-const BASE_URL = 'https://172.20.10.3:8888'
+const BASE_URL = 'https://192.168.1.109:8888'
+// const BASE_URL = 'https://172.20.10.3:8888'
 // const BASE_URL = 'https://www.lizeqiang.top:8888'
 
 const H_config = {}
@@ -9,11 +9,13 @@ H_config.STATECODE_SUCCESS = 200
 H_config.API_login_URL = '/user/login'
 // 搜索提示
 H_config.API_autoComplete_URL = '/getShopInfo/autoComplete'
+H_config.STATECODE_autoComplete_SUCCESS = 1200
 
 // 首页
 // 获取首页商铺列表
 H_config.API_getMultiData_URL = '/getShopInfo/userGetShop'
 H_config.STATECODE_getMultiData_SUCCESS = 1200
+H_config.STATECODE_getMultiData_FAIL = 1201
 
 // 商铺页面
 // 获取店铺详情：商品信息等
@@ -76,7 +78,7 @@ K_config.STATECODE_getUnpaidOrder_SUCCESS = 3203
 K_config.STATECODE_cancelUnpaidOrder_SUCCESS = 3204
 K_config.STATECODE_selectUserPaidOrder_SUCCESS = 3205
 K_config.STATECODE_refund_SUCCESS = 3200
-K_config.STATECODE_updateOrderStatus_SUCCESS = 3206
+K_config.STATECODE_updateOrderStatus_SUCCESS = 3255
 
 
 K_config.STATECODE_updateAddress_SUCCESS = 3258

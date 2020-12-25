@@ -46,6 +46,8 @@ async function _getMultiData(position, storeList, {pageNum, category, keyWord}) 
         storeList.push(...shopList.list)
       }
       totalPages = shopList.totalPages
+    } else if(res && res.data && res.data.code === H_config.STATECODE_getMultiData_FAIL) {
+      wx.hideLoading()
     } else {
       wx.hideLoading()
       showToast('网络异常！')
