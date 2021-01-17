@@ -35,17 +35,21 @@ Page({
           category: data.title,
           position: wx.getStorageSync('address')
         })
+        resolve()
       })
       eventChannel.on('showSearchList', (data) => {
         this.setData({
           keyWord: data.title
         })
+        resolve()
       })
-      resolve()
+      if(this.data.category || this.data.keyWord) {
+        resolve()
+      }
     })
 
     await _getMultiData(
-      this.data.position,
+      wx.getStorageSync('address'),
       this.data.storeList,
       {
         pageNum: 1,

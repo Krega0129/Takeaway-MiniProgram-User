@@ -89,6 +89,7 @@ Page({
       })
     })
     this._getAllAddress()
+    
   },
   takeAway() {
     app.culPrice(this.data.cartList, Number(wx.getStorageSync('sendPrice')))
@@ -228,12 +229,12 @@ Page({
 
       // 是否自提
       if(this.data.takeAway) {
-        order.userName = this.data.user.contactName + this.data.user.sex === 1 ? '（先生）' : '（女士）',
+        order.userName = this.data.user.contactName + (this.data.user.sex === 1 ? '（先生）' : '（女士）'),
         order.userPhone = this.data.user.contactPhone
         order.deliveryAddress = this.data.user.campus + '-' + this.data.user.detailedAddress
       } else {
         order.userPhone = this.data.userTel
-      }
+      } 
 
       // 每个商品对象
       for(let item of this.data.cartList) {
@@ -261,16 +262,11 @@ Page({
         // 下单成功
         if(res && res.data && res.data.code === H_config.STATECODE_orderNewOrder_SUCCESS) {
           const obj = res.data.data
+          // obj.userId = wx.getStorageSync('userId')
           wx.hideLoading()
-          pay.call(this, {
-            deliveryFee: obj.deliveryFee,
-            orderNumber: obj.orderNumber,
-            shopName: obj.shopName,
-            totalAmount: obj.totalAmount,
-            userId: wx.getStorageSync('userId')
-          })
+          pay.call(this, obj)
           let oldCart = app.globalData.cartList.find(item => item.shopId === this.data.shopId)
-          oldCart.foodList = [];
+          oldCart.foodList = []
         }else {
           showToast(res.data.msg)
         }

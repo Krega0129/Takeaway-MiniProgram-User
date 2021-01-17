@@ -1,4 +1,4 @@
-// const BASE_URL = 'https://192.168.1.109:8888'
+// const BASE_URL = 'https://192.168.1.105:8888'
 // const BASE_URL = 'https://172.20.10.3:8888'
 const BASE_URL = 'https://www.lizeqiang.top:8888'
 
@@ -63,7 +63,7 @@ H_config.STATECODE_getAllCampus_SUCCESS = 3200
 
 // 支付
 H_config.API_prePay_URL = '/wechatpay/prePay'
-H_config.STATECODE_prePay_SUCCESS = 2230
+H_config.STATECODE_prePay_SUCCESS = 3200
 H_config.STATECODE_prePay_FAIL = 2530
 // 单次请求分账
 H_config.API_oncePaySharing_URL = '/wechatpay/oncePaySharing'

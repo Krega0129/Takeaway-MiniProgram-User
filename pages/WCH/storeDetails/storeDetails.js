@@ -211,8 +211,12 @@ Page({
   },
   onShow() {
     // 更新购物车
-    if(app.globalData.cartList.find(item => item.shopId === this.data.shopId))
+    if(app.globalData.cartList.find(item => item.shopId === this.data.shopId)) {
       this.data.cartList = app.globalData.cartList.find(item => item.shopId === this.data.shopId).foodList
+      this.setData({
+        cartList: this.data.cartList
+      })
+    }
 
     // 支付完后返回
     if(!this.data.cartList[0]) {

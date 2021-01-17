@@ -106,8 +106,8 @@ export function prePay(data) {
     url: H_config.API_prePay_URL,
     method: 'post',
     data: data,
-    header: {
-      'content-type': 'application/x-www-form-urlencoded'
-    }
+    // header: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // }
   })
 }

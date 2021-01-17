@@ -41,22 +41,26 @@ Page({
       let index = list.indexOf(this.data.inputText)
       list.splice(index, 1)
     }
-    // 在前面插入一个记录
-    list.unshift(this.data.inputText)
-    this.data.searchHistoryList = list
-    // 超过5条记录就删除
-    if(wx.getStorageSync('searchFoodHistoryList').length >= 6) {
-      list.pop()
-    }
 
-    wx.setStorageSync('searchFoodHistoryList', list)
-
-    wx.navigateTo({
-      url: '/pages/WCH/storeListPage/storeListPage',
-      success: (res) => {
-        res.eventChannel.emit('showSearchList', {title: this.data.inputText})
+    if(this.data.inputText) {
+      // 在前面插入一个记录
+      list.unshift(this.data.inputText)
+      this.data.searchHistoryList = list
+      // 超过5条记录就删除
+      if(wx.getStorageSync('searchFoodHistoryList').length >= 6) {
+        list.pop()
       }
-    })
+      wx.setStorageSync('searchFoodHistoryList', list)
+
+      let key = this.data.inputText;
+      this.data.inputText = '' 
+      wx.navigateTo({
+        url: '/pages/WCH/storeListPage/storeListPage',
+        success: (res) => {
+          res.eventChannel.emit('showSearchList', {title: key})
+        }
+      })
+    }
   },
   searchFood(e) {
     setTimeout(() => {
