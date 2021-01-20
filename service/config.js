@@ -90,6 +90,8 @@ K_config.STATECODE_addNewAddress_FALSE = 3551
 K_config.STATECODE_deleteAddress_SUCCESS = 3257
 K_config.STATECODE_selectAllCampus_SUCCESS = 3200
 
+K_config.STATECODE_selectUserInfo_SUCCESS = 3208
+K_config.STATECODE_updateUserInfo_SUCCESS = 3253
 // 订单接口
 K_config.API_selectUserTotalOrder_URL = '/order/selectUserTotalOrder'
 K_config.API_getUnpaidOrder_URL = '/order/getUnpaidOrder'
@@ -107,6 +109,16 @@ K_config.API_addNewAddress_URL = '/address/addNewAddress'
 K_config.API_updateAddressStatus_URL = '/address/updateAddressStatus'
 K_config.API_deleteAddress_URL = '/address/deleteAddress'
 K_config.API_selectAllCampus_URL = '/campus/selectAllCampusName'
+
+// 分享校园接口
+
+// 用户信息接口
+// 获取信息
+K_config.API_selectUserInfo_URL = '/user/selectUserInfo'
+// 修改信息
+K_config.API_updateUserInfo_URL = '/user/updateUserInfo'
+// 上传图片
+K_config.API_updatePhoto_URL = '/modifyShopInfo/updatePhoto'
 
 // 改成对象
 export {

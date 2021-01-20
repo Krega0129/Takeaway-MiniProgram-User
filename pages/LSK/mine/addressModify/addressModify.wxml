@@ -11,19 +11,19 @@
     <picker mode="selector" bindchange="CampusChange" value="{{campus[campusIndex].campusName}}" range="{{campus}}" range-key="campusName"
       data-id="{{campusIndex}}" name="campus" >
       <view class="picker">
-        {{isEmpty?'请选择收货地址':campus[campusIndex].campusName}}
+        {{isNoCampus?'请选择收货地址':campus[campusIndex].campusName}}
       </view>
     </picker>
   </view>
   <!-- 收货地址 -->
   <view class="cu-form-group">
     <view class="title">门牌号</view>
-    <input placeholder="如：宿舍楼-宿舍号" style="text-align:right" name="detailedAddress" value="{{addressMsg.detailedAddress}}"></input>
+    <input placeholder="如：宿舍楼-宿舍号" style="text-align:right" name="detailedAddress" value="{{addressMsg.detailedAddress}}" maxlength="10"></input>
   </view>
   <!-- 收货人姓名 -->
   <view class="cu-form-group">
     <view class="title">联系人</view>
-    <input placeholder="如：张三" style="text-align:right" name="contactName" value="{{addressMsg.contactName}}"></input>
+    <input placeholder="如：张三" style="text-align:right" name="contactName" value="{{addressMsg.contactName}}" maxlength="5"></input>
     <radio-group bindchange="sexSelect" name='sex'>
       <radio value="{{man}}" checked="{{sexChecked}}" class="radio margin-right-sm">先生</radio>
       <radio value="{{woman}}" checked="{{!sexChecked}}" class="radio">女士</radio>

@@ -1,0 +1,38 @@
+<!--pages/LSK/sociality/releaseDynamic/releaseDynamic.wxml-->
+<cu-custom bgColor="bg-red" isBack="true">
+  <text slot="backText">返回</text>
+  <text slot="content">发布动态</text>
+</cu-custom>
+<form bindsubmit="formSuggest">
+  <view class="cu-form-group">
+    <textarea  maxlength="{{max}}" disabled="{{modalName!=null}}" placeholder="分享这一刻的心情~"
+      bindinput="inputNum"
+      style="height:250rpx"><text class="text-gray" style="position:absolute;bottom:0;right:0">{{num}}/{{max}}</text></textarea>
+  </view>
+  <!-- <view class="padding-lr">
+    <button class="cu-btn bg-red lg" style="width:690rpx" form-type="submit">提交建议</button>
+  </view> -->
+  <view class="cu-form-group" style="border:none">
+		<view class="grid col-2 grid-square flex-sub">
+			<view class="bg-img" wx:for="{{imgList}}" wx:key="{{index}}" bindtap="ViewImage" data-url="{{imgList[index]}}">
+				<image src='{{imgList[index]}}' mode='aspectFill'></image>
+				<view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}">
+					<text class="cuIcon-close"></text>
+				</view>
+			</view>
+			<view class="solids" bindtap="ChooseImage" wx:if="{{imgList.length<1}}">
+				<text class="cuIcon-cameraadd"></text>
+			</view>
+		</view>
+  </view>
+  <view class="cu-form-group ">
+    <view class="title">校区选择</view>
+    <picker mode="selector" bindchange="CampusChange" value="{{campus[campusIndex].campusName}}" range="{{campus}}" range-key="campusName"
+      data-id="{{campusIndex}}" name="campus" >
+      <view class="picker">
+        {{isEmpty?'请选择收货地址':campus[campusIndex].campusName}}
+      </view>
+    </picker>
+  </view>
+  <view class="bg-white solid-top padding-lg"><button class="cu-btn block line-green lg text-green" style="width:500rpx">发布动态</button></view>
+</form>

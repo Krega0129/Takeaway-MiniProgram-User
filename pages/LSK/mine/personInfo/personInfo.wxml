@@ -7,31 +7,31 @@
   <view class="flex align-center justify-between margin-left">
     <view class="">头像</view>
     <view class="flex align-center">
-      <view class="cu-avatar radius margin-right xl" style="background-image:url({{imgUrl}});background-size:cover">
+      <view class="cu-avatar radius margin-right xl" style="background-image:url({{userMsg.head}});background-size:cover">
       </view><text class="cuIcon-right text-xxl"></text>
     </view>
   </view>
 </view>
-<view class="bg-white padding solid-bottom" bindtap="nameChange">
+<view class="bg-white padding solid-bottom" bindtap="nameChange" data-nickname="{{userMsg.nickname?userMsg.nickname:'默认用户'}}">
   <view class="flex align-center justify-between margin-left">
     <view class="">姓名</view>
     <view class="flex align-center">
-      <view class="margin-right-xl">{{name}}</view><text class="cuIcon-right padding-right-xs"></text>
+      <view class="margin-right-xl">{{userMsg.nickname?userMsg.nickname:'默认用户'}}</view><text class="cuIcon-right padding-right-xs"></text>
     </view>
   </view>
 </view>
-<view class="bg-white padding solid-bottom" bindtap="phoneChange">
+<view class="bg-white padding solid-bottom" >
   <view class="flex align-center justify-between margin-left">
     <view class="">手机号码</view>
     <view class="flex align-center">
-      <view class="margin-right-xl">{{phoneNumber}}</view><text class="cuIcon-right padding-right-xs"></text>
+      <view class="margin-right-xl">{{userMsg.userPhone}}</view><text class=" padding-right-xs"></text>
     </view>
   </view>
 </view>
 <view class="bg-white padding solid-bottom">
   <view class="flex align-center justify-between margin-left">
     <view class="title">性别</view>
-    <picker value="{{index}}" range="{{sex}}" class="" mode="selector" bindchange="PickerChange">
+    <picker value="{{index}}" range="{{sex}}" class="" mode="selector" bindchange="sexChange">
       <view class="flex align-center justify-between">
         <view class="picker margin-right-xl">
           {{sex[index]}}

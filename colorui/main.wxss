@@ -3830,6 +3830,15 @@ scroll-view.cu-steps .cu-item {
 	overflow: hidden;
 }
 
+.text-cut-lines {
+	/* text-overflow: ellipsis; */
+	/* overflow: hidden; */
+	display:-webkit-box;
+	-webkit-line-clamp:5; /*这个数字是设置要显示省略号的行数*/
+	-webkit-box-orient:vertical;
+	overflow: hidden;
+}
+
 .text-bold {
 	font-weight: bold;
 }

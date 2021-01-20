@@ -1,7 +1,0 @@
-<!--pages/sociality/sociality.wxml-->
-<cu-custom bgColor="bg-red">
-  <text slot="content">朋友圈</text>
-</cu-custom>
-<view class="text-center margin-top">
-  <text>尚未开放</text>
-</view>

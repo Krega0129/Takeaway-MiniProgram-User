@@ -1,4 +1,8 @@
-// pages/mine/nameChange/nameChange.js
+import{loadingOn,loadingOff,showToast}from '../../../../utils/util'
+import { updateUserInfo }from '../../../../service/userInfo'
+import {
+  K_config
+} from '../../../../service/config'
 const app = getApp()
 Page({
 
@@ -31,6 +35,7 @@ Page({
       isEmpty: true
     })
   },
+  // 修改姓名
   nameModify() {
     let reg = /^[\w\u4e00-\u9fa5]{2,8}$/;
     if(!reg.test(this.data.name)){
@@ -40,16 +45,33 @@ Page({
       });
     }
     else{
-      wx.showToast({
-        title: '修改成功',
-      });
-      setTimeout(function () {
-        wx.navigateBack({
-          delta: 1
-        });  
-      }, 1000);  
-    app.globalData.name=this.data.name;
-    
+      const userId=wx.getStorageSync('userId')
+      const nickname=this.data.name
+      updateUserInfo({userId,nickname}).then((res)=>{
+        loadingOff()
+        if(res.data.code===K_config.STATECODE_updateUserInfo_SUCCESS || res.data.code===K_config.STATECODE_SUCCESS){
+          showToast('修改成功',1000)
+          let pages = getCurrentPages();
+          let currPage = null; //当前页面
+          let prevPage = null; //上一个页面
+          if (pages.length >= 2) {
+              currPage = pages[pages.length - 1]; //当前页面
+              prevPage = pages[pages.length - 2]; //上一个页面
+          }
+          if(prevPage){
+              prevPage.setData({
+                'userMsg.nickname':nickname
+              });
+          }
+          setTimeout(function () {
+            wx.navigateBack({
+              delta: 1
+            });  
+          }, 1000);  
+        }else{
+          showToast('网络异常',1000)
+        }
+      })
     }
   },
   /**
@@ -57,7 +79,7 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      name: app.globalData.name,
+      name: options.nickname,
     })
   },
 

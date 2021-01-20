@@ -61,6 +61,7 @@
               </view>
             </view>
           </view>
+          <view class="padding" wx:if="{{isRequestAll}}"><view class="text-center" decode="{{true}}">----------------已经到底啦----------------</view></view>
           <!-- <button class="bg-white cu-btn button-hover"
             style="width:80rpx;height:80rpx;text-align:center;line-height:80rpx;position:fixed;bottom:200rpx;right:50rpx;padding:0rpx;opacity:.8"><text
               class="cuIcon-refresh text-xxl text-black" catchtap="refreshAllList"></text></button> -->
@@ -89,6 +90,7 @@
               </view>
             </view>
           </view>
+          <view class="padding"><view class="text-center" decode="{{true}}">----------------已经到底啦----------------</view></view>
         </block>
         <block wx:else="{{statusCode[TabCur]==='paidList'}}">
           <view class="padding bg-white radius flex margin-top-sm" bindtap="goToOrderDetails" wx:for="{{paidList}}"
@@ -113,6 +115,7 @@
               </view>
             </view>
           </view>
+          <view class="padding"><view class="text-center" decode="{{true}}">----------------已经到底啦----------------</view></view>
         </block>
       </view>
     </view>

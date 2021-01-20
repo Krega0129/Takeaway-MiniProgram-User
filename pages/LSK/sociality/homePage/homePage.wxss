@@ -1,0 +1,105 @@
+/* pages/sociality/sociality.wxss */
+/* .heart{
+  position: absolute;
+  right: 20px;
+  top: 0px;
+  margin: 0 auto;
+  opacity: 1;
+  z-index: 100;
+  background-size: 2900%;
+  height: 50px;
+  width: 50px;
+}
+
+.btn:checked + .btn-love:after {
+  -webkit-animation: heart-burst steps(28) 0.8s 1 both;
+          animation: heart-burst steps(28) 0.8s 1 both;
+}
+
+@-webkit-keyframes heart-burst {
+  0% {
+    background-position: left;
+  }
+  100% {
+    background-position: right;
+  }
+}
+
+@keyframes heart-burst {
+  0% {
+    background-position: left;
+  }
+  100% {
+    background-position: right;
+  }
+} */
+
+/* .heart::before{
+  animation: heart-burst;
+  animation-duration: .5s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both
+}
+@keyframes heart-burst {
+  0% {
+    font-size: 4px;
+  }
+  50% {
+    font-size: 28px;
+  }
+  100% {
+    font-size: 20px;
+  }
+}  */
+.like{
+  height:20px;
+  width:20px; 
+}
+.heart-active{
+  height:20px;
+  width:20px; 
+  animation: heart-burst steps(28) 1.2s 1 both;
+}
+
+@keyframes heart-burst {
+  0% {
+    background-position: left;
+  }
+  100% {
+    background-position: right;
+  }
+}
+
+/* 清除按钮默认格式 */
+.noStyle{
+  background-color: #fff;
+  border-radius:0;
+  width: auto;
+  height:24px;
+  padding: 0;
+  font-weight:normal;
+  font-size:14px;
+  line-height: 1.8em;
+}
+.noStyle::after{
+  border: none;
+}
+.noStyle:not([size='mini'])
+{
+  width: 30px;
+}
+/* 小三角 */
+.corner{
+  content: '';
+  position: absolute;
+  top: -16px;
+  left: 3px;
+  width: 0;
+  height: 0;
+  padding: 0px; 
+  margin: 0;
+  border-width: 8px;
+  border-style: solid;
+  border-color:  transparent transparent #f9f8f8;
+  /* box-shadow: 0 1rpx 6rpx; */
+}
