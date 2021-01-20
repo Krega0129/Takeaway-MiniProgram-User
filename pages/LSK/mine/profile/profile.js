@@ -1,4 +1,10 @@
 // pages/profile/profile.js
+import { loadingOff, showToast } from '../../../../utils/util';
+import { selectUserInfo }from '../../../../service/userInfo';
+import {
+  BASE_URL,
+  K_config
+} from '../../../../service/config'
 const app = getApp()
 Page({
 
@@ -13,12 +19,15 @@ Page({
       { icon: '', itemName: '骑手招聘' },
       { icon: '', itemName: '投诉建议' }
     ],
-    isLogin:false
+    isLogin:false,
+    userMsg:{}
   },
-  toPersonInfo() {
+  toPersonInfo(e) {
+    console.log(e);
+    
     if(this.data.isLogin){
       wx.navigateTo({
-      url: '/pages/LSK/mine/personInfo/personInfo',
+      url: '/pages/LSK/mine/personInfo/personInfo?userMsg='+JSON.stringify(e.currentTarget.dataset.usermsg),
     })
     }
     else{
@@ -50,7 +59,22 @@ Page({
       icon: 'none',
       title: '内容未开放',
     });
-
+  },
+  // 获取用户信息
+  getUserInfo(){
+    let userId = wx.getStorageSync('userId')
+    selectUserInfo(userId).then((res)=>{
+      loadingOff()
+      console.log(res);
+      
+      if(res.data.code===K_config.STATECODE_selectUserInfo_SUCCESS || res.data.code===K_config.STATECODE_SUCCESS){
+        let userMsg=res.data.data
+        console.log(userMsg);
+        this.setData({
+          userMsg:userMsg
+        })
+      }  
+    })
   },
   /**
    * 生命周期函数--监听页面加载
@@ -75,6 +99,7 @@ onShow: function () {
       isLogin: false
     })
   } else {
+    this.getUserInfo()
     this.setData({
       isLogin: true
     })

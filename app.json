@@ -2,7 +2,7 @@
   "pages": [
     "pages/WCH/home/home",
     "pages/WCH/location/location",
-    "pages/sociality/sociality",
+    "pages/LSK/sociality/homePage/homePage",
     "pages/LSK/orders/orders",
     "pages/LSK/mine/profile/profile",
     "pages/LSK/orderDetails/orderDetails",
@@ -19,7 +19,9 @@
     "pages/WCH/remarks/remarks",
     "pages/WCH/editLocation/editLocation",
     "pages/WCH/login/login",
-    "pages/WCH/submitOrder/submitOrder"
+    "pages/WCH/submitOrder/submitOrder",
+    "pages/LSK/sociality/dynamicDetails/dynamicDetails",
+    "pages/LSK/sociality/releaseDynamic/releaseDynamic"
   ],
   "window": {
     "navigationStyle": "custom"
@@ -37,7 +39,7 @@
         "selectedIconPath": "/assets/img/WCH/tabBar/home-active.png"
       },
       {
-        "pagePath": "pages/sociality/sociality",
+        "pagePath": "pages/LSK/sociality/homePage/homePage",
         "text": "分享校园",
         "iconPath": "/assets/img/WCH/tabBar/sociality.png",
         "selectedIconPath": "/assets/img/WCH/tabBar/sociality-active.png"

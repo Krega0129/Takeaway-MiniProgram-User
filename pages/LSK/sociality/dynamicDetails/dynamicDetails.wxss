@@ -1,0 +1,53 @@
+/* pages/LSK/sociality/dynamicDetails.wxss */
+.like{
+  height:20px;
+  width:20px; 
+}
+.heart-active{
+  height:20px;
+  width:20px; 
+  animation: heart-burst steps(28) 1.2s 1 both;
+}
+
+@keyframes heart-burst {
+  0% {
+    background-position: left;
+  }
+  100% {
+    background-position: right;
+  }
+}
+
+/* 清除按钮默认格式 */
+.noStyle{
+  background-color: #fff;
+  border-radius:0;
+  width: auto;
+  height:24px;
+  padding: 0;
+  font-weight:normal;
+  font-size:14px;
+  line-height: 1.8em;
+}
+.noStyle::after{
+  border: none;
+}
+.noStyle:not([size='mini'])
+{
+  width: 30px;
+}
+
+.corner{
+  content: '';
+  position: absolute;
+  top: -16px;
+  left: 81px;
+  width: 0;
+  height: 0;
+  padding: 0px; 
+  margin: 0;
+  border-width: 8px;
+  border-style: solid;
+  border-color:  transparent transparent #f9f8f8;
+  /* box-shadow: 0 1rpx 6rpx; */
+}

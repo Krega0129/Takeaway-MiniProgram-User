@@ -1,0 +1,62 @@
+<!--pages/sociality/sociality.wxml-->
+<cu-custom bgColor="bg-red">
+  <text slot="content">朋友圈</text>
+</cu-custom>
+<swiper class="screen-swiper square-dot" style="height:450rpx" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
+  <swiper-item wx:for="{{swiperList}}" wx:key="index" data-url="{{item.url}}" bindtap="tapBanner">
+    <image src="{{item.url}}" mode="scaleToFill" wx:if="{{item.type=='image'}}"></image>
+    <video src="{{item.url}}" autoplay loop muted show-play-btn="{{false}}" controls="{{false}}" objectFit="cover" wx:if="{{itemtype=='video'}}"></video>
+  </swiper-item>
+</swiper>
+
+<view class="cu-modal {{showImg?'show':''}}" style="z-index: 3000">
+  <view class="cu-dialog">
+    <view class="bg-img" style="background-image: url('{{imgUrl}}'); height: 400rpx; background-size: 100% 100%"></view>
+    <view class="action pos-fix text-center round" style="bottom: 50%; left: 50%; margin-left: -25rpx; transform: translateY(300rpx); height: 50rpx; width: 50rpx; background: rgba(0,0,0,.5); line-height: 50rpx" bindtap="hideImg">
+      <text class="cuIcon-close text-white"></text>
+    </view>
+  </view>
+</view>
+
+<view>
+  <view class="padding-tb-xl bg-white" bindtap="toDynamicDetails">
+  <view class="flex justify-start">
+    <view class="cu-avatar margin-left lg"><image src="{{}}" mode="aspectFill"></image></view>
+    <view class="margin-left" style="width:560rpx">
+      <view class="text-df text-bold">阿巴阿巴</view>
+      <view class="margin-top-sm text-sm">2021/01/15  15:25:32</view>
+      <view style="position:relative">
+        <view class="padding-top">
+          <text>{{containBreak}}</text>
+        </view>
+        <button class="cu-btn round bg-white button-hover noStyle margin-top-xs" wx:if="{{contain.length>90}}"><text class="text-cyan">全文</text></button>
+      </view>
+      <view class="grid margin-top-sm">
+        <view class=" xl radius margin-right-sm margin-bottom-sm bg-gray" ><image src="{{}}" mode="aspectFill" style="height:300rpx;width:560rpx"></image></view>
+      </view>
+      <view class="margin-top flex justify-between" style="width:300rpx">
+        <view class="cuIcon-commentfill text-xxl text-gray flex justify-center">
+          <text class="text-lg margin-left-xs">100</text>
+        </view>
+        <!-- <view class="cuIcon-likefill text-xxl text-gray flex justify-center heart">
+          <text class="text-lg margin-left-xs">100</text>
+        </view> -->
+        <view class="flex align-center" catchtap="likeClick">
+          <view class="{{isLike?'heart-active':'like'}}" style="background-image:url('https://i.loli.net/2021/01/16/vTltmxunYQH3Pcz.png');transform:scale(3.2);background-position: left;background-size: cover;"></view>
+          <view class="text-lg margin-left-xs  {{isLike?'text-red':'text-gray'}}">{{likeNum}}</view>
+        </view>
+      </view>
+      <view style="position:relative">
+        <view class="corner"></view>
+        <view class="bubbleBox bg-white margin-top radius shadow" style="width:560rpx">
+        <view class="padding-sm text-df"><text class=" text-bold text-purple">阿巴阿巴</text><text decode="{{true}}">&nbsp;:&nbsp;</text><text>我真的不是人</text></view>
+      </view>
+      </view>
+    </view>
+  </view>
+  </view>
+</view>
+<view class="bg-white shadow" style="position:fixed;bottom:40rpx;right:30rpx;width:80rpx;height:80rpx;border-radius:100%;line-height:80rpx;z-index:1000" bindtap="toReleaseDynamic">
+  <text class="cuIcon-add text-gray" style="font-size:64rpx;padding-left:8rpx"></text>
+</view>
+

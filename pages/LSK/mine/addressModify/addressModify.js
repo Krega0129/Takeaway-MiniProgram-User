@@ -32,7 +32,7 @@ Page({
     sexChecked: true,
     man: 1,
     woman: 0,
-    campusIndex: 0,
+    campusIndex: null,
     sex: '',
     // 点击列表的index
     listId: null,
@@ -40,6 +40,8 @@ Page({
     isDefault: true,
     // 是否为新增地址
     isEmpty: true,
+    // 判断校区选择picker的状态
+    isNoCampus:true
   },
   // 校区选择
   CampusChange: function (e) {
@@ -53,6 +55,7 @@ Page({
     console.log(e.detail.value);
 
     this.setData({
+      isNoCampus:false,
       campusIndex: e.detail.value
     })
 
@@ -89,6 +92,8 @@ Page({
   // 保存地址
   formModify: function (e) {
     let { campus, detailedAddress, contactName, contactPhone, sex, Default } = e.detail.value;
+    console.log(campus,'ddd');
+    
     let isDefault = 1
     let addressStatus = 1
     // 判断是否为默认地址
@@ -102,11 +107,11 @@ Page({
     }
     // 判断所填信息是否完整和正确
     let telStr = /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/;
-    if (detailedAddress.length === 0) {
-      showToast('地址选项不能为空', 1000)
-    } else if (campus.length === 0) {
+    if (campus===null) {
       showToast('校区选项不能为空', 1000)
-    } else if (contactName.length === 0) {
+    } else if (detailedAddress.length === 0) {
+      showToast('地址选项不能为空', 1000)
+    }  else if (contactName.length === 0) {
       showToast('联系人姓名不能为空', 1000)
     } else if (contactPhone.length === 0) {
       showToast('联系电话不能为空', 1000)
@@ -268,7 +273,8 @@ Page({
       addressMsg: addressMsg,
       isDefault: flag,
       sexChecked: sexCode,
-      isEmpty: false
+      isEmpty: false,
+      isNoCampus:false
     })
     setTimeout(function () {
       wx.hideLoading()
@@ -283,7 +289,8 @@ Page({
     }
     else{
       this.setData({
-        isEmpty:true
+        isEmpty:true,
+        isNoCampus:true
       })
     }
   },

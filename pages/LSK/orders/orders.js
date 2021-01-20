@@ -1,5 +1,5 @@
 import { getUserTotalOrder, getUnpaidOrder, cancelUnpaidOrder, selectUserPaidOrder,updateOrderStatus } from '../../../service/order';
-import {changeOrderStatus,oncePaySharing,refundOrder} from '../../../service/bill';
+import {changeOrderStatus,refundOrder} from '../../../service/bill';
 import { loadingOff, showToast } from '../../../utils/util';
 import {
   BASE_URL,
@@ -202,7 +202,7 @@ Page({
           }
           list.push(order)
         }
-        if(res.data.data.total<=pageNum*size){
+        if(res.data.data.total<=pageNum*size||res.data.data.total===0){
           isRequestAll=true
         }
         this.data.allList.push(...list)
