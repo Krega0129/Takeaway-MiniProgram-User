@@ -5,13 +5,11 @@
 </cu-custom> 
 
 <view class="margin" style="margin-bottom: 100rpx">
-  <view class="cu-form-group text-xs">
-    <view class="title">学校：</view>
-    <picker bindchange="changeSchool" value="{{index}}" range="{{schoolList}}">
-      <view class="picker" style="text-align: left">
-        {{index?schoolList[index]:user.campus?user.campus:'请选择你的校区'}}
-      </view>
-    </picker>
+  <view class="cu-form-group justify-start">
+    <view class="title">校区：</view>
+    <view>
+      {{user.campus}}
+    </view>
   </view>
 
   <view class="cu-form-group solid-bottom line-gray text-black" style="line-height: 38rpx">

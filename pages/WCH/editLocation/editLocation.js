@@ -20,38 +20,15 @@ import {
 Page({
   data: {
     user: {
+      campus: wx.getStorageSync('address'),
       sex: 1,
       detailedAddress: '',
       isDefault: 0
     },
-    changeSchool: false,
     hasChange: false,
     // 修改第几个地址
     locationIndex: null,
-    // 选择的学校
-    index: null,
-    schoolList: [],
-    // 是否是新增地址
     addNewAddress: false
-  },
-  onLoad: function (options) {
-    getAllCampus().then(res => {
-      if(res && res.data && res.data.code === H_config.STATECODE_getAllCampus_SUCCESS) {
-        const list = res.data.data
-        let schoolList = []
-        for(let school of list) {
-          schoolList.push(school.campusName)
-        }
-        this.data.schoolList.push(...schoolList)
-        this.setData({
-          schoolList: this.data.schoolList
-        })
-      }
-    }).then(() => {
-      wx.hideLoading()
-    }).catch(err => {
-      console.log(err);
-    })
   },
   onShow: function () {
     let eventChannel = this.getOpenerEventChannel()
@@ -68,13 +45,6 @@ Page({
       this.setData({
         addNewAddress: true
       })
-    })
-  },
-  changeSchool(e) {
-    this.data.user.campus = this.data.schoolList[e.detail.value]
-    this.data.hasChange = true
-    this.setData({
-      index: e.detail.value,
     })
   },
   selectSex(e) {
@@ -103,9 +73,7 @@ Page({
         const reg = /^(?:[\u4e00-\u9fa5·0-9]{2,6})$/
         const reg1 = /^(?:[\u4e00-\u9fa5A-Za-z0-9]{2,10})$/
         
-        if(this.data.index == null) {
-          showToast('请选择校区')
-        } else if(!reg.test(this.data.user.contactName)) {
+        if(!reg.test(this.data.user.contactName)) {
           showToast('姓名格式错误，请输入2-6个中文')
         } else if(!reg1.test(this.data.user.detailedAddress)) {
           showToast('详细地址只能是2-10个字符')
