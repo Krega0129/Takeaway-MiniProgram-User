@@ -3,6 +3,7 @@ import {
   updateAddress,
   deleteAddress,
   addNewAddress,
+  updateDefaultAddress
 } from '../../../service/bill'
 
 import {
@@ -13,10 +14,6 @@ import {
   showToast
 } from '../../../utils/util'
 
-import {
-  getAllCampus
-} from '../../../service/home'
-
 Page({
   data: {
     user: {
@@ -25,6 +22,7 @@ Page({
       detailedAddress: '',
       isDefault: 0
     },
+    oldDefaultStatus: 0,
     hasChange: false,
     // 修改第几个地址
     locationIndex: null,
@@ -36,6 +34,7 @@ Page({
     eventChannel.on('editLocation', (data) => {
       this.setData({
         user: data.user || {},
+        oldDefaultStatus: data.user.isDefault,
         locationIndex: data.index
       })
     })
@@ -115,6 +114,16 @@ Page({
           }).then(res => {
             // 修改成功后
             if(res && res.data && res.data.code === H_config.STATECODE_updateAddress_SUCCESS) {
+              if(this.data.user.isDefault != this.data.oldDefaultStatus) {
+                updateDefaultAddress({
+                  addressStatus: Number(this.data.user.isDefault),
+                  receiveId: this.data.user.receiveId,
+                  userId: wx.getStorageSync('userId')
+                }).then(result => {
+                  console.log(result);
+                  
+                })
+              }
               wx.showToast({
                 title: '修改地址成功',
                 duration: 1000

@@ -37,6 +37,9 @@ H_config.STATECODE_getAllAddress_SUCCESS = 3256
 H_config.API_updateAddress_URL = '/address/updateAddress'
 H_config.STATECODE_updateAddress_SUCCESS = 3258
 H_config.STATECODE_updateAddress_FAIL = 3552
+// 修改地址默认状态
+H_config.API_updateDefaultAddress_URL = '/address/updateAddressStatus'
+H_config.STATECODE_updateDefaultAddress_SUCCESS = 3255
 // 删除收货地址
 H_config.API_deleteAddress_URL = '/address/deleteAddress'
 H_config.STATECODE_deleteAddress_SUCCESS = 3257

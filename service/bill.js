@@ -24,6 +24,14 @@ export function updateAddress(data) {
   })
 }
 
+export function updateDefaultAddress(data) {
+  return request({
+    url: H_config.API_updateDefaultAddress_URL,
+    method: 'post',
+    data: data
+  })
+}
+
 export function deleteAddress(data) {
   return request({
     url: H_config.API_deleteAddress_URL,

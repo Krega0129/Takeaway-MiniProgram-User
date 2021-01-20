@@ -21,7 +21,7 @@
     <view class="bg-white margin-lr-sm" style="box-sizing: border-box" wx:if="{{chooseLocation}}" bindtap="changeLocation">
       <view class="flex justify-between" style="line-height: 60rpx">
         <view class="padding text-bold text-lg">
-          <text class="cuIcon-location"> {{user.compus}}{{user.detailedAddress}}</text>
+          <text class="cuIcon-location"> {{user.campus}}{{user.detailedAddress}}</text>
         </view>
         <view class="cuIcon-right padding"></view>
       </view>
