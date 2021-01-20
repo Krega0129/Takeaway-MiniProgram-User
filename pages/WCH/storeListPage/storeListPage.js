@@ -3,6 +3,8 @@ import {
   _getMultiData
 } from '../../../utils/util'
 
+const BACK_TOP = 500
+
 const app = getApp()
 
 Page({
@@ -15,7 +17,8 @@ Page({
     totalPages: 1,
     showEnd: false,
     toBottom: 100 + 2 * app.globalData.CustomBar,
-    triggered: false
+    triggered: false,
+    showBackTop: false
   },
   async onLoad(options) {
     wx.showLoading({
@@ -57,9 +60,14 @@ Page({
         keyWord: this.data.keyWord
       }
     ).then(res => {
+      if(!this.data.storeList[9]) {
+        this.data.showEnd = true
+      }
+
       this.setData({
         storeList: res.storeList,
-        totalPages: res.totalPages || 1
+        totalPages: res.totalPages || 1,
+        showEnd: this.data.showEnd
       })
     }).then(() => {
       this.onShow()
@@ -86,6 +94,16 @@ Page({
     this.setData({
       storeList: this.data.storeList
     })
+  },
+  onPageScroll(options) {
+    const scrollTop = options.scrollTop
+    const flag = scrollTop >= BACK_TOP
+
+    if(flag !== this.data.showBackTop) {
+      this.setData({
+        showBackTop: flag
+      })
+    }
   },
   showStoreDetails(e) {
     const shopInfo = e.currentTarget.dataset.shopinfo

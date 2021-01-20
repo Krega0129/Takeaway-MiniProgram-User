@@ -82,7 +82,7 @@
     <view class="flex-sub">配送地址</view>
     <view class="flex-treble">
       <view>{{user.contactName}}{{user.sex === 1 ? '(先生)' : '(女士)'}}{{user.contactPhone}}</view>
-      <view class="margin-top-xs">{{user.compus}}{{user.detailedAddress}}</view>
+      <view class="margin-top-xs">{{user.campus}}{{auser.detailedAddress}}</view>
     </view>
   </view>
 </view>

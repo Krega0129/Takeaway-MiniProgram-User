@@ -94,6 +94,12 @@ Page({
             pageNum: 1
           }
         ).then((res) => {
+          if(!res.storeList[9]) {
+            this.setData({
+              showEnd: true
+            })
+          }
+          
           this.setData({
             storeList: res.storeList || [],
             categoryList: this.data.categoryList,

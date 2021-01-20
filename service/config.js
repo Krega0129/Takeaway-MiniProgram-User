@@ -1,6 +1,7 @@
 // const BASE_URL = 'https://192.168.1.105:8888'
 // const BASE_URL = 'https://172.20.10.3:8888'
 const BASE_URL = 'https://www.lizeqiang.top:8888'
+// const BASE_URL = 'https://longdongwu.free.idcfengye.com'
 
 const H_config = {}
 H_config.STATECODE_SUCCESS = 200

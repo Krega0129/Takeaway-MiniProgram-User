@@ -58,6 +58,6 @@
       </view>
     </view>
   </view>
+  <w-to-top-btn wx:if="{{showBackTop}}"></w-to-top-btn>
+  <view class="padding-sm text-center text-gray" wx:if="{{showEnd}}">--------- 我可是有底线的 ---------</view>
 </scroll-view>
-
-<view class="padding-sm text-center text-gray" wx:if="{{showEnd}}">--------- 我可是有底线的 ---------</view>
