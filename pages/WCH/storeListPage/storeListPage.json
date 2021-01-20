@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "w-shop-item": "/components/WCH/w-shop-item/w-shop-item"
+    "w-shop-item": "/components/WCH/w-shop-item/w-shop-item",
+    "w-to-top-btn": "/components/WCH/w-to-top-btn/w-to-top-btn"
   }
 }

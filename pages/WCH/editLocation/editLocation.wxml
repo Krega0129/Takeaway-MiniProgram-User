@@ -38,6 +38,12 @@
       <input type="number" id="telNum" bindinput="newTelNum" placeholder="请输入你的手机号" value="{{user.contactPhone}}" style="font-size: 28rpx;"/>
     </view>
   </view>
+  <view class="solid-bottom line-gray text-black">
+    <view class="cu-form-group margin-top">
+      <view class="title">设为默认</view>
+      <switch checked="{{user.isDefault}}" bindchange="setDefault"></switch>
+    </view>
+  </view>
 </view>
 
 <view class="bg-red margin-sm  radius text-lg padding-sm text-center" style="width: 95%" bindtap="saveLocation">

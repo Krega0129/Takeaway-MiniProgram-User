@@ -46,7 +46,9 @@
     </view>
     <view class="solid-tb flex justify-between padding-sm padding-left-xl solid-bottom line-gray" wx:for="{{locationList}}" wx:key="index" data-user="{{item}}" bindtap="selectLocation">
       <view class="text-cut text-sm" style="width: 600rpx">
-        <view class="text-cut text-black" style="line-height: 40rpx">{{item.campus}}{{item.detailedAddress}}</view>
+        <view class="text-cut text-black" style="line-height: 40rpx">{{item.campus}}{{item.detailedAddress}}
+          <text class="cu-tag margin-left bg-red sm round light text-xs" wx:if="{{item.isDefault}}">默认</text>
+        </view>
         <view class="text-gray">
           <text class="padding-right-xs">{{item.contactName}}</text>
           <text class="padding-right-xs">{{item.sex === 1 ? '先生' : '女士'}}</text>
