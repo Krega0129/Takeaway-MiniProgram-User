@@ -2,6 +2,7 @@
 import{loadingOn,loadingOff,showToast}from '../../../../utils/util'
 import { updateUserInfo , updatePhoto }from '../../../../service/userInfo'
 import {
+  BASE_URL,
   K_config
 } from '../../../../service/config'
 const app = getApp()
@@ -14,7 +15,8 @@ Page({
   data: {
     sex: ['男', '女'],
     index:0,
-    userMsg:{}
+    userMsg:{},
+    baseurl:''
   },
   headChange() {
     let that = this;
@@ -26,27 +28,16 @@ Page({
         // tempFilePath可以作为img标签的src属性显示图片
         const file = res.tempFilePaths;
         const name='用户头像'
-        updatePhoto({file,name}).then((res)=>{
-          loadingOff()
-          console.log(res);
-        })
-        that.setData({
-          imgUrl: tempFilePaths
-        })
-        console.log(tempFilePaths);
-
+        that.upload(that, file)
       },
       fail: function (errInfo) { console.info(errInfo) }
     })
   },
   
-upload:function(page, path) {
-  wx.showToast({
-    icon: "loading",
-    title: "正在上传"
-  }),
+upload(page, path) {
+  let that = this
     wx.uploadFile({
-      url: constant.SERVER_URL + "/FileUploadServlet",
+      url: BASE_URL + "/modifyShopInfo/updatePhoto",
       filePath: path[0], 
       name: 'file',
       header: { "Content-Type": "multipart/form-data" },
@@ -55,31 +46,21 @@ upload:function(page, path) {
         'session_token': wx.getStorageSync('session_token')
       },
       success: function (res) {
-        console.log(res);
-        if (res.statusCode != 200) { 
-          wx.showModal({
-            title: '提示',
-            content: '上传失败',
-            showCancel: false
-          })
-          return;
-        }
-        var data = res.data
-        page.setData({  //上传成功修改显示头像
-          src: path[0]
+        let data=JSON.parse(res.data)
+        console.log(data);    
+        const head=data.data
+        updateUserInfo({head,userId}).then((res)=>{
+          if(res.data.code===K_config.STATECODE_updateUserInfo_SUCCESS || res.data.code===K_config.STATECODE_SUCCESS){
+            showToast('头像更新成功',1000)
+          }
+        })
+        that.setData({
+          'userMsg.head':head
         })
       },
-      fail: function (e) {
-        console.log(e);
-        wx.showModal({
-          title: '提示',
-          content: '上传失败',
-          showCancel: false
-        })
+      fail: function (res) {
+        showToast('头像上传失败，请检查网络')
       },
-      complete: function () {
-        wx.hideToast();  //隐藏Toast
-      }
     })
 },
 
@@ -117,7 +98,8 @@ upload:function(page, path) {
     const userMsg =JSON.parse(options.userMsg)
     this.setData({
       userMsg:userMsg,
-      index:userMsg.sex
+      index:userMsg.sex,
+      baseurl: BASE_URL
     })
     
   },

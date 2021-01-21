@@ -7,7 +7,7 @@
   <view class="flex align-center justify-between margin-left">
     <view class="">头像</view>
     <view class="flex align-center">
-      <view class="cu-avatar radius margin-right xl" style="background-image:url({{userMsg.head}});background-size:cover">
+      <view class="cu-avatar radius margin-right xl"><image src="{{baseurl}}/{{userMsg.head}}" mode='scaleToFill' style="width:100%;height:100%"></image>
       </view><text class="cuIcon-right text-xxl"></text>
     </view>
   </view>

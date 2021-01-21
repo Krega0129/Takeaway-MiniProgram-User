@@ -56,7 +56,7 @@ Page({
     //   phoneNumber: '156 0232 9916'
     // }
     orderDetails:[],
-    status:''
+    status:'',
   },
   // 计算总价
   // totalMoney() {

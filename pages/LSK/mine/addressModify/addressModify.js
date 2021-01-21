@@ -41,7 +41,9 @@ Page({
     // 是否为新增地址
     isEmpty: true,
     // 判断校区选择picker的状态
-    isNoCampus:true
+    isNoCampus: true,
+    // 定位当前校区
+    localCampus:''
   },
   // 校区选择
   CampusChange: function (e) {
@@ -92,8 +94,11 @@ Page({
   // 保存地址
   formModify: function (e) {
     let { campus, detailedAddress, contactName, contactPhone, sex, Default } = e.detail.value;
+   
+    if(campus==null){
+      campus=wx.getStorageSync('address')
+    } 
     console.log(campus,'ddd');
-    
     let isDefault = 1
     let addressStatus = 1
     // 判断是否为默认地址
@@ -306,7 +311,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    let address=wx.getStorageSync('address')
     this.getCampusMsg()
+    this.setData({
+      localCampus:address
+    })
   },
 
   /**
