@@ -24,3 +24,14 @@ export function getShopInfo(data) {
     }
   })
 }
+
+export function shopIdGetShopLicense(data) {
+  return request({
+    url: H_config.API_shopIdGetShopLicense_URL,
+    method: 'post',
+    data: data,
+    header: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
+}

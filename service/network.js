@@ -8,6 +8,7 @@ const header = {
 export default async function(options) {
   wx.showLoading({
     title: '加载中...',
+    mask: true
   })
 
   if(options.header) {

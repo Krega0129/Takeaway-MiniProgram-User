@@ -1,7 +1,8 @@
 // pages/storeDetails/storeDetails.js
 import {
   getShopInfo,
-  getShopDetail
+  getShopDetail,
+  shopIdGetShopLicense
 } from '../../../service/shop'
 import {
   BASE_URL, H_config
@@ -21,6 +22,9 @@ Page({
     storeAddress: '商家地址',
     storeTelNum: '',
     storeNotice: '暂无公告',
+    showShopLicense: false,
+    licenseImg: [],
+    licenseName: ['营业证书', '其他证书', '商铺内部', '商铺外部'],
     TabCur: 0,
     TabIndex: 0,
     tabTitleList: ['点餐', '商家'],
@@ -28,6 +32,8 @@ Page({
     showFoodDetails: false,
     showCartList: false,
     showSpecification: false,
+    showImg: false,
+    imgUrl: '',
     // 商品的详情信息
     foodDetails: {},
     chooseFood: {},
@@ -671,5 +677,43 @@ Page({
       }
     }
     this.data.foodDetails.attributePrice = price
+  },
+  checkCer() {
+    shopIdGetShopLicense({
+      shopId: this.data.shopId
+    }).then(res => {
+      if(res.data.code == H_config.STATECODE_getShopInfo_SUCCESS) {
+        let imgArr = res.data.data
+        let keys = Object.keys(imgArr)
+        for(let i in keys) {
+          this.data.licenseImg.push(BASE_URL + '/' + imgArr[keys[i]])
+        }
+        this.setData({
+          showShopLicense: true,
+          licenseImg: this.data.licenseImg
+        })
+        wx.hideLoading()
+      } else {
+        showToast('加载失败')
+      }
+    })
+  },
+  hideLicense() {
+    this.setData({
+      showShopLicense: false
+    })
+  },
+  showImg(e) {
+    console.log(e);
+    
+    this.setData({
+      showImg: true,
+      imgUrl: e.currentTarget.dataset.imgurl
+    })
+  },
+  hideImg() {
+    this.setData({
+      showImg: false
+    })
   }
 })

@@ -42,7 +42,8 @@ Page({
     // 新增地址
     eventChannel.on('addNewAddress', () => {
       this.setData({
-        addNewAddress: true
+        addNewAddress: true,
+        [`user.campus`]: wx.getStorageSync('address')
       })
     })
   },
@@ -89,6 +90,7 @@ Page({
             if(res && res.data && res.data.code === H_config.STATECODE_addNewAddress_SUCCESS) {
               wx.showToast({
                 title: '新增地址成功！',
+                mask: true,
                 duration: 1000
               })
               setTimeout(() => {

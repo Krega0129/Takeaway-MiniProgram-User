@@ -5,6 +5,7 @@ import {
 
 import {
   getAllAddress,
+  getAllAddressByCampus,
   orderNewOrder
 } from '../../../service/bill'
 
@@ -88,7 +89,7 @@ Page({
         remark: data.remark
       })
     })
-    this._getAllAddress()
+    this._getAllAddressByCampus()
     
   },
   takeAway() {
@@ -128,8 +129,9 @@ Page({
       }
     })
   },
-  _getAllAddress() {
-    getAllAddress({
+  _getAllAddressByCampus() {
+    getAllAddressByCampus({
+      campus: wx.getStorageSync('address'),
       userId: wx.getStorageSync('userId')
     }).then(res => {
       if(res && res.data && res.data.code === H_config.STATECODE_getAllAddress_SUCCESS) {
@@ -143,7 +145,7 @@ Page({
   },
   changeLocation() {
     if(wx.getStorageSync('userId')) {
-      this._getAllAddress()
+      this._getAllAddressByCampus()
       this.setData({
         changeLocation: true
       })

@@ -28,11 +28,13 @@ H_config.STATECODE_getShopInfo_SUCCESS = 1200
 // 获取店铺分类信息
 H_config.API_getShopCategory_URL = '/getShopInfo/getShopCategory'
 H_config.STATECODE_getShopCategory_SUCCESS = 1200
+H_config.API_shopIdGetShopLicense_URL = '/getShopInfo/shopIdGetShopLicense'
 
 // 订单页面
 // 获取收货地址列表
 H_config.API_getAllAddress_URL = '/address/getAllAddress'
 H_config.STATECODE_getAllAddress_SUCCESS = 3256
+H_config.API_getAllAddressByCampus_URL = '/address/selectAddressByCampus'
 // 修改收获地址
 H_config.API_updateAddress_URL = '/address/updateAddress'
 H_config.STATECODE_updateAddress_SUCCESS = 3258

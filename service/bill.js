@@ -16,6 +16,15 @@ export function getAllAddress(data) {
   })
 }
 
+// 获取地址列表
+export function getAllAddressByCampus(data){
+  return request({
+    url: H_config.API_getAllAddressByCampus_URL,
+    method:'POST',
+    data: data
+  })
+}
+
 export function updateAddress(data) {
   return request({
     url: H_config.API_updateAddress_URL,

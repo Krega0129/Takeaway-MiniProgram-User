@@ -220,7 +220,7 @@
     </view>
     <view class="cuIcon-phone lg text-xxl solid-left line-black padding-left" bindtap="callStore"></view>
   </view>
-  <view class="flex justify-between text-lg padding-top-sm">
+  <view class="flex justify-between text-lg padding-top-sm" bindtap="checkCer">
     <view>
       <text class="cuIcon-selection text padding-right-xs"></text>
       <text class="text-bold">查看食品安全档案</text>
@@ -228,10 +228,33 @@
     <view class="cuIcon-right text-xxl"></view>
   </view>
   <view class="flex margin-top-lg">
-    <view class="text-bold text-lg" style="width: 660rpx">
+    <view class="text-bold text-lg" style="width: 200rpx">
       <text class="cuIcon-notification text padding-right-xs"></text>商家公告：
     </view>
-    <view class="text-lg" style="line-height: 50rpx">{{storeNotice}}</view>
+    <view class="text-lg flex-sub" style="line-height: 50rpx">{{storeNotice}}</view>
+  </view>
+</view>
+<!-- 证书展示 -->
+<view class="cu-modal {{showShopLicense?'show':''}}">
+  <view class="cu-dialog">
+    <view class="grid col-2 grid-square padding">
+      <view wx:for="{{licenseImg}}" wx:key="index">
+        <view class="text-center">{{licenseName[index]}}</view>
+        <image src="{{item}}" mode="aspectFill" bindtap="showImg" data-imgUrl="{{item}}"></image>
+      </view>
+    </view>
+    <view class="action pos-fix text-center round" style="bottom: 50%; left: 50%; margin-left: -25rpx; transform: translateY(460rpx); height: 50rpx; width: 50rpx; background: rgba(0,0,0,.5); line-height: 50rpx" bindtap="hideLicense">
+      <text class="cuIcon-close text-white"></text>
+    </view>
+  </view>
+</view>
+
+<view class="cu-modal {{showImg?'show':''}}" style="z-index: 3000">
+  <view class="cu-dialog">
+    <view class="bg-img" style="background-image: url('{{imgUrl}}'); height: 600rpx; background-size: 100% 100%"></view>
+    <view class="action pos-fix text-center round" style="bottom: 50%; left: 50%; margin-left: -25rpx; transform: translateY(400rpx); height: 50rpx; width: 50rpx; background: rgba(0,0,0,.5); line-height: 50rpx" bindtap="hideImg">
+      <text class="cuIcon-close text-white"></text>
+    </view>
   </view>
 </view>
 
