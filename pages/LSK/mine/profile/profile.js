@@ -20,7 +20,8 @@ Page({
       { icon: '', itemName: '投诉建议' }
     ],
     isLogin:false,
-    userMsg:{}
+    userMsg:{},
+    baseurl:''
   },
   toPersonInfo(e) {
     console.log(e);
@@ -97,11 +98,13 @@ onShow: function () {
   if (!wx.getStorageSync('token')) {
     this.setData({
       isLogin: false
+
     })
   } else {
     this.getUserInfo()
     this.setData({
-      isLogin: true
+      isLogin: true,      
+      baseurl: BASE_URL
     })
   }
 },

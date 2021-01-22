@@ -9,11 +9,12 @@
   <view class="cu-form-group ">
     <view class="title">收货地址</view>
     <picker mode="selector" bindchange="CampusChange" value="{{campus[campusIndex].campusName}}" range="{{campus}}" range-key="campusName"
-      data-id="{{campusIndex}}" name="campus" >
+      data-id="{{campusIndex}}" name="campus" wx:if="{{!isNoCampus}}">
       <view class="picker">
-        {{isNoCampus?'请选择收货地址':campus[campusIndex].campusName}}
+        {{campus[campusIndex].campusName}}
       </view>
     </picker>
+    <view wx:else value="{{localCampus}}">{{localCampus}}</view>
   </view>
   <!-- 收货地址 -->
   <view class="cu-form-group">
