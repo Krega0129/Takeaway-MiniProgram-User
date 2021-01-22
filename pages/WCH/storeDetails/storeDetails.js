@@ -685,6 +685,7 @@ Page({
       if(res.data.code == H_config.STATECODE_getShopInfo_SUCCESS) {
         let imgArr = res.data.data
         let keys = Object.keys(imgArr)
+        this.data.licenseImg = []
         for(let i in keys) {
           this.data.licenseImg.push(BASE_URL + '/' + imgArr[keys[i]])
         }
@@ -704,8 +705,6 @@ Page({
     })
   },
   showImg(e) {
-    console.log(e);
-    
     this.setData({
       showImg: true,
       imgUrl: e.currentTarget.dataset.imgurl
