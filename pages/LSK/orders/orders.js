@@ -118,6 +118,7 @@ Page({
         deliveryStatus: item.deliveryStatus,
         status: item.status,
         shopName: item.shopName,
+        shopId: item.shopId,
         isReserved: item.isReserved,
         reservedTime: item.reservedTime,
         businessPhone: item.businessPhone,
@@ -178,6 +179,7 @@ Page({
             deliveryStatus: item.deliveryStatus,
             status: item.status,
             shopName: item.shopName,
+            shopId: item.shopId,
             isReserved: item.isReserved,
             reservedTime: item.reservedTime,
             businessPhone: item.businessPhone,
@@ -234,6 +236,7 @@ Page({
             orderNumber: item.orderNumber,
             totalAmount: item.totalAmount,
             shopName: item.shopName,
+            shopId: item.shopId,
             deliveryAddress: item.deliveryAddress,
             userPhone: item.userPhone,
             userName: item.userName,
@@ -423,7 +426,8 @@ Page({
       orderNumber: order.orderNumber,
       shopName: order.shopName,
       totalAmount: order.totalAmount,
-      userId: order.userId
+      userId: order.userId,
+      shopId: order.shopId
     }, order)
   },
   // 微信支付请求
@@ -431,11 +435,11 @@ Page({
     wx.request({
       url: BASE_URL + '/wechatpay/prePay',
       method: 'POST',
-      header: { 'content-type': 'application/x-www-form-urlencoded' },
+      header: { 'content-type': 'application/json' },
       data: data,
       success: (res) => {
         if (res.data.prepayId != ''){
-          const map = res.data.data.payMap
+          const map = res.data.data
           wx.requestPayment({
             'appId': map.appId,
             'timeStamp': map.timeStamp,
@@ -604,7 +608,8 @@ Page({
       const that = this
       bus.on('orderMsg', function (orderMsg) {
         showToast('有订单信息发生改变', 2000)
-        const obligationList = that.data.obligationList
+        let obligationList = that.data.obligationList
+        console.log(obligationList);
         let paidList = that.data.paidList
         let orderNumber = orderMsg.orderNumber
         console.log(orderMsg);
