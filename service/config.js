@@ -29,6 +29,9 @@ H_config.STATECODE_getShopInfo_SUCCESS = 1200
 H_config.API_getShopCategory_URL = '/getShopInfo/getShopCategory'
 H_config.STATECODE_getShopCategory_SUCCESS = 1200
 H_config.API_shopIdGetShopLicense_URL = '/getShopInfo/shopIdGetShopLicense'
+// 获取轮播图
+H_config.API_getAllPosters_URL = '/managerInfo/selectPhotos'
+H_config.STATECODE_getAllPosters_SUCCESS = 1200
 
 // 订单页面
 // 获取收货地址列表

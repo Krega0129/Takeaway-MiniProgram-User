@@ -35,6 +35,17 @@ export function getAllCampus() {
   })
 }
 
+export function getAllPosters(data) {
+  return request({
+    method: 'post',
+    url: H_config.API_getAllPosters_URL,
+    data: data,
+    header: {
+      'content-type': 'application/x-www-form-urlencoded'
+    }
+  })
+}
+
 export function getShopCategory(data) {
   return request({
     url: H_config.API_getShopCategory_URL,

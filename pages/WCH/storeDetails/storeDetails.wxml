@@ -43,7 +43,7 @@
 <!-- 垂直导航（点餐页面） -->
 <view class="VerticalBox" wx:if="{{TabIndex === 0}}">
   <scroll-view class="VerticalNav nav" scroll-y="{{true}}" scroll-with-animation scroll-top="{{VerticalNavTop}}" style="height:calc(100vh - 500rpx);">
-    <view class="cu-item {{index==TabCur?'text-green cur':''}} text-sm" wx:for="{{list}}" wx:key="index" bindtap='tabSelect' data-id="{{index}}" style="height: auto; line-height: 40rpx; padding: 30rpx 10rpx; word-break: break-all;">
+    <view class="cu-item {{index==TabCur?'text-red cur':''}} text-sm" wx:for="{{list}}" wx:key="index" bindtap='tabSelect' data-id="{{index}}" style="height: auto; line-height: 40rpx; padding: 30rpx 10rpx; word-break: break-all;">
       {{item.name}}
     </view>
   </scroll-view>

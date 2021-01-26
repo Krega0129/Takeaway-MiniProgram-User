@@ -3,39 +3,21 @@ const BACK_TOP = 500
 const app = getApp()
 
 import { 
-  getShopCategory
+  getShopCategory,
+  getAllPosters
 } from '../../../service/home'
 
 import {
   _getMultiData,
   showToast
 } from '../../../utils/util'
-import { H_config } from '../../../service/config'
+import { H_config, BASE_URL } from '../../../service/config'
 
 Page({
   data: {
     position: '定位',
-    swiperList: [{
-      id: 0,
-      type: 'image',
-      url: 'https://p1.meituan.net/travelcube/01d2ab1efac6e2b7adcfcdf57b8cb5481085686.png'
-    }, {
-      id: 1,
-        type: 'image',
-        url: 'http://p0.meituan.net/codeman/33ff80dc00f832d697f3e20fc030799560495.jpg',
-    }, {
-      id: 2,
-      type: 'image',
-      url: 'http://p0.meituan.net/codeman/a97baf515235f4c5a2b1323a741e577185048.jpg'
-    }, {
-      id: 3,
-      type: 'image',
-      url: 'http://p1.meituan.net/codeman/826a5ed09dab49af658c34624d75491861404.jpg'
-    }, {
-      id: 4,
-      type: 'image',
-      url: 'http://p0.meituan.net/codeman/daa73310c9e57454dc97f0146640fd9f69772.jpg'
-    }],
+    BASE_URL: BASE_URL,
+    swiperList: [],
     imgUrl: '',
     showImg: false,
     sendPrice: Number(wx.getStorageSync('sendPrice')),
@@ -74,6 +56,14 @@ Page({
     })
     
     if(wx.getStorageSync('address')) {
+      await getAllPosters({
+        campusId: wx.getStorageSync('campusId')
+      }).then(res => {
+        this.setData({
+          swiperList: res.data.data
+        })
+      })
+
       await getShopCategory().then(res => {
         if(res && res.data && res.data.code  === H_config.STATECODE_getShopCategory_SUCCESS) {
           let cateList = res.data.data
@@ -84,7 +74,7 @@ Page({
           this.data.categoryList = res.data.data || []
         } else {
           wx.hideLoading()
-          showToast('网络异常!')
+          showToast('服务器异常!')
         }
       }).then(() => {
         _getMultiData(
@@ -107,7 +97,7 @@ Page({
           })
           wx.hideLoading()
         }).catch(err => {
-          showToast('网络异常！')
+          showToast('服务器异常！')
         })
       })
     } else {
@@ -209,7 +199,7 @@ Page({
   tapBanner(e) {
     this.setData({
       showImg: true,
-      imgUrl: e.currentTarget.dataset.url
+      imgUrl: BASE_URL + '/' + e.currentTarget.dataset.url
     })
   },
   hideImg() {

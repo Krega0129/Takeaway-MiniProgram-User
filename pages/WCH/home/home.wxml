@@ -49,9 +49,9 @@
   >
 
   <swiper class="screen-swiper square-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
-    <swiper-item wx:for="{{swiperList}}" wx:key="index" data-url="{{item.url}}" bindtap="tapBanner">
-      <image src="{{item.url}}" mode="aspectFill" wx:if="{{item.type=='image'}}"></image>
-      <video src="{{item.url}}" autoplay loop muted show-play-btn="{{false}}" controls="{{false}}" objectFit="cover" wx:if="{{item.type=='video'}}"></video>
+    <swiper-item wx:for="{{swiperList}}" wx:key="photoId" data-url="{{item.photo}}" bindtap="tapBanner">
+      <image src="{{BASE_URL + '/' + item.photo}}" mode="aspectFill"></image>
+      <!-- <video src="{{item.url}}" autoplay loop muted show-play-btn="{{false}}" controls="{{false}}" objectFit="cover" wx:if="{{item.type=='video'}}"></video> -->
     </swiper-item>
   </swiper>
 
@@ -78,6 +78,7 @@
         </view>
         <view class="desc">
           <view class="title text-cut" style="font-size: 40rpx">{{item.shopName}}</view>
+          <view class="text-gray margin-left">浏览人数：{{item.glanceNumber}}</view>
           <view class="text-gray margin-left">
             起送 <text class="text-price">{{item.minPrice ? item.minPrice : 0}}</text>
             配送 <text class="text-price">{{sendPrice}}</text>
