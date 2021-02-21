@@ -37,7 +37,7 @@
 
 <scroll-view 
   scroll-y 
-  style="height: {{flagBottom - toBottom}};"
+  style="height: {{flagBottom - toBottom}}rpx;"
   refresher-enabled="{{true}}"
   refresher-threshold="{{100}}"
   lower-threshold="{{20}}"
