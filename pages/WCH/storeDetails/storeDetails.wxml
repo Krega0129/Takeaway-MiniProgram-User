@@ -228,8 +228,8 @@
     <view class="cuIcon-right text-xxl"></view>
   </view>
   <view class="flex margin-top-lg">
-    <view class="text-bold text-lg" style="width: 200rpx">
-      <text class="cuIcon-notification text padding-right-xs"></text>商家公告：
+    <view class="text-bold text-lg" style="width: 210rpx">
+      <text class="cuIcon-notification text"></text> 商家公告：
     </view>
     <view class="text-lg flex-sub" style="line-height: 50rpx">{{storeNotice}}</view>
   </view>

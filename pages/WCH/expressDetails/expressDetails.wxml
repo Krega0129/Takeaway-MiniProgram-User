@@ -40,7 +40,7 @@
     <view class="cu-form-group text-bold text-xl">
       <view class="title padding-left">{{order.riderName}}</view>
       <view class="flex-sub cuIcon-phone"> {{order.riderPhone}}</view>
-      <view class="cuIcon-copy"></view>
+      <view class="cuIcon-copy" bindtap="copyRiderPhone"></view>
     </view>
   </block>
   <button class="bg-cyan margin-top-xl">取消订单</button>

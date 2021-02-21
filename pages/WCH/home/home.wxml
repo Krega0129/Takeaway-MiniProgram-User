@@ -48,13 +48,13 @@
   bindrefresherrefresh="onRefresh"
 >
 
-  <swiper class="screen-swiper square-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500" style="height: 100rpx; overflow:hidden">
+  <swiper class="screen-swiper square-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
     <swiper-item wx:for="{{swiperList}}" wx:key="photoId" data-url="{{item.photo}}" bindtap="tapBanner">
       <image src="{{BASE_URL + '/' + item.photo}}" mode="aspectFill"></image>
     </swiper-item>
   </swiper>
-
-  <view class="grid col-4 margin-tb-xs padding-tb-sm text-center bg-white padding-lr">
+  <view class="text-center padding-top-sm bg-white text-lg"> —— {{ad}} —— </view>
+  <view class="grid col-4 padding-tb-sm text-center bg-white padding-lr">
     <view class="padding-top-sm" wx:for="{{categoryList}}" wx:key="index">
       <w-category-item data-title="{{item.categoryName}}" bindtap="tapCategory">
         <image slot="img" src="{{item.img}}" style="width: 100rpx; height: 80rpx"></image>
@@ -68,7 +68,10 @@
       </w-category-item>
     </view>
   </view>
-
+  <view class="pos-re" style="height: 50rpx; background: #fde6d2">
+    <view class="cuIcon-notification text-orange pos-ab padding-lr-xs" style="left: 0; top: 0; z-index: 2; font-size: 40rpx; background: #fde6d2; line-height: 50rpx"></view>
+    <view class="notice pos-ab text-orange" style="{{setWidth}}">{{notice}}</view>
+  </view>
   <view class="cu-card article no-card margin-lr-xs margin-bottom-xs radius" bindtap="showStoreDetails" data-shopInfo="{{item}}" wx:for="{{storeList}}" wx:key="index" lower-threshold="{{0}}">
     <view class="cu-item">
       <view class="content">
@@ -77,7 +80,7 @@
           <image src="{{item.shopHead}}" mode="aspectFill" style="width: 200rpx; height: 6.4em"></image>
         </view>
         <view class="desc padding-top: 10rpx pos-re">
-          <view class="title text-cut" style="font-size: 40rpx; line-height: 40rpx">{{item.shopName}}</view>
+          <view class="title text-cut" style="font-size: 36rpx; font-weight: 600; line-height: 40rpx">{{item.shopName}}</view>
           <view class="text-gray margin-left">浏览人数：{{item.glanceNumber}}</view>
           <view class="text-gray margin-left">
             起送 <text class="text-price">{{item.minPrice ? item.minPrice : 0}}</text>
@@ -86,7 +89,7 @@
           <view>
             <view class="dp-in-bk text-cut bg-orange light margin-left" style="max-width: 380rpx">“ {{item.shopIntroduce}} ”</view>
           </view>
-          <view class="cu-tag badge" style="right: 50rpx; top: 30rpx" wx:if="{{item.addCart}}">{{item.num}}</view>
+          <view class="cu-tag badge bg-cyan" style="right: 50rpx; top: 30rpx" wx:if="{{item.addCart}}">{{item.num}}</view>
         </view>
       </view>
     </view>

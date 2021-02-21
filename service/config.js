@@ -79,6 +79,11 @@ H_config.API_oncePaySharing_URL = '/wechatpay/oncePaySharing'
 // 添加分帐方
 H_config.API_addReceiver_URL = '/wechatpay/addReceiver'
 
+// 申请退款
+H_config.API_refund_URL = '/wechatpay/refund'
+H_config.STATECODE_refund_SUCCESS = 3200
+H_config.STATECODE_refund_FAILED = 2530
+
 const K_config = {}
 
 K_config.STATECODE_SUCCESS = 200

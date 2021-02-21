@@ -31,5 +31,18 @@ Page({
   },
   onShow: function () {
 
+  },
+  copyRiderPhone() {
+    wx.setClipboardData({
+      data: this.data.riderPhone,
+      success() {
+        wx.showToast({
+          title: '复制成功',
+        });
+      },
+      fail: () => {
+        showToast('复制失败')
+      }
+    })
   }
 })
