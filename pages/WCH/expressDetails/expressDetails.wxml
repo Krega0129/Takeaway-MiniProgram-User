@@ -1,0 +1,47 @@
+<!--pages/WCH/expressDetails/expressDetails.wxml-->
+<cu-custom bgColor="bg-cyan" isBack="true">
+  <text slot="content">订单详情</text>
+</cu-custom>
+
+<view class="bg-white padding-bottom margin-xs">
+  <view class="padding text-bold">
+    <view class="flex justify-between text-xl flex-wrap">
+      <!-- <text class="text-blue">等待骑手接单...</text> -->
+      <!-- <text class="text-orange">待送达</text> -->
+      <!-- <text class="text-green">已完成</text> -->
+      <text class="text-{{statusColor[order.status]}}">{{status[order.status]}}</text>
+      <text>{{order.expressType}} - {{order.pickUpType}}</text>
+    </view>
+    <view class="flex justify-between flex-wrap margin-top-lg ">
+      <view class="cuIcon-location text-lg"> {{order.campus}}</view>
+      <text class="text-red text-xl">￥{{order.distributionFee}}</text>
+    </view>
+    
+    <view class="margin-bottom-xs margin-top">
+      <text class="cuIcon-title text-xl text-orange"></text>取件地址：
+      {{order.pickUpAddress}}
+    </view>
+    <view class="margin-bottom-xl">
+      <text class="cuIcon-title text-xl text-green"></text>收货地址：
+      {{order.serviceAddress}}
+    </view>
+    <view class="text-center">
+      <view>取件码：</view>
+      <view class="text-bold text-sl text-cyan">{{order.pickUpCode}}</view>
+      <view class="text-bold text-xxl text-cyan margin-top">({{order.specifications}}){{order.expressContent}}</view>
+    </view>
+  </view>
+  <view class="cu-form-group text-bold text-xl">
+    <view class="title padding-left">{{order.addresseeName}}</view>
+    <view class="flex-sub cuIcon-phone"> {{order.addresseePhone}}</view>
+  </view>
+  <block wx:if="{{order.status !== 0}}">
+    <view class="padding-top-xl padding-left-xl text-center solids-top text-xxl text-bold">骑手信息</view>
+    <view class="cu-form-group text-bold text-xl">
+      <view class="title padding-left">{{order.riderName}}</view>
+      <view class="flex-sub cuIcon-phone"> {{order.riderPhone}}</view>
+      <view class="cuIcon-copy"></view>
+    </view>
+  </block>
+  <button class="bg-cyan margin-top-xl">取消订单</button>
+</view>

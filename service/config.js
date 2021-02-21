@@ -128,6 +128,13 @@ K_config.API_updateUserInfo_URL = '/user/updateUserInfo'
 // 上传图片
 K_config.API_updatePhoto_URL = '/modifyShopInfo/updatePhoto'
 
+// 快递代拿
+H_config.API_selectExpressAgentPrice_URL = '/expressAgent/selectExpressAgentPrice'
+H_config.STATECODE_express_SUCCESS = 3200
+
+H_config.API_submitNewForm_URL = '/expressAgent/submitNewForm'
+H_config.API_selectUserOrder_URL = '/expressAgent/selectUserOrder'
+
 // 改成对象
 export {
   BASE_URL,

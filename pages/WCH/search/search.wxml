@@ -1,10 +1,10 @@
 <!--pages/search/search.wxml-->
-<cu-custom bgColor="bg-red" isBack="true">
+<cu-custom bgColor="bg-cyan" isBack="true">
   <text slot="backText">返回</text>
   <text slot="content">搜索</text>
 </cu-custom>
 
-<view class="cu-bar bg-red search">
+<view class="cu-bar bg-cyan search">
   <view class="search-form radius">
     <text class="cuIcon-search"></text>
     <input type="text" placeholder="搜索美食" confirm-type="search" value="{{inputText}}" bindinput="inputSearch" focus="{{true}}"></input>

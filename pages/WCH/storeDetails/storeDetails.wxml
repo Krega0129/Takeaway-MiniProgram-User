@@ -1,9 +1,9 @@
 <!--pages/storeDetails/storeDetails.wxml-->
-<cu-custom bgColor="bg-red" isBack="true"></cu-custom>
+<cu-custom bgColor="bg-cyan" isBack="true"></cu-custom>
 
 <!-- 商家信息展示 -->
 <view class="cu-card article no-card">
-  <view class="cu-item" style="background: #e54d42">
+  <view class="cu-item" style="background: #1cbbb4">
     <view class="content">
       <image src="{{storeImgURL}}" mode="aspectFill" style="width: 200rpx; height: 166rpx; margin-right: 0" class="margin-top bg-white"></image>
       <view class="desc">
@@ -43,7 +43,7 @@
 <!-- 垂直导航（点餐页面） -->
 <view class="VerticalBox" wx:if="{{TabIndex === 0}}">
   <scroll-view class="VerticalNav nav" scroll-y="{{true}}" scroll-with-animation scroll-top="{{VerticalNavTop}}" style="height:calc(100vh - 500rpx);">
-    <view class="cu-item {{index==TabCur?'text-red cur':''}} text-sm" wx:for="{{list}}" wx:key="index" bindtap='tabSelect' data-id="{{index}}" style="height: auto; line-height: 40rpx; padding: 30rpx 10rpx; word-break: break-all;">
+    <view class="cu-item {{index==TabCur?'text-cyan cur':''}} text-sm" wx:for="{{list}}" wx:key="index" bindtap='tabSelect' data-id="{{index}}" style="height: auto; line-height: 40rpx; padding: 30rpx 10rpx; word-break: break-all;">
       {{item.name}}
     </view>
   </scroll-view>
@@ -92,7 +92,7 @@
               <!-- {{chooseFood.id === item.id ? chooseFood.count : 0}} -->
             </view>
             <view catchtap="addGoods" data-food="{{item}}" class="padding-xs" style="display: inline-block">
-              <view class="round cuIcon-add text-white bg-blue text-center" 
+              <view class="round cuIcon-add text-white bg-cyan text-center" 
                   style="height: 36rpx; width: 36rpx; line-height: 36rpx; display: inline-block"></view>
             </view>
           </view>
@@ -108,12 +108,12 @@
               {{goodsCategoryList[ind].foodsList[index].num}}
             </view>
             <view catchtap="chooseSpecification" data-food="{{item}}" data-id="{{item.id}}" class="padding-xs" style="display: inline-block">
-              <view class="round cuIcon-add text-white bg-blue text-center" 
+              <view class="round cuIcon-add text-white bg-cyan text-center" 
                   style="height: 36rpx; width: 36rpx; line-height: 36rpx; display: inline-block"></view>
             </view>
           </view>
           <!-- 有规格商品，未加入购物车，显示选规格 -->
-          <view class="action round bg-red text-sm pos-ab" style="line-height: 36rpx; bottom: 20rpx; right: 20rpx;" wx:if="{{item.specification[0] && item.num === 0}}" catchtap="chooseSpecification" data-id="{{item.id}}" data-food="{{item}}">
+          <view class="action round bg-cyan text-sm pos-ab" style="line-height: 36rpx; bottom: 20rpx; right: 20rpx;" wx:if="{{item.specification[0] && item.num === 0}}" catchtap="chooseSpecification" data-id="{{item.id}}" data-food="{{item}}">
             选规格
           </view>
         </view>
@@ -135,7 +135,7 @@
       <view class="text-left" wx:for="{{specificationList}}" wx:key="index">
         <view class="padding-tb-xs">{{item.specName}}</view>
         <view wx:for="{{item.list}}" wx:for-index="ind" wx:key="ind" wx:for-item="tagList"
-              class="cu-tag radius margin-xs {{tagList.check?'bg-orange':''}}" 
+              class="cu-tag radius margin-xs {{tagList.check?'bg-cyan':''}}" 
               data-index="{{index}}"
               data-ind="{{ind}}"
               data-list="{{item.list}}"
@@ -175,9 +175,9 @@
         </view>
       </view>
       <!-- 无规格商品，未加入购物车 -->
-      <view class="bg-red padding-sm radius" bindtap="addSingleFood" wx:if="{{!foodDetails.specification[0] && foodDetails.num <= 0}}">加入购物车</view>
+      <view class="bg-cyan padding-sm radius" bindtap="addSingleFood" wx:if="{{!foodDetails.specification[0] && foodDetails.num <= 0}}">加入购物车</view>
       <!-- 有规格商品，未加入购物车 -->
-      <view class="bg-red padding-sm radius" bindtap="chooseSpecification" data-id="{{foodDetails.id}}" data-food="{{foodDetails}}" wx:if="{{foodDetails.specification[0] && foodDetails.num <= 0}}">选规格</view>
+      <view class="bg-cyan padding-sm radius" bindtap="chooseSpecification" data-id="{{foodDetails.id}}" data-food="{{foodDetails}}" wx:if="{{foodDetails.specification[0] && foodDetails.num <= 0}}">选规格</view>
 
       <!-- 无规格商品，已经加入购物车 -->
       <view class="action padding-bottom-xs padding-right-xs pos-ab" style="width:162rpx; height: 80rpx; line-height: 36rpx; bottom: 0; right: 0; text-align: right" wx:if="{{!foodDetails.specification[0] && foodDetails.num > 0}}">
@@ -189,7 +189,7 @@
           {{foodDetails.num}}
         </view>
         <view catchtap="addGoods" class="padding-xs" style="display: inline-block">
-          <view class="round cuIcon-add text-white bg-blue text-center" 
+          <view class="round cuIcon-add text-white bg-cyan text-center" 
               style="height: 36rpx; width: 36rpx; line-height: 36rpx; display: inline-block"></view>
         </view>
       </view>
@@ -203,7 +203,7 @@
           {{foodDetails.num}}
         </view>
         <view catchtap="chooseSpecification" data-food="{{foodDetails}}" data-id="{{foodDetails.id}}" class="padding-xs" style="display: inline-block">
-          <view class="round cuIcon-add text-white bg-blue text-center" 
+          <view class="round cuIcon-add text-white bg-cyan text-center" 
               style="height: 36rpx; width: 36rpx; line-height: 36rpx; display: inline-block"></view>
         </view>
       </view>
@@ -259,9 +259,9 @@
 </view>
 
 <!-- 底部结算栏 -->
-<view class="pos-fix bg-black text-center" style="bottom: 0; height: 130rpx; width: 100%; z-index: 2000" wx:if="{{TabIndex == 0}}">
-  <view class="cuIcon-cartfill round bg-white pos-ab text-sl" style="width: 140rpx; height: 140rpx; top: -70rpx; left: 50rpx; line-height: 140rpx;" catchtap="showCartList">
-    <view class="round bg-red pos-ab" style="width: 40rpx; height: 40rpx; font-size: 30rpx; line-height: 40rpx; top: 0; right: 10rpx;" wx:if="{{totalCount > 0}}">{{totalCount}}</view>
+<view class="pos-fix bg-black text-center" style="bottom: 0; height: 120rpx; width: 100%; z-index: 2000" wx:if="{{TabIndex == 0}}">
+  <view class="cuIcon-cartfill round bg-white pos-ab text-sl" style="width: 140rpx; height: 140rpx; top: -60rpx; left: 20rpx; line-height: 140rpx;" catchtap="showCartList">
+    <view class="round bg-cyan pos-ab" style="width: 40rpx; height: 40rpx; font-size: 30rpx; line-height: 40rpx; top: 0; right: 10rpx;" wx:if="{{totalCount > 0}}">{{totalCount}}</view>
   </view>
   <view class="text-left" style="width: 60%; padding-left: 180rpx; line-height: 100rpx">
     <text class="text-price text-white">{{totalPrice}}</text>
@@ -269,7 +269,7 @@
       <text>另需配送费<text class="text-price">{{sendPrice}}</text>/可自提</text>
     </view>
   </view>
-  <view class="pos-ab bg-{{cartList[0]?'red':'grey'}} text-xl" style="right: 0; top: 0; height: 100%; line-height: 130rpx; width: 260rpx" bindtap="bill">去结算</view>
+  <view class="pos-ab bg-{{cartList[0]?'cyan':'grey'}} text-xl" style="right: 0; top: 0; height: 100%; line-height: 130rpx; width: 260rpx" bindtap="bill">去结算</view>
 </view>
 
 <!-- 结算栏菜单 -->
@@ -300,9 +300,9 @@
           </view>
           <view class="action">
             <view style="margin-top: 40rpx; width: 200rpx; margin-left: -30rpx" class="flex text-center">
-              <view class="round cuIcon-move text-lg text-white bg-blue" style="height: 40rpx; width: 40rpx; line-height: 40rpx" data-food="{{item}}" catchtap="removeGoods"></view>
+              <view class="round cuIcon-move text-lg text-white bg-cyan" style="height: 40rpx; width: 40rpx; line-height: 40rpx" data-food="{{item}}" catchtap="removeGoods"></view>
               <text class="margin-lr-xs text-xl"> {{cartList[index].count?cartList[index].count:cartList[index].num}} </text>
-              <view class="round cuIcon-add text-white bg-blue text-lg" data-food="{{item}}" style="height: 40rpx; width: 40rpx; line-height: 40rpx" catchtap="addGoodsInCartList"></view>
+              <view class="round cuIcon-add text-white bg-cyan text-lg" data-food="{{item}}" style="height: 40rpx; width: 40rpx; line-height: 40rpx" catchtap="addGoodsInCartList"></view>
               <view class="cuIcon-delete text-red text-xl margin-left" catchtap="deleteCartListItem" data-food="{{item}}"></view>
             </view>
           </view>

@@ -37,17 +37,34 @@ Page({
       '../../../assets/img/WCH/category/tea-milk.png'
     ],
     totalPages: 1,
-    toBottom: 100 + 2 * app.globalData.CustomBar,
-    showEnd: false
+    toBottom: null,
+    flagBottom: null,
+    showEnd: false,
+    setWidth: '',
+    ad: '校园生活，这是广告',
+    notice: '这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语'
   },
   async onLoad() {
     wx.showLoading({
       title: '加载中...'
     })
+    
+    wx.createSelectorQuery().select('.notice').boundingClientRect(res => {
+      let setWidth = `--width: -${res.width}px; --wid: ${res.width / 30}s`
+      this.setData({
+        setWidth: setWidth
+      })
+    }).exec()
 
     wx.createSelectorQuery().select('.search').boundingClientRect().selectViewport().scrollOffset().exec(res => {
       this.setData({
         toBottom: res[0].bottom * 2
+      })
+    })
+
+    wx.createSelectorQuery().select('.flag').boundingClientRect().selectViewport().scrollOffset().exec(res => {
+      this.setData({
+        flagBottom: res[0].bottom * 2
       })
     })
 
@@ -205,6 +222,11 @@ Page({
   hideImg() {
     this.setData({
       showImg: false
+    })
+  },
+  takeExpress() {
+    wx.navigateTo({
+      url: '/pages/WCH/express/express'
     })
   }
 })

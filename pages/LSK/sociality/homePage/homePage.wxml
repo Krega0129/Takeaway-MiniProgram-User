@@ -1,6 +1,6 @@
 <!--pages/sociality/sociality.wxml-->
 <cu-custom bgColor="bg-red">
-  <text slot="content">朋友圈</text>
+  <text slot="content">生活圈</text>
 </cu-custom>
 <swiper class="screen-swiper square-dot" style="height:450rpx" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
   <swiper-item wx:for="{{swiperList}}" wx:key="index" data-url="{{item.url}}" bindtap="tapBanner">

@@ -1,5 +1,5 @@
 <!--pages/WCH/submitOrder/submitOrder.wxml-->
-<cu-custom bgColor="bg-red" isBack="true" delta="2"></cu-custom>
+<cu-custom bgColor="bg-cyan" isBack="true" delta="2"></cu-custom>
 
 <view class="bg-white text-center margin-sm padding-bottom">
   <!-- 等待支付 -->
@@ -35,12 +35,12 @@
     <!-- 未支付 -->
     <view class="flex justify-between" style="width: 60%; margin: 0 auto" wx:if="{{!isPay && !cancel}}" >
       <view style="width: 45%" class="solid line-black padding-xs" bindtap="cancelOrder">取消订单</view>
-      <view style="width: 45%" class="padding-xs bg-red" bindtap="toPay">去支付</view>
+      <view style="width: 45%" class="padding-xs bg-cyan" bindtap="toPay">去支付</view>
     </view>
     <!-- 支付 -->
     <view class="flex justify-between" style="width: 60%; margin: 0 auto" wx:if="{{isPay || cancel}}" >
       <view style="width: 45%" class="solid line-black padding-xs" bindtap="toHome">返回首页</view>
-      <view style="width: 45%" class="bg-red padding-xs" bindtap="orderAgain">再来一单</view>
+      <view style="width: 45%" class="bg-cyan padding-xs" bindtap="orderAgain">再来一单</view>
     </view>
   </view>
 </view>

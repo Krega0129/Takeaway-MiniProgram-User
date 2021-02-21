@@ -1,0 +1,106 @@
+<!--pages/WCH/express/express.wxml-->
+<cu-custom bgColor="bg-cyan" isBack="true">
+  <text slot="content">快递代拿</text>
+</cu-custom>
+
+<scroll-view scroll-x class="bg-white nav">
+  <view class="flex text-center">
+    <view class="cu-item flex-sub {{index==TabIndex?'text-orange cur':''}}" wx:for="{{tabTitleList}}" wx:key="index" bindtap="tapTabIndex" data-id="{{index}}">
+      {{item}}
+    </view>
+  </view>
+</scroll-view>
+
+<scroll-view
+  scroll-y 
+  style="height:{{flagBottom - toBottom}}rpx;"
+>
+  <view class="margin-lr-xs" wx:if="{{TabIndex === 0}}">
+    <view class="bg-white text-xl text-bold text-center padding-tb-xl">
+      <view class="cuIcon-deliver text-sl margin-tb"></view>
+      快递代拿
+    </view>
+    <view class="bg-white padding-bottom">
+      <view class="cu-form-group">
+        <view class="title">校区</view>
+        <input disabled value="{{campus}}" placeholder="校区"></input>
+      </view>
+      <view class="cu-form-group">
+        <view class="title">姓名</view>
+        <input model:value="{{addresseeName}}" placeholder="姓名"></input>
+      </view>
+      <view class="cu-form-group">
+        <view class="title">手机号码</view>
+        <input model:value="{{addresseePhone}}" placeholder="手机号码"></input>
+      </view>
+      <view class="cu-form-group">
+        <view class="title">物品名称</view>
+        <input model:value="{{expressContent}}" placeholder="物品名称"></input>
+        <picker bindchange="specificationsChange" range="{{specificationsList}}">
+          <view class="picker">
+            {{specificationsList[idx]}}
+          </view>
+        </picker>
+      </view>
+      <view class="cu-form-group">
+        <view class="title">取件码</view>
+        <input model:value="{{pickUpCode}}" placeholder="取件码"></input>
+      </view>
+      <view class="cu-form-group">
+        <view class="title">取件地址</view>
+        <input model:value="{{pickUpAddress}}" placeholder="取件地址"></input>
+      </view>
+      <view class="cu-form-group">
+        <view class="title">取件类型</view>
+        <view class="cu-form-group">
+          <picker bindchange="PickerChange" range="{{pickUpTypeList}}">
+            <view class="picker">
+              {{pickUpTypeList[index]}}
+            </view>
+          </picker>
+        </view>
+      </view>
+      <view class="cu-form-group">
+        <view class="title">快递公司</view>
+        <input model:value="{{expressType}}" placeholder="快递公司"></input>
+      </view>
+      <view class="cu-form-group margin-bottom">
+        <view class="title">送达地址</view>
+        <input model:value="{{serviceAddress}}" placeholder="送达地址"></input>
+      </view>
+      <view class="text-red text-center">* 贵重物品建议自行取件</view>
+      <button bindtap="submitOrder" class="bg-cyan margin-top-xs">提交</button>
+    </view>
+  </view>
+
+  <view class="margin-lr-xs" style="overflow: hidden" wx:if="{{TabIndex === 1}}">
+    <view class="bg-white margin-top-xs padding-sm" wx:for="{{express}}" wx:key="index" bindtap="expressDetails" data-item="{{item}}">
+      <view class="flex justify-between padding-bottom-sm solids-bottom">
+        <view class="text-bold">{{item.expressType + ' - ' + item.pickUpType}}</view>
+        <view class="text-{{item.status === 0 ? 'blue' : item.status === 1 ? 'orange' : item.status === 2 ? 'green' : 'red'}} text-bold">{{item.status === 0 ? '待接单' : item.status === 1 ? '已接单' : item.status === 2 ? '已送达' : '订单异常'}}</view>
+      </view>
+      <view class="padding-top-sm padding-left">
+        <view class="text-cut margin-bottom-xs text-lg text-bold text-cyan padding-left">
+          {{item.expressContent ? item.expressContent : '未知物品'}}
+        </view>
+        <view class="text-cut margin-bottom-xs">
+          <text class="cuIcon-title text-lg text-orange"></text>取件地址：
+          {{item.pickUpAddress}}
+        </view>
+        <view class="text-cut margin-bottom">
+          <text class="cuIcon-title text-lg text-green"></text>收获地址：
+          {{item.serviceAddress}}
+        </view>
+        <view class="text-cut margin-bottom-xs" wx:if="{{item.deliverPhone}}">
+          <text class="cuIcon-phone"> 骑手电话：</text>
+          {{item.deliverPhone}}
+        </view>
+      </view>
+    </view>
+    <view class="padding-sm text-center text-gray" wx:if="{{showEnd}}">--------- 我可是有底线的 ---------</view>
+  </view>
+</scroll-view>
+
+<!-- 充当一个参考点，计算距离底部的距离 -->
+<view class="pos-fix flag" style="bottom: 0"></view>
+

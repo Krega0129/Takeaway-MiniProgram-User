@@ -1,10 +1,10 @@
 <!--pages/home/home.wxml-->
-<cu-custom bgColor="bg-red" isLocated="true">
+<cu-custom bgColor="bg-cyan" isLocated="true">
   <text slot="location">{{position}}</text>
   <text slot="content">首页</text>
 </cu-custom>
 
-<view class="cu-bar bg-red search pos-fix" style="width:100%; z-index: 10" bindtap="focusSearch">
+<view class="cu-bar bg-cyan search pos-fix" style="width:100%; z-index: 10" bindtap="focusSearch">
   <view class="search-form radius">
     <text class="cuIcon-search"></text>
     <text class="text-gray">搜索美食</text>
@@ -37,7 +37,7 @@
 
 <scroll-view 
   scroll-y 
-  style="height:calc(100vh - {{toBottom}}rpx);"
+  style="height: {{flagBottom - toBottom}};"
   refresher-enabled="{{true}}"
   refresher-threshold="{{100}}"
   lower-threshold="{{20}}"
@@ -46,24 +46,25 @@
   refresher-background="#f1f1f1"
   refresher-triggered="{{triggered}}"
   bindrefresherrefresh="onRefresh"
-  >
+>
 
-  <swiper class="screen-swiper square-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
+  <swiper class="screen-swiper square-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500" style="height: 100rpx; overflow:hidden">
     <swiper-item wx:for="{{swiperList}}" wx:key="photoId" data-url="{{item.photo}}" bindtap="tapBanner">
       <image src="{{BASE_URL + '/' + item.photo}}" mode="aspectFill"></image>
-      <!-- <video src="{{item.url}}" autoplay loop muted show-play-btn="{{false}}" controls="{{false}}" objectFit="cover" wx:if="{{item.type=='video'}}"></video> -->
     </swiper-item>
   </swiper>
 
-  <!-- <button bindtap="test">test</button> -->
-  <!-- <button bindtap="showLogin">登录</button>
-  <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNum">获取手机号</button> -->
-
-  <view class="grid col-4 margin-bottom-xs text-center margin-top-xs bg-white padding-lr">
-    <view wx:for="{{categoryList}}" wx:key="index">
-      <w-category-item class="padding" data-title="{{item.categoryName}}" bindtap="tapCategory">
+  <view class="grid col-4 margin-tb-xs padding-tb-sm text-center bg-white padding-lr">
+    <view class="padding-top-sm" wx:for="{{categoryList}}" wx:key="index">
+      <w-category-item data-title="{{item.categoryName}}" bindtap="tapCategory">
         <image slot="img" src="{{item.img}}" style="width: 100rpx; height: 80rpx"></image>
         <text slot="title">{{item.categoryName}}</text>
+      </w-category-item>
+    </view>
+    <view class="padding-top-sm">
+      <w-category-item bindtap="takeExpress">
+        <image slot="img" src="../../../assets/img/WCH/category/bread.png" style="width: 100rpx; height: 80rpx"></image>
+        <text slot="title">快递代拿</text>
       </w-category-item>
     </view>
   </view>
@@ -74,10 +75,9 @@
         <!-- <image src="{{item.shopHead}}" mode="aspectFill" style="width: 200rpx; height: 6.4em" class="margin-top"></image> -->
         <view class="pos-re margin-top">
           <image src="{{item.shopHead}}" mode="aspectFill" style="width: 200rpx; height: 6.4em"></image>
-          <view class="cu-tag badge" wx:if="{{item.addCart}}">{{item.num}}</view>
         </view>
-        <view class="desc">
-          <view class="title text-cut" style="font-size: 40rpx">{{item.shopName}}</view>
+        <view class="desc padding-top: 10rpx pos-re">
+          <view class="title text-cut" style="font-size: 40rpx; line-height: 40rpx">{{item.shopName}}</view>
           <view class="text-gray margin-left">浏览人数：{{item.glanceNumber}}</view>
           <view class="text-gray margin-left">
             起送 <text class="text-price">{{item.minPrice ? item.minPrice : 0}}</text>
@@ -86,6 +86,7 @@
           <view>
             <view class="dp-in-bk text-cut bg-orange light margin-left" style="max-width: 380rpx">“ {{item.shopIntroduce}} ”</view>
           </view>
+          <view class="cu-tag badge" style="right: 50rpx; top: 30rpx" wx:if="{{item.addCart}}">{{item.num}}</view>
         </view>
       </view>
     </view>
@@ -98,3 +99,6 @@
   <view class="padding-sm text-center text-gray" wx:if="{{showEnd}}">--------- 我可是有底线的 ---------</view>
 
 </scroll-view>
+
+<!-- 充当一个参考点，计算距离底部的距离 -->
+<view class="pos-fix flag" style="bottom: 0"></view>

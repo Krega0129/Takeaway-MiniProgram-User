@@ -1,5 +1,5 @@
 <!--pages/location/location.wxml-->
-<cu-custom bgColor="bg-red" isBack="{{canBack}}">
+<cu-custom bgColor="bg-cyan" isBack="{{canBack}}">
   <text slot="backText">返回</text>
   <text slot="content">定位</text>
 </cu-custom>
