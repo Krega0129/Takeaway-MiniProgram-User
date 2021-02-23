@@ -240,19 +240,10 @@
     <view class="grid col-2 grid-square padding">
       <view wx:for="{{licenseImg}}" wx:key="index">
         <view class="text-center">{{licenseName[index]}}</view>
-        <image src="{{item}}" mode="aspectFill"  bindtap="showImg" data-imgUrl="{{item}}"></image>
+        <image src="{{item}}" mode="aspectFill"  bindtap="_previewImage" data-imgUrl="{{item}}"></image>
       </view>
     </view>
     <view class="action pos-fix text-center round" style="bottom: 50%; left: 50%; margin-left: -25rpx; transform: translateY(460rpx); height: 50rpx; width: 50rpx; background: rgba(0,0,0,.5); line-height: 50rpx" bindtap="hideLicense">
-      <text class="cuIcon-close text-white"></text>
-    </view>
-  </view>
-</view>
-
-<view class="cu-modal {{showImg?'show':''}}" style="z-index: 3000">
-  <view class="cu-dialog">
-    <view class="bg-img" style="background-image: url('{{imgUrl}}'); height: 600rpx; background-size: 100% 100%"></view>
-    <view class="action pos-fix text-center round" style="bottom: 50%; left: 50%; margin-left: -25rpx; transform: translateY(400rpx); height: 50rpx; width: 50rpx; background: rgba(0,0,0,.5); line-height: 50rpx" bindtap="hideImg">
       <text class="cuIcon-close text-white"></text>
     </view>
   </view>

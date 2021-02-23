@@ -178,6 +178,13 @@ export function pay(data) {
   })
 }
 
+export function previewImage(urls) {
+  wx.previewImage({
+    urls: [urls],
+    current: 'current'
+  })
+}
+
 module.exports = {
   formatTime: formatTime,
   _getMultiData,
@@ -185,5 +192,6 @@ module.exports = {
   loadingOn,
   loadingOff,
   showToast,
-  pay
+  pay,
+  previewImage
 }
