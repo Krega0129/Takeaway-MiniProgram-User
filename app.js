@@ -1,5 +1,8 @@
 //app.js
 import  bus  from './utils/bus'
+import {
+  getAllCampus
+} from './service/home'
 App({
   onLaunch: function () {
     this.globalData.bus=bus
@@ -21,6 +24,15 @@ App({
     if(wx.getStorageSync('userId')) {
       this.webSocketConnect()
     }
+
+    getAllCampus().then(res => {
+      if(res.data && res.data.code && res.data.code === 3200) {
+        let list = res.data.data
+        let address = list.find(item => item.campusId === wx.getStorageSync('campusId'))
+        wx.setStorageSync('sendPrice', address.campusCost)
+        wx.setStorageSync('minPrice', address.campusMinPrice)
+      }
+    })
     
     wx.getSystemInfo({
       success: e => {

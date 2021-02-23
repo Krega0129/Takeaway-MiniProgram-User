@@ -68,6 +68,7 @@ Page({
           wx.setStorageSync('address', e.currentTarget.dataset.location.campusName)
           wx.setStorageSync('campusId', e.currentTarget.dataset.location.campusId)
           wx.setStorageSync('sendPrice', Number(e.currentTarget.dataset.location.campusCost).toFixed(2))
+          wx.setStorageSync('minPrice', Number(e.currentTarget.dataset.location.campusMinPrice).toFixed(2))
           // 修改当前定位
           this.setData({
             nowLocation: wx.getStorageSync('address')

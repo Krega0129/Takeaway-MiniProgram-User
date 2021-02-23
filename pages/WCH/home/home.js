@@ -21,6 +21,7 @@ Page({
     imgUrl: '',
     showImg: false,
     sendPrice: Number(wx.getStorageSync('sendPrice')),
+    minPrice: Number(wx.getStorageSync('minPrice')),
     triggered: false,
     categoryList: [],
     storeList: [],
@@ -145,7 +146,8 @@ Page({
     }
     this.setData({
       storeList: this.data.storeList,
-      sendPrice: Number(wx.getStorageSync('sendPrice')) ? Number(wx.getStorageSync('sendPrice')).toFixed(2) : Number(wx.getStorageSync('sendPrice'))
+      sendPrice: Number(wx.getStorageSync('sendPrice')) ? Number(wx.getStorageSync('sendPrice')).toFixed(2) : Number(wx.getStorageSync('sendPrice')),
+      minPrice: Number(wx.getStorageSync('minPrice')) ? Number(wx.getStorageSync('minPrice')).toFixed(2) : Number(wx.getStorageSync('minPrice'))
     })
   },
   onPageScroll(options) {
