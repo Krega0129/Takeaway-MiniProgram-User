@@ -58,13 +58,13 @@ Page({
 
     wx.createSelectorQuery().select('.search').boundingClientRect().selectViewport().scrollOffset().exec(res => {
       this.setData({
-        toBottom: res[0].bottom * 2
+        toBottom: res[0].bottom
       })
     })
 
     wx.createSelectorQuery().select('.flag').boundingClientRect().selectViewport().scrollOffset().exec(res => {
       this.setData({
-        flagBottom: res[0].bottom * 2
+        flagBottom: res[0].bottom
       })
     })
 
@@ -76,6 +76,7 @@ Page({
       await getAllPosters({
         campusId: wx.getStorageSync('campusId')
       }).then(res => {
+        wx.hideLoading()
         this.setData({
           swiperList: res.data.data
         })
@@ -101,6 +102,7 @@ Page({
             pageNum: 1
           }
         ).then((res) => {
+          wx.hideLoading()
           if(!res.storeList[9]) {
             this.setData({
               showEnd: true
@@ -112,7 +114,6 @@ Page({
             categoryList: this.data.categoryList,
             totalPages: res.totalPages
           })
-          wx.hideLoading()
         }).catch(err => {
           showToast('服务器异常！')
         })

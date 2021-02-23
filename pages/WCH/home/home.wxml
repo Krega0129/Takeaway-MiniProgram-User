@@ -37,7 +37,7 @@
 
 <scroll-view 
   scroll-y 
-  style="height: {{flagBottom - toBottom}}rpx;"
+  style="height: {{flagBottom - toBottom}}px;"
   refresher-enabled="{{true}}"
   refresher-threshold="{{100}}"
   lower-threshold="{{20}}"
@@ -83,7 +83,7 @@
           <view class="title text-cut" style="font-size: 36rpx; font-weight: 600; line-height: 40rpx">{{item.shopName}}</view>
           <view class="text-gray margin-left">浏览人数：{{item.glanceNumber}}</view>
           <view class="text-gray margin-left">
-            起送 <text class="text-price">{{item.minPrice ? item.minPrice : 0}}</text>
+            <!-- 起送 <text class="text-price">{{item.minPrice ? item.minPrice : 0}}</text> -->
             配送 <text class="text-price">{{sendPrice}}</text>
           </view>
           <view>
