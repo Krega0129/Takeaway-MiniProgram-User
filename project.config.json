@@ -9,7 +9,7 @@
     "enhance": true,
     "postcss": true,
     "preloadBackgroundData": false,
-    "minified": true,
+    "minified": false,
     "newFeature": false,
     "coverView": true,
     "nodeModules": false,
@@ -37,7 +37,7 @@
   },
   "compileType": "miniprogram",
   "libVersion": "2.12.2",
-  "appid": "wx3f6fe20d6c3ea467",
+  "appid": "wxb2dfbd203ddd200f",
   "projectname": "Takeaway-User",
   "debugOptions": {
     "hidedInDevtools": []
@@ -48,11 +48,9 @@
   "simulatorPluginLibVersion": {},
   "condition": {
     "search": {
-      "current": -1,
       "list": []
     },
     "conversation": {
-      "current": -1,
       "list": []
     },
     "plugin": {

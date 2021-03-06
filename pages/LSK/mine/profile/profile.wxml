@@ -24,7 +24,7 @@
   <view class="bg-white padding-lr margin-bottom-xs" bindtap="toAddressList">
     <view class="padding-tb flex justify-between align-end">
       <view class=" flex align-center">
-        <text class="cuIcon-locationfill text-xl"></text>
+        <text class="cuIcon-locationfill text-xl text-green"></text>
         <text class="margin-left">收货地址</text>
       </view>
       <view class="padding-right-xs"><text class="cuIcon-right"></text></view>
@@ -34,7 +34,7 @@
   <view class="bg-white padding-lr margin-bottom-xs" bindtap="toSocial">
     <view class="padding-tb flex justify-between align-end">
       <view class=" flex align-center">
-        <text class="cuIcon-messagefill text-xl"></text>
+        <text class="cuIcon-messagefill text-xl text-blue"></text>
         <text class="margin-left">历史说说</text>
       </view>
       <view class="padding-right-xs"><text class="cuIcon-right"></text></view>
@@ -44,7 +44,7 @@
   <view class="bg-white padding-lr margin-bottom-xs">
     <view class="padding-tb flex justify-between align-end">
       <view class=" flex align-center">
-        <text class="cuIcon-dianhua text-xl"></text>
+        <text class="cuIcon-dianhua text-xl text-yellow"></text>
         <text class="margin-left">商业合作</text>
       </view>
       <view class="padding-right-xs"><text class="cuIcon-right"></text></view>
@@ -54,7 +54,7 @@
   <view class="bg-white padding-lr margin-bottom-xs">
     <view class="padding-tb flex justify-between align-end">
       <view class=" flex align-center">
-        <text class="cuIcon-expressman  text-xl"></text>
+        <text class="cuIcon-expressman text-xl text-red"></text>
         <text class="margin-left">骑手招聘</text>
       </view>
       <view class="padding-right-xs"><text class="cuIcon-right"></text></view>
@@ -64,7 +64,7 @@
   <view class="bg-white padding-lr margin-bottom-xs" bindtap="toSuggest">
     <view class="padding-tb flex justify-between align-end">
       <view class=" flex align-center">
-        <text class="cuIcon-commentfill  text-xl"></text>
+        <text class="cuIcon-commentfill text-xl text-pink"></text>
         <text class="margin-left">投诉建议</text>
       </view>
       <view class="padding-right-xs"><text class="cuIcon-right"></text></view>
