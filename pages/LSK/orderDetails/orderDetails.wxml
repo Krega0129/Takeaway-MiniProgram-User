@@ -1,6 +1,6 @@
 <!--pages/orderDetails/orderDetails.wxml-->
 
-<cu-custom bgColor="bg-red" isBack="true">
+<cu-custom bgColor="bg-cyan" isBack="true">
   <text slot="backText">返回</text>
   <text slot="content">订单详情</text>
 </cu-custom>

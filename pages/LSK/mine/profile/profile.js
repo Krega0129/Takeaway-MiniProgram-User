@@ -56,17 +56,16 @@ Page({
     })
   },
   toSocial() {
-    wx.showToast({
-      icon: 'none',
-      title: '内容未开放',
-    });
+    wx.navigateTo({
+      url: '/pages/LSK/mine/historyDynamic/historyDynamic',
+    })
   },
   // 获取用户信息
   getUserInfo(){
     let userId = wx.getStorageSync('userId')
     selectUserInfo(userId).then((res)=>{
       loadingOff()
-      console.log(res);
+      // console.log(res);
       
       if(res.data.code===K_config.STATECODE_selectUserInfo_SUCCESS || res.data.code===K_config.STATECODE_SUCCESS){
         let userMsg=res.data.data

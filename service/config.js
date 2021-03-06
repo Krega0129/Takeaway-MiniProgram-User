@@ -1,7 +1,7 @@
 // const BASE_URL = 'https://192.168.1.105:8888'
 // const BASE_URL = 'https://172.20.10.3:8888'
 const BASE_URL = 'https://www.lizeqiang.top:8888'
-// const BASE_URL = 'https://longdongwu.free.idcfengye.com'
+// const BASE_URL = 'https://cat.vipgz4.idcfengye.com'
 
 const H_config = {}
 H_config.STATECODE_SUCCESS = 200
@@ -124,6 +124,39 @@ K_config.API_deleteAddress_URL = '/address/deleteAddress'
 K_config.API_selectAllCampus_URL = '/campus/selectAllCampusName'
 
 // 分享校园接口
+// 查询所有校园圈
+K_config.API_getAllDynamic_URL = '/shareschool/selectAll'
+K_config.STATECODE_getAllDynamic_SUCCESS = 3200
+// 根据校区查询校园圈
+K_config.API_getAllDynamicByCampus_URL = '/shareschool/selectAllByCampus'
+K_config.STATECODE_getAllDynamicByCampus_SUCCESS = 3200
+//点赞
+K_config.API_giveThumbUp_URL = '/shareschool/like'
+K_config.STATECODE_giveThumbUp_SUCCESS = 2221
+// 取消点赞
+K_config.API_cancelThumbUp_URL = '/shareschool/unlike'
+K_config.STATECODE_cancelThumbUp_SUCCESS = 2223
+// 新增校园圈
+K_config.API_addDynamic_URL = '/shareschool/insert'
+K_config.STATECODE_addDynamic_SUCCESS = 3200
+// 新增评论
+K_config.API_insertComment_URL = '/shareschool/insertComment'
+K_config.STATECODE_insertComment_SUCCESS = 3200
+// 获取评论
+K_config.API_getComment_URL = '/shareschool/selectCommentByShareId'
+K_config.STATECODE_getComment_SUCCESS = 3200
+// 删除评论
+K_config.API_deleteComment_URL = '/shareschool/deleteComment'
+K_config.STATECODE_deleteComment_SUCCESS = 3200
+// 获取个人历史动态
+K_config.API_getDynamicById_URL = '/shareschool/selectByUid'
+K_config.STATECODE_getDynamicById_SUCCESS = 3200
+// 按照审核状态获取动态
+K_config.API_getDynamicByStatus_URL = '/shareschool/selectByUidAndStatus'
+K_config.STATECODE_getDynamicByStatus_SUCCESS = 3200
+// 删除动态
+K_config.API_deleteDynamic_URL = '/shareschool/delete'
+K_config.STATECODE_deleteDynamic_SUCCESS = 3200
 
 // 用户信息接口
 // 获取信息

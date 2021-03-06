@@ -27,6 +27,8 @@ Page({
       success(res) {
         // tempFilePath可以作为img标签的src属性显示图片
         const file = res.tempFilePaths;
+        // console.log(file);
+        
         const name='用户头像'
         that.upload(that, file)
       },

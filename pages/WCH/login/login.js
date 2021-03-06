@@ -2,7 +2,11 @@
 import {
   login
 } from '../../../utils/util'
-
+import { selectUserInfo }from '../../../service/userInfo';
+import {
+  BASE_URL,
+  K_config
+} from '../../../service/config'
 Page({
   data: {
     code: null
@@ -32,6 +36,12 @@ Page({
         if(res.data.code === 3252 || res.data.code === 3251) {
           wx.setStorageSync('token', token)
           wx.setStorageSync('userId', id)
+          selectUserInfo(id).then((res)=>{
+            if(res.data.code===K_config.STATECODE_selectUserInfo_SUCCESS || res.data.code===K_config.STATECODE_SUCCESS){
+              // let userMsg=res.data.data
+              wx.setStorageSync('nickName', res.data.data.nickname)
+            } 
+          })
           wx.hideLoading()
           wx.showToast({
             title: '登录成功',

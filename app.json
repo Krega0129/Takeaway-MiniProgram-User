@@ -22,6 +22,8 @@
     "pages/WCH/submitOrder/submitOrder",
     "pages/LSK/sociality/dynamicDetails/dynamicDetails",
     "pages/LSK/sociality/releaseDynamic/releaseDynamic",
+    "pages/LSK/mine/historyDynamic/historyDynamic",
+    "pages/LSK/mine/dynamicDetail/dynamicDetail",
     "pages/WCH/express/express",
     "pages/WCH/expressDetails/expressDetails"
   ],
