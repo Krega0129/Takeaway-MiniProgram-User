@@ -146,7 +146,7 @@ Page({
     }
     this.setData({
       storeList: this.data.storeList,
-      sendPrice: Number(wx.getStorageSync('sendPrice')) ? Number(wx.getStorageSync('sendPrice')).toFixed(2) : Number(wx.getStorageSync('sendPrice')),
+      sendPrice: Number(wx.getStorageSync('sendPrice')) ? (Number(wx.getStorageSync('sendPrice')) / 2).toFixed(2) : Number(wx.getStorageSync('sendPrice')),
       minPrice: Number(wx.getStorageSync('minPrice')) ? Number(wx.getStorageSync('minPrice')).toFixed(2) : Number(wx.getStorageSync('minPrice'))
     })
   },

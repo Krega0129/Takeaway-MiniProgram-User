@@ -173,6 +173,11 @@ H_config.STATECODE_express_SUCCESS = 3200
 H_config.API_submitNewForm_URL = '/expressAgent/submitNewForm'
 H_config.API_selectUserOrder_URL = '/expressAgent/selectUserOrder'
 
+H_config.API_payExpress_URL = '/wechatpay/agentPre'
+// H_config.STATECODE_addNewAddress_SUCCESS = 
+
+H_config.API_cancelExpressOrder_URL = '/expressAgent/cancelOrder'
+
 // 改成对象
 export {
   BASE_URL,

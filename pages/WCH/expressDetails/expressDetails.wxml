@@ -43,5 +43,5 @@
       <view class="cuIcon-copy" bindtap="copyRiderPhone"></view>
     </view>
   </block>
-  <button class="bg-cyan margin-top-xl">取消订单</button>
+  <button class="bg-cyan margin-top-xl" bindtap="cancelOrder">取消订单</button>
 </view>
