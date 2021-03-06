@@ -102,10 +102,10 @@
     </view>
     <view class="text-price margin-right-xl text-red text-bold" style="line-height: 64rpx">{{item.price + (item.attrPrice?item.attrPrice:0)}}</view>
   </view>
-  <!-- <view class="padding-lr padding-bottom-xs padding-top-lg flex justify-between" style="line-height: 38rpx">
+  <view class="padding-lr padding-bottom-xs padding-top-lg flex justify-between" style="line-height: 38rpx">
     <view>包装费</view>
     <view class="text-price margin-right-xl text-red text-bold">{{packPrice}}</view>
-  </view> -->
+  </view>
   <view class="padding-lr padding-tb-xs flex justify-between" style="line-height: 38rpx">
     <view>配送费</view>
     <view class="text-price margin-right-xl text-red text-bold">{{sendPrice}}</view>

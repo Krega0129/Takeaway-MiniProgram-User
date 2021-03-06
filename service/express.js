@@ -26,9 +26,18 @@ export function selectUserOrder(data) {
   })
 }
 
-export function a(data) {
+export function payExpress(data) {
   return request({
-    url: H_config.API_submitNewForm_URL,
+    url: H_config.API_payExpress_URL,
+    method: 'post',
+    data: data
+  })
+}
+
+// 取消订单
+export function cancelExpressOrder(data) {
+  return request({
+    url: H_config.API_cancelExpressOrder_URL,
     method: 'post',
     data: data,
     header: {

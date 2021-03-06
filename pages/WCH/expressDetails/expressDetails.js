@@ -1,4 +1,8 @@
 // pages/WCH/expressDetails/expressDetails.js
+import {
+  cancelExpressOrder
+} from '../../../service/express'
+
 Page({
   data: {
     order: {
@@ -44,5 +48,20 @@ Page({
         showToast('复制失败')
       }
     })
-  }
+  },
+  cancelOrder() {
+    wx.showModal({
+      content: '确定取消该订单？',
+      success: res => {
+        if(res.confirm) {
+          cancelExpressOrder({
+            id: String(this.data.order.orderNumber)
+          }).then(res => {
+            wx.hideLoading()
+            console.log(res);
+          })
+        }
+      }
+    })
+  },
 })

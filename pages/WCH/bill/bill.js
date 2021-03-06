@@ -23,7 +23,8 @@ Page({
     imgUrl: null,
     cartList: [],
     totalPrice: 0,
-    sendPrice: Number(wx.getStorageSync('sendPrice')),
+    sendPrice: (Number(wx.getStorageSync('sendPrice')) / 2).toFixed(2),
+    packPrice: (Number(wx.getStorageSync('sendPrice')) / 2).toFixed(2),
     chooseLocation: false,
     changeLocation: false,
     // 当前地址
@@ -79,7 +80,7 @@ Page({
 
     this.setData({
       picker: this.data.picker,
-      sendPrice: Number(wx.getStorageSync('sendPrice'))
+      sendPrice: (Number(wx.getStorageSync('sendPrice')) / 2).toFixed(2)
     })
   },
   onShow: function () {
@@ -96,7 +97,7 @@ Page({
     app.culPrice(this.data.cartList, Number(wx.getStorageSync('sendPrice')))
     this.setData({
       takeAway: true,
-      sendPrice: Number(wx.getStorageSync('sendPrice')),
+      sendPrice: (Number(wx.getStorageSync('sendPrice')) / 2).toFixed(2),
       totalPrice: app.globalData.totalPrice
     })
   },
