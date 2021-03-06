@@ -108,6 +108,7 @@ export function pay(data) {
                   wx.showToast({
                     title: '支付成功！'
                   })
+                  wx.setStorageSync('refundTime', new Date().getTime() + 10000)
                   wx.navigateTo({
                     url: '/pages/WCH/submitOrder/submitOrder',
                     success: result => {
@@ -177,6 +178,13 @@ export function pay(data) {
   })
 }
 
+export function previewImage(urls) {
+  wx.previewImage({
+    urls: [urls],
+    current: 'current'
+  })
+}
+
 module.exports = {
   formatTime: formatTime,
   _getMultiData,
@@ -184,5 +192,6 @@ module.exports = {
   loadingOn,
   loadingOff,
   showToast,
-  pay
+  pay,
+  previewImage
 }

@@ -97,6 +97,7 @@ Page({
           if(!wx.getStorageSync('campusSocialName')){
             wx.setStorageSync('campusSocialName', '所有校区')
           }
+          wx.setStorageSync('minPrice', Number(e.currentTarget.dataset.location.campusMinPrice).toFixed(2))
           // 修改当前定位
           this.setData({
             nowLocation: wx.getStorageSync('address')

@@ -1,5 +1,5 @@
 <!--pages/WCH/remarks/remarks.wxml-->
-<cu-custom bgColor="bg-red" isBack="true">
+<cu-custom bgColor="bg-cyan" isBack="true">
   <text slot="content">订单备注</text>
 </cu-custom>
 
@@ -28,6 +28,6 @@
   </view>
 </view>
 
-<view class="pos-fix bg-red margin-sm radius text-lg padding text-center" style="width: 95%; left: 0; bottom: 0;" bindtap="finishRemark">
+<view class="pos-fix bg-cyan margin-sm radius text-lg padding text-center" style="width: 95%; left: 0; bottom: 0;" bindtap="finishRemark">
   完成
 </view>

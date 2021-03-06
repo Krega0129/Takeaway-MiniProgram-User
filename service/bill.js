@@ -128,3 +128,14 @@ export function prePay(data) {
     // }
   })
 }
+
+export function refund(data) {
+  return request({
+    url: H_config.API_refund_URL,
+    method: 'post',
+    data: data,
+    header: {
+      'content-type': 'application/x-www-form-urlencoded'
+    }
+  })
+}

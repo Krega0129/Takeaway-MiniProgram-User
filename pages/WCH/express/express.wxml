@@ -1,0 +1,162 @@
+<!--pages/WCH/express/express.wxml-->
+<cu-custom bgColor="bg-cyan" isBack="true">
+  <text slot="content">快递代拿</text>
+</cu-custom>
+
+<scroll-view scroll-x class="nav bg-white">
+  <view class="flex text-center">
+    <view class="cu-item flex-sub {{index==TabIndex?'text-orange cur':''}}" wx:for="{{tabTitleList}}" wx:key="index" bindtap="tapTabIndex" data-id="{{index}}">
+      {{item}}
+    </view>
+  </view>
+</scroll-view>
+
+<scroll-view
+  scroll-y 
+  class="{{TabIndex === 0 ? 'bg-white' : ''}}"
+  style="height:{{flagBottom - toBottom}}px;"
+  wx:if="{{TabIndex === 0}}"
+>
+  <view class="margin-lr-xs">
+    <view class="bg-white text-xl text-bold text-center padding-tb-xs">
+      <view class="cuIcon-deliver text-sl margin-tb"></view>
+      快递代拿
+    </view>
+    <view class="bg-white solid-bottom" style="box-sizing: border-box" wx:if="{{!chooseLocation}}" bindtap="changeLocation">
+      <view class="flex justify-between" style="line-height: 60rpx">
+        <view class="padding text-bold text-lg">
+          <text class="cuIcon-roundaddfill text-yellow"> 选择收货地址</text>
+        </view>
+        <view class="cuIcon-right padding"></view>
+      </view>
+    </view>
+    <!-- 选择地址后显示 -->
+    <view class="bg-white margin-lr-sm" style="box-sizing: border-box" wx:if="{{chooseLocation}}" bindtap="changeLocation">
+      <view class="flex justify-between" style="line-height: 60rpx">
+        <view class="padding text-bold text-lg">
+          <text class="cuIcon-location"> {{user.campus}}{{user.detailedAddress}}</text>
+        </view>
+        <view class="cuIcon-right padding"></view>
+      </view>
+      <view class="flex margin-left-xl" style="line-height: 40rpx">
+        <view>{{user.contactName}} {{user.sex === 1 ? '先生' : '女士'}}</view>
+        <view class="margin-left padding-bottom">{{user.contactPhone}}</view>
+      </view>
+    </view>
+    <view class="bg-white padding-bottom">
+      <view class="cu-form-group">
+        <view class="title">物品名称</view>
+        <input model:value="{{expressContent}}" placeholder="物品名称"></input>
+        <picker bindchange="specificationsChange" range="{{specificationsList}}">
+          <view class="picker">
+            {{specificationsList[idx]}}
+          </view>
+        </picker>
+      </view>
+      <view class="cu-form-group">
+        <view class="title">取件码</view>
+        <input model:value="{{pickUpCode}}" placeholder="取件码"></input>
+      </view>
+      <view class="cu-form-group">
+        <view class="title">取件地址</view>
+        <input model:value="{{pickUpAddress}}" placeholder="取件地址"></input>
+      </view>
+      <view class="cu-form-group">
+        <view class="title">取件类型</view>
+        <view class="cu-form-group">
+          <picker bindchange="PickerChange" range="{{pickUpTypeList}}">
+            <view class="picker">
+              {{pickUpTypeList[index]}}
+            </view>
+          </picker>
+        </view>
+      </view>
+      <view class="cu-form-group">
+        <view class="title">快递公司</view>
+        <input model:value="{{expressType}}" placeholder="快递公司"></input>
+      </view>
+      <view class="cu-form-group">
+        <view class="title">价格</view>
+        <view class="padding-right text-price text-red">{{distributionFee}}</view>
+      </view>
+      <view class="text-red padding-left">* 贵重物品建议自行取件</view>
+      <button bindtap="submitOrder" class="bg-cyan margin-top-xs">提交</button>
+    </view>
+  </view>
+</scroll-view>
+
+<scroll-view
+  scroll-y
+  style="height:{{flagBottom - toBottom}}px;"
+  wx:if="{{TabIndex === 1}}"
+  refresher-enabled="{{true}}"
+  refresher-threshold="{{100}}"
+  lower-threshold="{{20}}"
+  bindscrolltolower	="scrollToBottom"
+  refresher-default-style="white"
+  refresher-background="#f1f1f1"
+  refresher-triggered="{{triggered}}"
+  bindrefresherrefresh="onRefresh"
+>
+  <view class="margin-lr-xs full">
+    <view wx:if="{{userId}}">
+      <view class="bg-white margin-top-xs padding-sm" wx:for="{{express}}" wx:key="index"  bindtap="expressDetails" data-item="{{item}}">
+        <view class="flex justify-between padding-bottom-sm solids-bottom">
+          <view class="text-bold">{{item.expressType + ' - ' + item.pickUpType}}</view>
+          <view class="text-{{item.status === 0 ? 'blue' : item.status === 1 ? 'orange' : item.status === 2 ? 'green' : 'red'}} text-bold">{{item.status === 0 ? '待接单' : item.status === 1 ? '已接单' : item.status === 2 ? '已送达' : '订单异常'}}</view>
+        </view>
+        <view class="padding-top-sm padding-left">
+          <view class="text-cut margin-bottom-xs text-lg text-bold text-cyan padding-left">
+            {{item.expressContent ? item.expressContent : '未知物品'}}
+          </view>
+          <view class="text-cut margin-bottom-xs">
+            <text class="cuIcon-title text-lg text-orange"></text>取件地址：
+            {{item.pickUpAddress}}
+          </view>
+          <view class="text-cut margin-bottom">
+            <text class="cuIcon-title text-lg text-green"></text>收货地址：
+            {{item.serviceAddress}}
+          </view>
+          <view class="text-cut margin-bottom-xs" wx:if="{{item.deliverPhone}}">
+            <text class="cuIcon-phone"> 骑手电话：</text>
+            {{item.deliverPhone}}
+          </view>
+        </view>
+      </view>
+      <view class="padding-sm text-center text-gray" wx:if="{{showEnd}}">--------- 我可是有底线的 ---------</view>
+    </view>
+    <view class="flex justify-center align-center full" wx:else>
+      <button type="primary" bindtap="login">请先登录</button>
+    </view>
+  </view>
+</scroll-view>
+
+<view class="cu-modal bottom-modal {{changeLocation?'show':''}}">
+  <view class="cu-dialog text-left bg-white" style="height: 800rpx">
+    <view class="bg-white solid-bottom line-gray">
+      <view class="action text-gray padding-sm" bindtap="cancleChangeLocation">取消</view>
+    </view>
+    <view class="solid-tb flex justify-between padding-sm padding-left-xl solid-bottom line-gray" wx:for="{{locationList}}" wx:key="index" data-user="{{item}}" bindtap="selectLocation">
+      <view class="text-cut text-sm" style="width: 600rpx">
+        <view class="text-cut text-black" style="line-height: 40rpx">{{item.campus}}{{item.detailedAddress}}
+          <text class="cu-tag margin-left bg-cyan sm round light text-xs" wx:if="{{item.isDefault}}">默认</text>
+        </view>
+        <view class="text-gray">
+          <text class="padding-right-xs">{{item.contactName}}</text>
+          <text class="padding-right-xs">{{item.sex === 1 ? '先生' : '女士'}}</text>
+          <text class="padding-right-xs">{{item.contactPhone}}</text>
+        </view>
+      </view>
+      <view class="padding-sm" catchtap="editLocation" data-user="{{item}}" data-index="{{index}}">
+        <text class="cuIcon-write"></text>
+      </view>
+    </view>
+  </view>
+  <view class="padding pos-ab text-center bg-cyan margin-sm" style="bottom: 0; width: 95%" bindtap="newLocation">
+    <text class="cuIcon-roundadd"> 新增地址</text>
+  </view>
+</view>
+
+<!-- 充当一个参考点，计算距离底部的距离 -->
+<view class="pos-fix flag" style="bottom: 0"></view>
+

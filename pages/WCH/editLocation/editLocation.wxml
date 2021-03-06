@@ -1,5 +1,5 @@
 <!--pages/WCH/editLocation/editLocation.wxml-->
-<cu-custom bgColor="bg-red" isBack="true">
+<cu-custom bgColor="bg-cyan" isBack="true">
   <text wx:if="{{addNewAddress}}" slot="backText">新增收货地址</text>
   <text wx:else slot="backText">编辑收货地址</text>
 </cu-custom> 
@@ -44,7 +44,7 @@
   </view>
 </view>
 
-<view class="bg-red margin-sm  radius text-lg padding-sm text-center" style="width: 95%" bindtap="saveLocation">
+<view class="bg-cyan margin-sm  radius text-lg padding-sm text-center" style="width: 95%" bindtap="saveLocation">
   保存地址
 </view>
 <view class="bg-gray margin-sm radius text-lg padding-sm text-center" style="width: 95%;" bindtap="deleteLocation" wx:if="{{!addNewAddress}}">

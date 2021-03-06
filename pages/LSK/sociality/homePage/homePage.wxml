@@ -1,7 +1,6 @@
 <!--pages/sociality/sociality.wxml-->
-<cu-custom bgColor="bg-red" isLocated="true" class="scrollTop">
-  <text slot="location">{{position}}</text>
-  <text slot="content">朋友圈</text>
+<cu-custom bgColor="bg-red">
+  <text slot="content">生活圈</text>
 </cu-custom>
 <view class="cu-modal {{showImg?'show':''}}" style="z-index: 3000">
   <view class="cu-dialog">

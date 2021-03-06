@@ -1,1 +1,16 @@
 /* pages/home/home.wxss */
+.notice {
+  top: 5rpx;
+  white-space: nowrap;
+  left: 100vw;
+  animation: move var(--wid) linear infinite;
+}
+
+@keyframes move {
+  0% {
+    left: 100vw;
+  }
+  100% {
+    left: var(--width);
+  }
+}

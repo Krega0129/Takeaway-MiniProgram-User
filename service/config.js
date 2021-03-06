@@ -79,6 +79,11 @@ H_config.API_oncePaySharing_URL = '/wechatpay/oncePaySharing'
 // 添加分帐方
 H_config.API_addReceiver_URL = '/wechatpay/addReceiver'
 
+// 申请退款
+H_config.API_refund_URL = '/wechatpay/refund'
+H_config.STATECODE_refund_SUCCESS = 3200
+H_config.STATECODE_refund_FAILED = 2530
+
 const K_config = {}
 
 K_config.STATECODE_SUCCESS = 200
@@ -160,6 +165,13 @@ K_config.API_selectUserInfo_URL = '/user/selectUserInfo'
 K_config.API_updateUserInfo_URL = '/user/updateUserInfo'
 // 上传图片
 K_config.API_updatePhoto_URL = '/modifyShopInfo/updatePhoto'
+
+// 快递代拿
+H_config.API_selectExpressAgentPrice_URL = '/expressAgent/selectExpressAgentPrice'
+H_config.STATECODE_express_SUCCESS = 3200
+
+H_config.API_submitNewForm_URL = '/expressAgent/submitNewForm'
+H_config.API_selectUserOrder_URL = '/expressAgent/selectUserOrder'
 
 // 改成对象
 export {

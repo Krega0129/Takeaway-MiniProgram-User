@@ -21,6 +21,7 @@ Page({
     imgUrl: '',
     showImg: false,
     sendPrice: Number(wx.getStorageSync('sendPrice')),
+    minPrice: Number(wx.getStorageSync('minPrice')),
     triggered: false,
     categoryList: [],
     storeList: [],
@@ -37,17 +38,34 @@ Page({
       '../../../assets/img/WCH/category/tea-milk.png'
     ],
     totalPages: 1,
-    toBottom: 100 + 2 * app.globalData.CustomBar,
-    showEnd: false
+    toBottom: null,
+    flagBottom: null,
+    showEnd: false,
+    setWidth: '',
+    ad: '校园生活，这是广告',
+    notice: '这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语'
   },
   async onLoad() {
     wx.showLoading({
       title: '加载中...'
     })
+    
+    wx.createSelectorQuery().select('.notice').boundingClientRect(res => {
+      let setWidth = `--width: -${res.width}px; --wid: ${res.width / 30}s`
+      this.setData({
+        setWidth: setWidth
+      })
+    }).exec()
 
     wx.createSelectorQuery().select('.search').boundingClientRect().selectViewport().scrollOffset().exec(res => {
       this.setData({
-        toBottom: res[0].bottom * 2
+        toBottom: res[0].bottom
+      })
+    })
+
+    wx.createSelectorQuery().select('.flag').boundingClientRect().selectViewport().scrollOffset().exec(res => {
+      this.setData({
+        flagBottom: res[0].bottom
       })
     })
 
@@ -59,6 +77,7 @@ Page({
       await getAllPosters({
         campusId: wx.getStorageSync('campusId')
       }).then(res => {
+        wx.hideLoading()
         this.setData({
           swiperList: res.data.data
         })
@@ -84,6 +103,7 @@ Page({
             pageNum: 1
           }
         ).then((res) => {
+          wx.hideLoading()
           if(!res.storeList[9]) {
             this.setData({
               showEnd: true
@@ -95,7 +115,6 @@ Page({
             categoryList: this.data.categoryList,
             totalPages: res.totalPages
           })
-          wx.hideLoading()
         }).catch(err => {
           showToast('服务器异常！')
         })
@@ -127,7 +146,8 @@ Page({
     }
     this.setData({
       storeList: this.data.storeList,
-      sendPrice: Number(wx.getStorageSync('sendPrice')) ? Number(wx.getStorageSync('sendPrice')).toFixed(2) : Number(wx.getStorageSync('sendPrice'))
+      sendPrice: Number(wx.getStorageSync('sendPrice')) ? Number(wx.getStorageSync('sendPrice')).toFixed(2) : Number(wx.getStorageSync('sendPrice')),
+      minPrice: Number(wx.getStorageSync('minPrice')) ? Number(wx.getStorageSync('minPrice')).toFixed(2) : Number(wx.getStorageSync('minPrice'))
     })
   },
   onPageScroll(options) {
@@ -205,6 +225,11 @@ Page({
   hideImg() {
     this.setData({
       showImg: false
+    })
+  },
+  takeExpress() {
+    wx.navigateTo({
+      url: '/pages/WCH/express/express'
     })
   }
 })

@@ -7,7 +7,7 @@ import {
 import {
   BASE_URL, H_config
 } from '../../../service/config'
-import { showToast } from '../../../utils/util';
+import { showToast, previewImage } from '../../../utils/util';
 const app = getApp()
 
 Page({
@@ -704,15 +704,7 @@ Page({
       showShopLicense: false
     })
   },
-  showImg(e) {
-    this.setData({
-      showImg: true,
-      imgUrl: e.currentTarget.dataset.imgurl
-    })
-  },
-  hideImg() {
-    this.setData({
-      showImg: false
-    })
+  _previewImage(e) {
+    previewImage(e.currentTarget.dataset.imgurl)
   }
 })

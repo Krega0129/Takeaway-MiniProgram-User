@@ -6,7 +6,7 @@
   "setting": {
     "urlCheck": false,
     "es6": true,
-    "enhance": false,
+    "enhance": true,
     "postcss": true,
     "preloadBackgroundData": false,
     "minified": true,
@@ -47,6 +47,14 @@
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "condition": {
+    "search": {
+      "current": -1,
+      "list": []
+    },
+    "conversation": {
+      "current": -1,
+      "list": []
+    },
     "plugin": {
       "list": []
     },
@@ -58,12 +66,6 @@
     },
     "miniprogram": {
       "list": [
-        {
-          "name": "pages/WCH/home/home",
-          "pathName": "pages/WCH/home/home",
-          "query": "",
-          "scene": null
-        },
         {
           "id": -1,
           "name": "pages/WCH/storeDetails/storeDetails",
@@ -100,51 +102,16 @@
           "scene": null
         },
         {
-          "name": "pages/LSK/orders/orders",
-          "pathName": "pages/LSK/orders/orders",
+          "id": -1,
+          "name": "pages/WCH/express/express",
+          "pathName": "pages/WCH/express/express",
           "query": "",
           "scene": null
         },
         {
-          "name": "pages/LSK/mine/addressList/addressList",
-          "pathName": "pages/LSK/mine/addressList/addressList",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/LSK/mine/profile/profile",
-          "pathName": "pages/LSK/mine/profile/profile",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/LSK/orders/orders",
-          "pathName": "pages/LSK/orders/orders",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/LSK/sociality/homePage/homePage",
-          "pathName": "pages/LSK/sociality/homePage/homePage",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/LSK/sociality/dynamicDetails",
-          "pathName": "pages/LSK/sociality/dynamicDetails",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/LSK/sociality/releaseDynamic/releaseDynamic",
-          "pathName": "pages/LSK/sociality/releaseDynamic/releaseDynamic",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/LSK/mine/profile/profile",
-          "pathName": "pages/LSK/mine/profile/profile",
-          "query": "",
+          "id": -1,
+          "name": "pages/WCH/expressDetails/expressDetails",
+          "pathName": "pages/WCH/expressDetails/expressDetails",
           "scene": null
         },
         {

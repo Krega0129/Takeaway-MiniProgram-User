@@ -1,5 +1,5 @@
 <!--pages/WCH/login/login.wxml-->
-<cu-custom bgColor="bg-red" isBack="true">
+<cu-custom bgColor="bg-cyan" isBack="true">
   <text slot="content">微信授权</text>
 </cu-custom>
 

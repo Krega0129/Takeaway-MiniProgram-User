@@ -1,0 +1,4 @@
+/* pages/WCH/expressDetails/expressDetails.wxss */
+page {
+  background: white;
+}

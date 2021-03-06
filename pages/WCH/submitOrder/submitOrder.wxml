@@ -1,12 +1,13 @@
 <!--pages/WCH/submitOrder/submitOrder.wxml-->
-<cu-custom bgColor="bg-red" isBack="true" delta="2"></cu-custom>
+<cu-custom bgColor="bg-cyan" isCustom="{{true}}" delta="2"></cu-custom>
 
 <view class="bg-white text-center margin-sm padding-bottom">
   <!-- 等待支付 -->
   <view class="padding-tb text-lg text-bold">
     <text wx:if="{{!isPay && !cancel}}">等待支付</text>
-    <text wx:if="{{isPay}}">支付成功</text>
+    <text wx:if="{{isPay && !isRefund}}">支付成功</text>
     <text wx:if="{{cancel}}">订单已取消</text>
+    <text wx:if="{{isRefund}}">已退款</text>
   </view>
 
   <view wx:if="{{!isPay && !cancel}}">
@@ -18,9 +19,9 @@
   </view>
 
   <!-- 已支付 -->
-  <view wx:if="{{isPay}}">
+  <view wx:if="{{isPay && !isRefund}}">
     <view class="text-sm text-gray margin-top-xs">
-      支付成功，请耐心等待商家送达
+      支付成功，请耐心等待商家送达，您可在3分钟内申请退款
     </view>
   </view>
 
@@ -31,16 +32,27 @@
     </view>
   </view>
 
+  <!-- 已取消 -->
+  <view wx:if="{{isRefund}}">
+    <view class="text-sm text-gray margin-top-xs">
+      已申请退款，稍后将退回到您的微信账户中，请注意查收
+    </view>
+  </view>
+
   <view class="margin-top">
     <!-- 未支付 -->
     <view class="flex justify-between" style="width: 60%; margin: 0 auto" wx:if="{{!isPay && !cancel}}" >
       <view style="width: 45%" class="solid line-black padding-xs" bindtap="cancelOrder">取消订单</view>
-      <view style="width: 45%" class="padding-xs bg-red" bindtap="toPay">去支付</view>
+      <view style="width: 45%" class="padding-xs bg-cyan" bindtap="toPay">去支付</view>
     </view>
     <!-- 支付 -->
-    <view class="flex justify-between" style="width: 60%; margin: 0 auto" wx:if="{{isPay || cancel}}" >
-      <view style="width: 45%" class="solid line-black padding-xs" bindtap="toHome">返回首页</view>
-      <view style="width: 45%" class="bg-red padding-xs" bindtap="orderAgain">再来一单</view>
+    <view class="flex justify-between" style="width: 60%; margin: 0 auto" wx:if="{{isPay && !isRefund}}" >
+      <view style="width: 45%" class="solid line-black padding-xs" bindtap="showModal" data-modalname="DialogModal">申请退款</view>
+      <view style="width: 45%" class="bg-cyan padding-xs" bindtap="orderAgain">再来一单</view>
+    </view>
+    <!-- 退款 -->
+    <view class="flex justify-center" style="width: 60%; margin: 0 auto" wx:if="{{isRefund || cancel}}" >
+      <view style="width: 45%" class="bg-cyan padding-xs" bindtap="orderAgain">再来一单</view>
     </view>
   </view>
 </view>
@@ -109,5 +121,40 @@
   <view class="flex padding-bottom-sm" wx:if="{{isPay}}">
     <view class="flex-sub">支付时间</view>
     <view class="flex-treble">{{payTime}}</view>
+  </view>
+</view>
+
+<view class="cu-modal {{modalName=='DialogModal'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">请填写退款原因</view>
+      <view class="action" bindtap="hideModal">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      <view class="margin-sm">
+        <view class="margin-bottom">快捷输入</view>
+        <view class="flex" style="width: 100%; flex-wrap: wrap">
+          <view wx:for="{{audioTag}}" wx:key="index" 
+                class="cu-tag radius margin-xs {{item.check?'bg-orange':''}}" 
+                data-index="{{index}}" 
+                data-taglist="{{audioTag}}" 
+                bindtap="chooseAudioTag">
+            {{item.tag}}
+          </view>
+        </view>
+      </view>
+      <view class="cu-form-group margin-sm bg-white dark pos-re radius text-left" wx:if="{{audioTag[3].check}}">
+        <textarea maxlength="50" model:value="{{refundDesc}}" placeholder="请填写退款原因"></textarea>
+        <view class="bg-white dark pos-ab text-gray text-sm" style="bottom: 20rpx; right: 40rpx">{{refundDesc.length}}/50个字</view>
+      </view>
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class="action">
+        <button class="cu-btn line-green text-green" size="mini" bindtap="hideModal">取消</button>
+        <button class="cu-btn bg-green margin-left" size="mini" bindtap="_refund">确定</button>
+      </view>
+    </view>
   </view>
 </view>

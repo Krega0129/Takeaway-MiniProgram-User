@@ -6,7 +6,8 @@ import {
 } from '../../../service/config'
 
 import {
-  cancelOrder
+  cancelOrder,
+  refund
 } from '../../../service/bill'
 
 import {
@@ -22,16 +23,39 @@ Page({
     shopName: '',
     sendPrice: 0,
     totalCount: 0,
+    shopId: '',
     user: {},
     storeTelNum: null,
     remark: '',
     takeAway: true,
     orderNum: null,
     payTime: '',
-    isPay: null,
+    isPay: true,
+    cancel: false,
+    isRefund: false,
     obj: {},
     time: '',
-    cancel: false
+    refundDesc: '',
+    valueArr: '不想要了',
+    audioTag: [
+      {
+        tag: '不想要了',
+        check: true
+      },
+      {
+        tag: '点错了',
+        check: false
+      },
+      {
+        tag: '想吃点别的',
+        check: false
+      },
+      {
+        tag: '其他',
+        check: false
+      }
+    ],
+    modalName: ''
   },
   onLoad: function (options) {
     wx.showLoading({
@@ -132,9 +156,70 @@ Page({
   toPay() {
     pay.call(this, this.data.obj)
   },
-  toHome() {
-    wx.reLaunch({
-      url: '/pages/WCH/home/home',
+  // toHome() {
+  //   wx.reLaunch({
+  //     url: '/pages/WCH/home/home',
+  //   })
+  // },
+  chooseAudioTag(e) {
+    // 点击第几个标签
+    const index = e.currentTarget.dataset.index;
+    // 获取标签列表
+    let audioList = e.currentTarget.dataset.taglist
+
+    // 单选
+    for(let item of audioList) {
+      if((audioList.indexOf(item) == index) && !audioList[index].check) {
+        item.check = true
+        this.data.valueArr = audioList[index].tag
+      } else {
+        // 其他的不勾选
+        item.check = false
+        if(this.data.valueArr === item.tag) {
+          this.data.valueArr = ''
+        }
+      }
+    }
+    this.setData({
+      audioTag: audioList
+    })
+  },
+  showModal(e) {
+    if(new Date().getTime() > wx.getStorageSync('refundTime')) {
+      showToast('已超过3分钟，不能退款')
+    } else {
+      this.setData({
+        modalName: e.currentTarget.dataset.modalname
+      })
+    }
+  },
+  hideModal() {
+    this.setData({
+      modalName: ''
+    })
+  },
+  _refund() {
+    refund({
+      deliveryFee: this.data.obj.deliveryFee,
+      orderNumber: this.data.orderNum,
+      refundDesc: this.data.audioTag[3].check ? this.data.refundDesc : this.data.valueArr,
+      shopId: this.data.obj.shopId,
+      shopName: this.data.shopName,
+      totalAmount: this.data.totalPrice,
+      userId: wx.getStorageSync('userId')
+    }).then(res => {
+      wx.hideLoading()
+      this.hideModal()
+      if(res.data && res.data.code && res.data.code === H_config.STATECODE_refund_SUCCESS) {
+        wx.showToast({
+          title: '申请成功',
+        })
+        this.setData({
+          isRefund: true
+        })
+      } else {
+        showToast('申请失败')
+      }
     })
   }
 })
