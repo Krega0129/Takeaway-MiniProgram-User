@@ -51,6 +51,7 @@
     font-size: 20px;
   }
 }  */
+
 .like{
   height:20px;
   width:20px; 

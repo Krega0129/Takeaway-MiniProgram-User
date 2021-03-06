@@ -1,4 +1,11 @@
 // pages/LSK/sociality/releaseDynamic/releaseDynamic.js
+import { loadingOn, loadingOff, showToast } from '../../../../utils/util'
+import { addDynamic } from '../../../../service/socialty'
+import {
+  BASE_URL,
+  K_config
+} from '../../../../service/config'
+const userId = wx.getStorageSync('userId')
 Page({
 
   /**
@@ -7,9 +14,12 @@ Page({
   data: {
     max: 150,
     num: 0,
-    textareaAValue:'',
+    textareaAValue: '',
     index: null,
+    // 上传图片地址
     imgList: [],
+    // 定位校区
+    localCampus: '',
   },
   // 文字计数
   inputNum(e) {
@@ -17,25 +27,29 @@ Page({
     // 获取输入框内容的长度
     let len = parseInt(value.length);
     this.setData({
-      num:len,
+      num: len,
       textareaAValue: e.detail.value
     })
   },
 
   ChooseImage() {
+    let that = this
     wx.chooseImage({
-      count: 4, //默认9
+      count: 1, //默认9
       sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
       sourceType: ['album'], //从相册选择
       success: (res) => {
+        console.log(res.tempFilePaths);
         if (this.data.imgList.length != 0) {
           this.setData({
             imgList: this.data.imgList.concat(res.tempFilePaths)
           })
         } else {
+          const file = res.tempFilePaths;
           this.setData({
-            imgList: res.tempFilePaths
+            imgList: file
           })
+          // that.upload(that, file)
         }
       }
     });
@@ -62,11 +76,69 @@ Page({
       }
     })
   },
+  // 上传图片
+  upload(page, path) {
+    let that = this
+    wx.uploadFile({
+      url: BASE_URL + "/shareschool/updatePhoto",
+      filePath: path[0],
+      name: 'file',
+      header: { "Content-Type": "multipart/form-data" },
+      formData: {
+        //和服务器约定的token, 一般也可以放在header中
+        'session_token': wx.getStorageSync('session_token')
+      },
+      success: function (res) {
+        console.log(res);
+        
+        wx.navigateBack()
+        // let data = JSON.parse(res.data)
+        // console.log(data);
+        // const head=data.data
+        // updateUserInfo({head,userId}).then((res)=>{
+        //   if(res.data.code===K_config.STATECODE_updateUserInfo_SUCCESS || res.data.code===K_config.STATECODE_SUCCESS){
+        //     showToast('头像更新成功',1000)
+        //   }
+        // })
+      },
+      fail: function (res) {
+        showToast('头像上传失败，请检查网络')
+      },
+    })
+  },
+  // 提交动态
+  submitDynamic(e) {
+    wx.showModal({
+      title: '发布动态',
+      content: '确定发布此动态？',
+      cancelText: '取消',
+      confirmText: '确定',
+      success: res => {
+        console.log(e);
+        let { shareContent } = e.detail.value
+        addDynamic({
+          userId,
+          shareContent,
+          sharePicture: this.data.imgList[0],
+          shareAddress: this.data.localCampus
+        }).then((res) => {
+          loadingOff()
+          if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_addDynamic_SUCCESS) {
+              this.upload(this,this.data.imgList)  
+          }
+        })
+      }
+    })
+
+
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.setData({
+      localCampus: wx.getStorageSync('campusSocialName')
+    })
   },
 
   /**

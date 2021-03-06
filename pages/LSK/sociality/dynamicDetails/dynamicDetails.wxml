@@ -1,65 +1,88 @@
 <!--pages/LSK/sociality/dynamicDetails.wxml-->
-<cu-custom bgColor="bg-red" isBack="true">
+<cu-custom bgColor="bg-red" isBack="true" class="scrollTop">
   <text slot="backText">返回</text>
   <text slot="content">动态详情</text>
 </cu-custom>
+<scroll-view
+  scroll-y
+  style="height:calc(100vh - {{toTop}}rpx)"
+  refresher-enabled="{{false}}"
+  refresher-threshold="{{100}}"
+  lower-threshold="{{20}}"
+  refresher-default-style="white"
+  refresher-background="#f1f1f1"
+  refresher-triggered="{{isTriggered}}"
+  bindscrolltolower="toLoading"
+
+>
 <view class="padding-tb-xl bg-white">
   <view class="flex justify-start">
-    <view class="cu-avatar margin-left lg"><image src="{{}}" mode="aspectFill"></image></view>
+    <view class="cu-avatar margin-left lg">
+      <image src="{{baseurl}}/{{dynamicDetails.head}}" mode="aspectFill" style="width:100%;height:100%"></image>
+    </view>
     <view class="margin-left" style="width:560rpx">
-      <view class="text-df text-bold">阿巴阿巴</view>
-      <view class="margin-top-sm text-sm">2021/01/15  15:25:32</view>
-      <view style="position:relative">
-        <view class="padding-top" style="text-indent:2em">
-          <text>{{contain}}</text>
-        </view>
-      </view>
-      <view class="grid margin-top-sm">
-        <view class=" xl radius margin-right-sm margin-bottom-sm bg-gray" ><image src="{{}}" mode="aspectFill" style="height:300rpx;width:560rpx"></image></view>
-      </view>
-      <view class="margin-top flex justify-between" style="width:300rpx">
-        <view class="cuIcon-commentfill text-xxl text-gray flex justify-center">
-          <text class="text-lg margin-left-xs">100</text>
-        </view>
-        <!-- <view class="cuIcon-likefill text-xxl text-gray flex justify-center heart">
-          <text class="text-lg margin-left-xs">100</text>
-        </view> -->
-        <view class="flex align-center" catchtap="likeClick">
-          <view class="{{isLike?'heart-active':'like'}}" style="background-image:url('https://i.loli.net/2021/01/16/vTltmxunYQH3Pcz.png');transform:scale(3.2);background-position: left;background-size: cover;"></view>
-          <view class="text-lg margin-left-xs  {{isLike?'text-red':'text-gray'}}">{{likeNum}}</view>
-        </view>
+      <view class="text-df text-bold">{{dynamicDetails.nickName}}</view>
+      <view class="flex justify-start text-sm align-center">
+        <view class="cuIcon-locationfill text-green margin-top-sm ">{{dynamicDetails.schoolAddress}}</view>
+        <view class="margin-left-sm margin-top-sm ">{{dynamicDetails.showTime}}</view>
+        <view class="margin-left-sm margin-top-sm text-red" wx:if="{{canDelete}}" bindtap="deleteDynamic">删除</view>
       </view>
     </view>
   </view>
-  <view style="position:relative">
-    <view class="corner"></view>    
-    <view class="bubbleBox bg-white margin-top radius shadow" style="width:640rpx;margin-left:80rpx" bindlongpress="sayTo" data-name="{{commentName}}">
-        <view class="padding-xs text-df">
-          <text class=" text-bold text-purple">{{commentName}}</text>
-          <text decode="{{true}}">&nbsp;:&nbsp;</text>
-          <text>我真的不是人</text>
-        </view>
-        <view class="padding-xs text-df">
-          <text class=" text-bold text-purple">阿巴阿巴</text>
-          <text decode="{{true}}">&nbsp;回复&nbsp;@</text><text class="text-bold text-yellow">{{replyTo}}</text>
-          <text decode="{{true}}">&nbsp;:&nbsp;</text>
-          <text>你好帅啊你好帅啊你好帅啊你好帅啊</text>
-        </view>
-        <view class="padding-xs text-df">
-          <text class=" text-bold text-purple">{{replyTo}}</text>
-          <text decode="{{true}}">&nbsp;回复&nbsp;@</text><text class="text-bold text-yellow">阿巴阿巴</text>
-          <text decode="{{true}}">&nbsp;:&nbsp;</text>
-          <text>我就是CAT最帅没毛病</text>
-        </view>
+  <view class=" margin-left">
+    <view style="position:relative">
+      <view class="padding-top">
+        <text>{{dynamicDetails.shareContentWhole}}</text>
+      </view>
+      <!-- <button class="cu-btn round bg-white button-hover noStyle margin-top-xs"
+        wx:if="{{dynamicDetails.shareContent.length>90}}"><text class="text-cyan">全文</text></button> -->
+    </view>
+    <view class="grid margin-top-sm" wx:if="{{dynamicDetails.sharePicture}}">
+      <view class=" xl radius margin-right-sm bg-gray">
+        <image src="{{baseurl}}/{{dynamicDetails.sharePicture}}" mode="aspectFill" style="height:375rpx;width:700rpx"></image>
       </view>
     </view>
+    <view class="margin-top-sm flex justify-around" style="width:600rpx">
+      <view class="cuIcon-commentfill text-xxl text-gray flex justify-center">
+        <text class="text-lg margin-left-xs">{{dynamicDetails.count}}</text>
+      </view>
+      <!-- <view class="cuIcon-likefill text-xxl text-gray flex justify-center heart">
+          <text class="text-lg margin-left-xs">100</text>
+        </view> -->
+      <view class="flex align-center" catchtap="likeClick" data-id="{{dynamicDetails.shareId}}" data-islike="{{dynamicDetails.isLike}}">
+        <view class="{{dynamicDetails.isLike?'heart-active':'like'}}"
+          style="background-image:url('https://i.loli.net/2021/01/16/vTltmxunYQH3Pcz.png');transform:scale(3.2);background-position: left;background-size: cover;">
+        </view>
+        <view class="text-lg margin-left-xs  {{dynamicDetails.isLike?'text-red':'text-gray'}}">{{dynamicDetails.likeNumber}}</view>
+      </view>
+    </view>
+    <view class="margin-top" style="position:relative" wx:if="{{dynamicDetails.commentList.length}}">
+        <view class="corner"></view>
+        <view class="bubbleBox bg-white margin-top radius shadow {{dynamicDetails.commentList.length>10?'mb-80':''}}" style="width:700rpx"
+          bindlongpress="sayTo" data-name="{{commentName}}">
+          <view wx:for="{{dynamicDetails.commentList}}" wx:key="index" data-id="{{index}}">         
+            <view class="padding-xs padding-tb-sm text-df">
+              <text class=" text-bold text-purple">{{item.nickName}}</text>
+              <text decode="{{true}}">&nbsp;:&nbsp;</text>
+              <text>{{item.content}}</text>
+              <text decode="{{true}}">&nbsp;&nbsp;&nbsp;</text>
+              <text class="text-xs text-gray" wx:if="{{item.userId===userId}}" data-id="{{item.commentId}}" data-index="{{index}}" catchtap="delete">删除</text>
+            </view>
+          </view>
+        </view>
+      </view>
+  </view>
 </view>
-<view class="">
+<view class="text-center text-gray" style="height:100rpx;line-height:100rpx" wx:if="{{!dynamicDetails.commentList.length}}">趁现在没人偷偷踩一脚吧!</view>
+</scroll-view>
+
+<form bindsubmit="submitComment">
   <view class="cu-bar input padding-left-sm padding-tb-sm" style="position:fixed;bottom:0">
-    <input class="solid padding-left" style="width:510rpx" maxlength="300" cursor-spacing="10" placeholder="{{placeholder}}" ></input>
+    <input class="solid padding-left" style="width:510rpx" maxlength="300" cursor-spacing="10"
+      placeholder="{{placeholder}}" name='comment' value="{{comment}}"></input>
     <!-- <view class="action">
       <text class="text-grey"></text>
     </view> -->
-    <button class="cu-btn bg-green shadow-blur" style="width:160rpx">发送</button>
+    <button class="cu-btn bg-green shadow-blur" style="width:160rpx" form-type="submit">发送</button>
   </view>
-</view>
+</form>

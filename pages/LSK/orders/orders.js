@@ -574,7 +574,7 @@ Page({
       this.setUserTotalOrder()
     }
     wx.createSelectorQuery().select('.scrollTop').boundingClientRect().selectViewport().scrollOffset().exec(res => {
-      // console.log(res); 
+      console.log(res); 
       this.setData({
         toTop: res[0].bottom * 2
       })
