@@ -1,5 +1,6 @@
 <!--pages/sociality/sociality.wxml-->
-<cu-custom bgColor="bg-cyan" class="scrollTop">
+<cu-custom bgColor="bg-cyan" class="scrollTop" isLocated="true">
+  <text slot="location">{{position}}</text>
   <text slot="content">生活圈</text>
 </cu-custom>
 <view class="cu-modal {{showImg?'show':''}}" style="z-index: 3000">
