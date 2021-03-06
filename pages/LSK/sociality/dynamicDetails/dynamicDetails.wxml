@@ -1,5 +1,5 @@
 <!--pages/LSK/sociality/dynamicDetails.wxml-->
-<cu-custom bgColor="bg-red" isBack="true" class="scrollTop">
+<cu-custom bgColor="bg-cyan" isBack="true" class="scrollTop">
   <text slot="backText">返回</text>
   <text slot="content">动态详情</text>
 </cu-custom>

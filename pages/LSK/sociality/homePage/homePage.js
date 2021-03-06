@@ -14,7 +14,7 @@ import {
   K_config,
   BASE_URL
 } from '../../../../service/config'
-const userId = wx.getStorageSync('userId')
+// const userId = wx.getStorageSync('userId')
 Page({
 
   /**
@@ -58,7 +58,8 @@ Page({
     maxPages:1,
     // 校园圈列表
     dynamicList:[],
-    baseurl:'',
+    baseurl : '',
+    userId : wx.getStorageSync('userId'),
     //是否到达底部
     showEnd:false
   },
@@ -82,6 +83,7 @@ Page({
   likeClick:function(e){
     let shareId = e.currentTarget.dataset.id
     let isLike = e.currentTarget.dataset.islike
+    let userId = this.data.userId
     console.log(isLike);
     if(!isLike){
       giveThunbUp(shareId,userId).then((res)=>{
@@ -151,6 +153,7 @@ Page({
   getAllCampusDynamic(){
     let pageNum = this.data.pageNum
     let pageSize = this.data.pageSize
+    let userId = this.data.userId
     getAllDynamic(pageNum,pageSize,userId).then((res)=>{
       loadingOff()
       if(res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_getAllDynamic_SUCCESS){
@@ -192,6 +195,7 @@ Page({
   getDynamicByCampus(){
     let pageNum = this.data.pageNum
     let pageSize = this.data.pageSize
+    let userId = this.data.userId
     let campusName = wx.getStorageSync('campusSocialName')
     getAllDynamicByCampus(campusName,pageNum,pageSize,userId).then((res)=>{
       loadingOff()

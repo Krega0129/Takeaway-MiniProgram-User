@@ -1,5 +1,5 @@
 <!--pages/order/order.wxml-->
-<cu-custom bgColor="bg-red">
+<cu-custom bgColor="bg-cyan">
   <text slot="content">订单</text>
 </cu-custom>
 <!-- 导航栏 -->
