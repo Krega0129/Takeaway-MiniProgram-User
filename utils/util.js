@@ -178,10 +178,10 @@ export function pay(data) {
   })
 }
 
-export function previewImage(urls) {
+export function previewImage(urls, index) {
   wx.previewImage({
-    urls: [urls],
-    current: 'current'
+    urls: urls,
+    current: index || urls[0]
   })
 }
 

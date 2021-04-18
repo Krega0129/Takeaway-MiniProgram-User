@@ -47,12 +47,6 @@
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "condition": {
-    "search": {
-      "list": []
-    },
-    "conversation": {
-      "list": []
-    },
     "plugin": {
       "list": []
     },
@@ -110,6 +104,7 @@
           "id": -1,
           "name": "pages/WCH/expressDetails/expressDetails",
           "pathName": "pages/WCH/expressDetails/expressDetails",
+          "query": "",
           "scene": null
         },
         {
@@ -133,6 +128,18 @@
         {
           "name": "pages/LSK/mine/historyDynamic/historyDynamic",
           "pathName": "pages/LSK/mine/historyDynamic/historyDynamic",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/WCH/home/home",
+          "pathName": "pages/WCH/home/home",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/LSK/mine/profile/profile",
+          "pathName": "pages/LSK/mine/profile/profile",
           "scene": null
         }
       ]

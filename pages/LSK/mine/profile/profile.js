@@ -50,6 +50,16 @@ Page({
       url: '/pages/LSK/mine/addressList/addressList',
     })
   },
+  toCooperation(){
+    wx.navigateTo({
+      url: '/pages/LSK/mine/businessCooperation/businessCooperation',
+    })
+  },
+  toRecruitment(){
+    wx.navigateTo({
+      url: '/pages/LSK/mine/riderRecruitment/riderRecruitment',
+    })
+  },
   toSuggest() {
     wx.navigateTo({
       url: '/pages/LSK/mine/suggest/suggest',
@@ -65,8 +75,6 @@ Page({
     let userId = wx.getStorageSync('userId')
     selectUserInfo(userId).then((res)=>{
       loadingOff()
-      // console.log(res);
-      
       if(res.data.code===K_config.STATECODE_selectUserInfo_SUCCESS || res.data.code===K_config.STATECODE_SUCCESS){
         let userMsg=res.data.data
         console.log(userMsg);

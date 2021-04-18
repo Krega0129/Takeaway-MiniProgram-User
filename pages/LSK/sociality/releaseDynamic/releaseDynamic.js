@@ -5,6 +5,7 @@ import {
   BASE_URL,
   K_config
 } from '../../../../service/config'
+// import { threadId } from 'worker_threads'
 const userId = wx.getStorageSync('userId')
 Page({
 
@@ -20,6 +21,8 @@ Page({
     imgList: [],
     // 定位校区
     localCampus: '',
+    returnImgUrl:'',
+    shareContent:''
   },
   // 文字计数
   inputNum(e) {
@@ -89,7 +92,23 @@ Page({
         'session_token': wx.getStorageSync('session_token')
       },
       success: function (res) {
-        console.log(res);
+        let data = JSON.parse(res.data)
+        addDynamic({
+          userId,
+          shareContent:that.data.shareContent,
+          sharePicture: data.data.name,
+          shareAddress: that.data.localCampus
+        }).then((res) => {
+          loadingOff()
+          // if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_addDynamic_SUCCESS) {
+          //     this.upload(this,this.data.imgList)  
+          // }
+        })
+        // console.log(JSON.parse(res.data));
+        // console.log(res);
+        // that.setData({
+        //   returnImgUrl:data.data.name
+        // })
         
         wx.navigateBack()
         // let data = JSON.parse(res.data)
@@ -108,25 +127,22 @@ Page({
   },
   // 提交动态
   submitDynamic(e) {
+    let { shareContent } = e.detail.value
+    this.setData({
+      shareContent:shareContent
+    })
     wx.showModal({
       title: '发布动态',
       content: '确定发布此动态？',
       cancelText: '取消',
       confirmText: '确定',
       success: res => {
-        console.log(e);
-        let { shareContent } = e.detail.value
-        addDynamic({
-          userId,
-          shareContent,
-          sharePicture: this.data.imgList[0],
-          shareAddress: this.data.localCampus
-        }).then((res) => {
-          loadingOff()
-          if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_addDynamic_SUCCESS) {
-              this.upload(this,this.data.imgList)  
-          }
-        })
+        if(this.data.shareContent.length!==0||this.data.imgList.length!==0){
+          this.upload(this,this.data.imgList) 
+        }else{
+          showToast('上传不能为空',1000)
+        }
+         
       }
     })
 
@@ -137,7 +153,7 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      localCampus: wx.getStorageSync('campusSocialName')
+      localCampus: wx.getStorageSync('address')
     })
   },
 

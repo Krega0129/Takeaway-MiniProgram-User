@@ -1,0 +1,12 @@
+<cu-custom bgColor="bg-gray" isBack="true">
+  <text slot="backText">返回</text>
+  <text slot="content">骑手招聘</text>
+</cu-custom>
+<view class="solids-bottom padding-xs flex align-center bg-white">
+  <view class="flex-sub text-center padding">
+    <view class="solid-bottom text-xsl padding">
+      <text class=" cuIcon-expressman text-green padding" style="border-style:solid;border-width:2rpx;border-radius:100%;border-color:green;"></text>
+    </view>
+    <view class="padding text-xl">{{textValue}}</view>
+  </view>
+</view>

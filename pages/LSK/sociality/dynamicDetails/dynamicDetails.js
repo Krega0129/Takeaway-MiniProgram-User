@@ -1,5 +1,5 @@
 // pages/LSK/sociality/dynamicDetails.js
-import{loadingOn,loadingOff,showToast}from '../../../../utils/util'
+import{loadingOn,loadingOff,showToast,previewImage}from '../../../../utils/util'
 import {
   giveThunbUp,
   cancelThunbUp,
@@ -14,7 +14,7 @@ import {
   BASE_URL,
   K_config
 } from '../../../../service/config'
-const userId = wx.getStorageSync('userId')
+// const userId = wx.getStorageSync('userId')
 Page({
 
   /**
@@ -35,6 +35,7 @@ Page({
     placeholder:'请留下你的评论吧！',
     dynamicDetails:{},
     baseurl:'',
+    userId:wx.getStorageSync('userId'),
     comment:'',
     // 分页查询评论
     pageNum:1,
@@ -43,7 +44,9 @@ Page({
     showEnd:false,
     userId:null,
     // 是否能够删除动态
-    canDelete:false
+    canDelete:false,
+    // 是否已经请求过评论
+    isRefresh:false
   },
   // 点赞
   likeClick:function(e){
@@ -51,6 +54,7 @@ Page({
     let shareId = e.currentTarget.dataset.id
     let isLike = e.currentTarget.dataset.islike
     let pages = getCurrentPages();
+    let userId = this.data.userId
     let prevPage = null; //上一个页面
     if (pages.length >= 2) {
         prevPage = pages[pages.length - 2]; //上一个页面
@@ -158,6 +162,7 @@ Page({
   submitComment(e){
     console.log(e);
     let {comment} = e.detail.value
+    let userId = this.data.userId
     insertComment({
       content:comment,
       nickname:wx.getStorageSync('nickName'),
@@ -215,7 +220,8 @@ Page({
           console.log(this.data.dynamicDetails.commentList);
           this.setData({
             'dynamicDetails.commentList':this.data.dynamicDetails.commentList,
-            maxPage:res.data.data.pages
+            maxPage:res.data.data.pages,
+            isRefresh:true
           })
         }
     })
@@ -271,6 +277,11 @@ Page({
     })
 
   },
+    // 查看图片
+    _previewImage(e){
+      console.log(e.currentTarget.dataset.image);
+      previewImage( [e.currentTarget.dataset.image], e.currentTarget.dataset.image)
+    },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -286,7 +297,7 @@ Page({
     console.log(dynamicDetails);
     this.setData({
       baseurl:BASE_URL,
-      userId:userId,
+      // userId:userId,
       dynamicDetails:dynamicDetails
     })
     setTimeout(function () {
@@ -305,6 +316,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.setData({
+      userId: wx.getStorageSync('userId')
+    })
     let pages = getCurrentPages();
     let prevPage = null; //上一个页面
     if (pages.length >= 2) {
@@ -315,17 +329,9 @@ Page({
         canDelete:true
       })
     }
-    // console.log(prevPage);
-    // if(prevPage){
-    //   console.log(prevPage);
-          
-    //       // let i=this.data.dynamicDetails.index
-    //       // let count='dynamicList['+i+'].count'
-    //       // prevPage.setData({
-    //       //     [count]: this.data.dynamicDetails.count
-    //       // });
-    //     }
-    this.getCommentList()
+    if(!this.data.isRefresh){
+      this.getCommentList()
+    }
   },
 
   /**

@@ -705,6 +705,7 @@ Page({
     })
   },
   _previewImage(e) {
-    previewImage(e.currentTarget.dataset.imgurl)
+    // previewImage(e.currentTarget.dataset.imgurl)
+    previewImage(this.data.licenseImg, e.currentTarget.dataset.imgurl)
   }
 })

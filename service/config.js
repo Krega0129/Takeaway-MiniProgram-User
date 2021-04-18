@@ -1,6 +1,6 @@
 // const BASE_URL = 'https://192.168.1.105:8888'
-// const BASE_URL = 'https://172.20.10.3:8888'
-const BASE_URL = 'https://www.lizeqiang.top:8888'
+// const BASE_URL = 'https://192.168.1.101:8888'
+const BASE_URL = 'https://www.sijie666.com:8080'
 // const BASE_URL = 'https://cat.vipgz4.idcfengye.com'
 
 const H_config = {}
@@ -165,6 +165,14 @@ K_config.API_selectUserInfo_URL = '/user/selectUserInfo'
 K_config.API_updateUserInfo_URL = '/user/updateUserInfo'
 // 上传图片
 K_config.API_updatePhoto_URL = '/modifyShopInfo/updatePhoto'
+// 提交投诉
+K_config.API_commitAdvise_URL = '/manager/commitAdvise'
+K_config.STATECODE_commitAdvise_SUCCESS = 3200
+K_config.STATECODE_commitAdvise_FALSE = 10000
+
+// 获取入驻提示
+K_config.API_getTip_URL = '/manager/getTip'
+K_config.STATECODE_getTip_SUCCESS = 3200
 
 // 快递代拿
 H_config.API_selectExpressAgentPrice_URL = '/expressAgent/selectExpressAgentPrice'

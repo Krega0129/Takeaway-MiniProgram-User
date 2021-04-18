@@ -12,6 +12,12 @@
     </view>
   </view>
 </scroll-view>
+<view class="" wx:if="{{!isLogin}}" style="position:absolute;top:50%;left:50%;margin-left:-200rpx">
+  <view class="padding flex flex-direction">
+    <button class="cu-btn bg-green margin-tb-sm lg" bindtap="toLogin">请先登录</button>
+  </view>
+</view>
+<block wx:else>
 <scroll-view class="bg-white nav">
   <view class="flex text-center">
     <view class="cu-item flex-sub {{index==TabCur?'text-orange cur':''}}" wx:for="{{TabName}}" wx:key="index"
@@ -55,7 +61,7 @@
               wx:if="{{item.shareContent.length>90}}"><text class="text-cyan">全文</text></button>
           </view>
           <view class="grid margin-top-sm" wx:if="{{item.sharePicture}}">
-            <view class=" xl radius margin-right-sm bg-gray">
+            <view class=" xl radius margin-right-sm bg-gray" catchtap="_previewImage" data-image='{{baseurl}}/{{item.sharePicture}}'>
               <image src="{{baseurl}}/{{item.sharePicture}}" mode="aspectFill" style="height:300rpx;width:560rpx">
               </image>
             </view>
@@ -70,7 +76,7 @@
             <view class="flex align-center" catchtap="likeClick" data-id="{{item.shareId}}"
               data-islike="{{item.isLike}}">
               <view class="{{item.isLike?'heart-active':'like'}}"
-                style="background-image:url('https://i.loli.net/2021/01/16/vTltmxunYQH3Pcz.png');transform:scale(3.2);background-position: left;background-size: cover;">
+                style="background-image:url('../../../../assets/img/LSK/heart.png');transform:scale(3.2);background-position: left;background-size: cover;">
               </view>
               <view class="text-lg margin-left-xs  {{item.isLike?'text-red':'text-gray'}}">{{item.likeNumber}}</view>
             </view>
@@ -105,7 +111,7 @@
               wx:if="{{item.shareContent.length>90}}"><text class="text-cyan">全文</text></button>
           </view>
           <view class="grid margin-top-sm" wx:if="{{item.sharePicture}}">
-            <view class=" xl radius margin-right-sm bg-gray">
+            <view class=" xl radius margin-right-sm bg-gray" catchtap="_previewImage" data-image='{{baseurl}}/{{item.sharePicture}}'>
               <image src="{{baseurl}}/{{item.sharePicture}}" mode="aspectFill" style="height:300rpx;width:560rpx">
               </image>
             </view>
@@ -152,7 +158,7 @@
               wx:if="{{item.shareContent.length>90}}"><text class="text-cyan">全文</text></button>
           </view>
           <view class="grid margin-top-sm" wx:if="{{item.sharePicture}}">
-            <view class=" xl radius margin-right-sm bg-gray">
+            <view class=" xl radius margin-right-sm bg-gray" catchtap="_previewImage" data-image='{{baseurl}}/{{item.sharePicture}}'>
               <image src="{{baseurl}}/{{item.sharePicture}}" mode="aspectFill" style="height:300rpx;width:560rpx">
               </image>
             </view>
@@ -180,3 +186,4 @@
     </block>
   </view>
 </scroll-view>
+</block>

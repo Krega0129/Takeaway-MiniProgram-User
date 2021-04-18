@@ -2,7 +2,8 @@
 import {
   loadingOff,
   loadingOn,
-  showToast
+  showToast,
+  previewImage
 } from '../../../../utils/util'
 import {
   getAllDynamic,
@@ -14,6 +15,7 @@ import {
   K_config,
   BASE_URL
 } from '../../../../service/config'
+// import { threadId } from 'worker_threads'
 // const userId = wx.getStorageSync('userId')
 Page({
 
@@ -61,7 +63,11 @@ Page({
     baseurl : '',
     userId : wx.getStorageSync('userId'),
     //是否到达底部
-    showEnd:false
+    showEnd:false,
+    // 是否登录
+    isLogin : false,
+    // 是否刷新
+    isRefresh:false
   },
   tapBanner(e) {
     this.setData({
@@ -73,6 +79,20 @@ Page({
     this.setData({
       showImg: false
     })
+  },
+  // 跳转登录页
+  toLogin: function () {
+    wx.login({
+      success: res => {
+        const code = res.code
+        wx.navigateTo({
+          url: '/pages/WCH/login/login',
+          success: res => {
+            res.eventChannel.emit('code',{ code: code })
+          }
+        })
+      }
+    })  
   },
   // 初始化数据
   initData:function(){
@@ -185,9 +205,10 @@ Page({
           this.setData({
             dynamicList:this.data.dynamicList,
             maxPages:res.data.data.pages,
-            isTriggered:false
+            isTriggered:false,
+            isRefresh:true
           })
-          // console.log(this.data.dynamicList);
+          // console.log("aaaasasasasa");
       }
     })
   },
@@ -245,12 +266,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.initData()
-    this.getDynamic()
-    this.setData({
-      baseurl:BASE_URL,
-      position: wx.getStorageSync('campusSocialName') || '定位'
-    })
+    // if (wx.getStorageSync('token')) {
+    //   this.setData({
+    //     isLogin:true
+    //   })    
+    //   this.initData()
+    //   this.getDynamic()
+    // }
+
     wx.createSelectorQuery().select('.scrollTop').boundingClientRect().selectViewport().scrollOffset().exec(res => {
       // console.log(res); 
       this.setData({
@@ -270,6 +293,18 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    if (wx.getStorageSync('token')) {
+      this.setData({
+        isLogin: true,
+        baseurl:BASE_URL,
+        position: wx.getStorageSync('campusSocialName') || '定位',
+        userId:wx.getStorageSync('userId')
+      })
+      if(!this.data.isRefresh){
+        this.initData()
+        this.getDynamic()
+      }
+    } 
   },
 
   // 下拉刷新
@@ -294,6 +329,10 @@ Page({
       })
     }
    
+  },
+  // 查看图片
+  _previewImage(e){
+    previewImage( [e.currentTarget.dataset.image], e.currentTarget.dataset.image)
   },
   /**
    * 生命周期函数--监听页面隐藏

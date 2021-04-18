@@ -41,7 +41,7 @@
     </view>
   </view>
   <!-- 商业合作 -->
-  <view class="bg-white padding-lr margin-bottom-xs">
+  <view class="bg-white padding-lr margin-bottom-xs" bindtap="toCooperation">
     <view class="padding-tb flex justify-between align-end">
       <view class=" flex align-center">
         <text class="cuIcon-dianhua text-xl text-yellow"></text>
@@ -51,7 +51,7 @@
     </view>
   </view>
   <!-- 骑手招聘 -->
-  <view class="bg-white padding-lr margin-bottom-xs">
+  <view class="bg-white padding-lr margin-bottom-xs" bindtap="toRecruitment">
     <view class="padding-tb flex justify-between align-end">
       <view class=" flex align-center">
         <text class="cuIcon-expressman text-xl text-red"></text>

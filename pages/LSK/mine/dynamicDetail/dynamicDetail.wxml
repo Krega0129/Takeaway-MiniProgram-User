@@ -26,7 +26,7 @@
         wx:if="{{dynamicDetails.shareContent.length>90}}"><text class="text-cyan">全文</text></button> -->
     </view>
     <view class="grid margin-top-sm" wx:if="{{dynamicDetails.sharePicture}}">
-      <view class=" xl radius margin-right-sm bg-gray">
+      <view class=" xl radius margin-right-sm bg-gray" catchtap="_previewImage" data-image='{{baseurl}}/{{dynamicDetails.sharePicture}}'>
         <image src="{{baseurl}}/{{dynamicDetails.sharePicture}}" mode="aspectFill" style="height:375rpx;width:700rpx"></image>
       </view>
     </view>

@@ -2,7 +2,8 @@
 import {
   loadingOff,
   loadingOn,
-  showToast
+  showToast,
+  previewImage
 } from '../../../../utils/util'
 import {
   deleteDynamicById
@@ -17,37 +18,38 @@ Page({
    * 页面的初始数据
    */
   data: {
-    dynamicDetails:{},
-    baseurl:'',
+    dynamicDetails: {},
+    baseurl: '',
+    userId: wx.getStorageSync('userId')
   },
-  deleteDynamic:function(){
+  deleteDynamic: function () {
     wx.showModal({
       content: '是否删除该动态?',
       showCancel: true,
       title: '提示',
       success: (res) => {
-        if(res.confirm){
+        if (res.confirm) {
           deleteDynamicById({
-            shareId:this.data.dynamicDetails.shareId
-          }).then((res)=>{
+            shareId: this.data.dynamicDetails.shareId
+          }).then((res) => {
             loadingOff()
-            if(res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_deleteDynamic_SUCCESS){
+            if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_deleteDynamic_SUCCESS) {
               let pages = getCurrentPages();
               let prevPage = null; //上一个页面
               if (pages.length >= 2) {
-                  prevPage = pages[pages.length - 2]; //上一个页面
+                prevPage = pages[pages.length - 2]; //上一个页面
               }
-              if(prevPage){
-                let i=this.data.dynamicDetails.index
+              if (prevPage) {
+                let i = this.data.dynamicDetails.index
                 // let count='dynamicList['+i+'].count'
                 prevPage.setData({
-                    // [count]: this.data.dynamicDetails.count
-                    deleteIndex:i
+                  // [count]: this.data.dynamicDetails.count
+                  deleteIndex: i
                 });
                 prevPage.refreshPage();
               }
               wx.navigateBack({         //返回上一页  
-                delta:1
+                delta: 1
               })
             }
           })
@@ -61,18 +63,22 @@ Page({
    */
   onLoad: function (options) {
     loadingOn('加载中')
-    const dynamicDetails =JSON.parse(options.item)
+    const dynamicDetails = JSON.parse(options.item)
     console.log(dynamicDetails);
     this.setData({
-      baseurl:BASE_URL,
+      baseurl: BASE_URL,
       // userId:userId,
-      dynamicDetails:dynamicDetails
+      dynamicDetails: dynamicDetails
     })
     setTimeout(function () {
       loadingOff()
-    }, 1000) 
+    }, 1000)
   },
-
+  // 查看图片
+  _previewImage(e){
+    console.log(e.currentTarget.dataset.image);
+    previewImage( [e.currentTarget.dataset.image], e.currentTarget.dataset.image)
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -84,7 +90,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.setData({
+      userId: wx.getStorageSync('userId')
+    })
   },
 
   /**
