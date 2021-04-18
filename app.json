@@ -25,7 +25,9 @@
     "pages/LSK/mine/historyDynamic/historyDynamic",
     "pages/LSK/mine/dynamicDetail/dynamicDetail",
     "pages/WCH/express/express",
-    "pages/WCH/expressDetails/expressDetails"
+    "pages/WCH/expressDetails/expressDetails",
+    "pages/LSK/mine/businessCooperation/businessCooperation",
+    "pages/LSK/mine/riderRecruitment/riderRecruitment"
   ],
   "window": {
     "navigationStyle": "custom"

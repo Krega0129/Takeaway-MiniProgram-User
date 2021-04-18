@@ -37,8 +37,8 @@
       <!-- <button class="cu-btn round bg-white button-hover noStyle margin-top-xs"
         wx:if="{{dynamicDetails.shareContent.length>90}}"><text class="text-cyan">全文</text></button> -->
     </view>
-    <view class="grid margin-top-sm" wx:if="{{dynamicDetails.sharePicture}}">
-      <view class=" xl radius margin-right-sm bg-gray">
+    <view class="grid margin-top-sm" wx:if="{{dynamicDetails.sharePicture}}" >
+      <view class=" xl radius margin-right-sm bg-gray" bindtap="_previewImage" data-image='{{baseurl}}/{{dynamicDetails.sharePicture}}'>
         <image src="{{baseurl}}/{{dynamicDetails.sharePicture}}" mode="aspectFill" style="height:375rpx;width:700rpx"></image>
       </view>
     </view>
@@ -51,7 +51,7 @@
         </view> -->
       <view class="flex align-center" catchtap="likeClick" data-id="{{dynamicDetails.shareId}}" data-islike="{{dynamicDetails.isLike}}">
         <view class="{{dynamicDetails.isLike?'heart-active':'like'}}"
-          style="background-image:url('https://i.loli.net/2021/01/16/vTltmxunYQH3Pcz.png');transform:scale(3.2);background-position: left;background-size: cover;">
+          style="background-image:url('../../../../assets/img/LSK/heart.png');transform:scale(3.2);background-position: left;background-size: cover;">
         </view>
         <view class="text-lg margin-left-xs  {{dynamicDetails.isLike?'text-red':'text-gray'}}">{{dynamicDetails.likeNumber}}</view>
       </view>

@@ -11,6 +11,11 @@
     </view>
   </view>
 </view>
+<view class="" wx:if="{{!isLogin}}" style="position:absolute;top:50%;left:50%;margin-left:-200rpx">
+  <view class="padding flex flex-direction">
+    <button class="cu-btn bg-green margin-tb-sm lg" bindtap="toLogin">请先登录</button>
+  </view>
+</view>
 <scroll-view
   scroll-y
   style="height:calc(100vh - {{toTop}}rpx)"
@@ -22,6 +27,7 @@
   refresher-triggered="{{isTriggered}}"
   bindscrolltolower="toLoading"
   bindrefresherrefresh="toRefresh"
+  wx:else
 >
 <swiper class="screen-swiper square-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
   <swiper-item wx:for="{{swiperList}}" wx:key="index" data-url="{{item.url}}" bindtap="tapBanner">
@@ -55,8 +61,8 @@
         </view>
         <button class="cu-btn round bg-white button-hover noStyle margin-top-xs" wx:if="{{item.shareContent.length>90}}"><text class="text-cyan">全文</text></button>
       </view>
-      <view class="grid margin-top-sm" wx:if="{{item.sharePicture}}">
-        <view class=" xl radius margin-right-sm bg-gray" ><image src="{{baseurl}}/{{item.sharePicture}}" mode="aspectFill" style="height:300rpx;width:560rpx"></image></view>
+      <view class="grid margin-top-sm" wx:if="{{item.sharePicture}}" >
+        <view class=" xl radius margin-right-sm bg-gray" catchtap="_previewImage" data-image='{{baseurl}}/{{item.sharePicture}}'><image src="{{baseurl}}/{{item.sharePicture}}" mode="aspectFill" style="height:300rpx;width:560rpx"></image></view>
       </view>
       <view class="margin-top-sm flex justify-around" style="width:600rpx">
         <view class="cuIcon-commentfill text-xxl text-gray flex justify-center">
@@ -66,7 +72,7 @@
           <text class="text-lg margin-left-xs">100</text>
         </view> -->
         <view class="flex align-center" catchtap="likeClick" data-id="{{item.shareId}}" data-islike="{{item.isLike}}">
-          <view class="{{item.isLike?'heart-active':'like'}}" style="background-image:url('https://i.loli.net/2021/01/16/vTltmxunYQH3Pcz.png');transform:scale(3.2);background-position: left;background-size: cover;"></view>
+          <view class="{{item.isLike?'heart-active':'like'}}" style="background-image:url('../../../../assets/img/LSK/heart.png');transform:scale(3.2);background-position: left;background-size: cover;"></view>
           <view class="text-lg margin-left-xs  {{item.isLike?'text-red':'text-gray'}}">{{item.likeNumber}}</view>
         </view>
       </view>
@@ -76,7 +82,7 @@
 </view>
 <view class="padding" wx:if="{{showEnd}}"><view class="text-center text-gray" decode="{{true}}">----------------已经到底啦----------------</view></view>
 </scroll-view>
-<view class="bg-white shadow" style="position:fixed;bottom:40rpx;right:30rpx;width:80rpx;height:80rpx;border-radius:100%;line-height:80rpx;z-index:1000" bindtap="toReleaseDynamic">
+<view class="bg-white shadow" wx:if="{{isLogin}}" style="position:fixed;bottom:40rpx;right:30rpx;width:80rpx;height:80rpx;border-radius:100%;line-height:80rpx;z-index:1000" bindtap="toReleaseDynamic">
   <text class="cuIcon-add text-gray" style="font-size:64rpx;padding-left:8rpx"></text>
 </view>
 

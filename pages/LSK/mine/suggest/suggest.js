@@ -1,4 +1,9 @@
-// pages/mine/suggest/suggest.js
+import { loadingOff, showToast } from '../../../../utils/util';
+import { commitAdvise }from '../../../../service/userInfo';
+import {
+  BASE_URL,
+  K_config
+} from '../../../../service/config'
 Page({
 
   /**
@@ -21,7 +26,7 @@ Page({
   },
   // 表单提交
   formSuggest(){
-    console.log(this.data.textareaAValue);
+    // console.log(this.data.textareaAValue);
     if(this.data.textareaAValue==""){
       wx.showToast({
         icon:'none',
@@ -29,14 +34,25 @@ Page({
       });
     }
     else{
-      wx.showToast({
-        title: '提交成功',
-      });
-      setTimeout(function () {
-        wx.navigateBack({
-          delta: 1
-        });  
-      }, 1000);   
+    commitAdvise({
+      advise: this.data.textareaAValue,
+      userId: wx.getStorageSync('userId')
+    }).then((res) => {
+        loadingOff()
+        if(res.data.code===K_config.STATECODE_commitAdvise_SUCCESS || res.data.code===K_config.STATECODE_SUCCESS){
+          wx.showToast({
+            title: '提交成功',
+          });
+          setTimeout(function () {
+            wx.navigateBack({
+              delta: 1
+            });  
+          }, 1000);  
+        }else if(res.data.code === K_config.STATECODE_commitAdvise_FALSE){
+          showToast('每天只能提交一次', 1000)
+        }  
+    })
+ 
     }
   },
   /**

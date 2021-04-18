@@ -34,3 +34,27 @@ export function updatePhoto(data) {
     data: data
   })
 }
+
+// 用户提交投诉
+export function commitAdvise(data) {
+  return request({
+    url: K_config.API_commitAdvise_URL,
+    method: 'POST', 
+    data: data,
+    header: {
+      'Content-Type': "application/x-www-form-urlencoded" 
+    },
+  })
+}
+
+// 获取入驻提示
+export function getTip(data) {
+  return request({
+    url: K_config.API_getTip_URL,
+    method: 'POST', 
+    data: data,
+    header: {
+      'Content-Type': "application/x-www-form-urlencoded" 
+    },
+  })
+}

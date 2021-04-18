@@ -2,7 +2,8 @@
 import {
   loadingOff,
   loadingOn,
-  showToast
+  showToast,
+  previewImage
 } from '../../../../utils/util'
 import {
   getDynamicById,
@@ -50,7 +51,23 @@ Page({
     showEndByNoPass: false,
     showEndByunaudited: false,
     // 需要删除的动态的index
-    deleteIndex:null
+    deleteIndex:null,
+    isLogin:false,
+    isRefresh:false
+  },
+  // 是否登录
+  toLogin: function () {
+    wx.login({
+      success: res => {
+        const code = res.code
+        wx.navigateTo({
+          url: '/pages/WCH/login/login',
+          success: res => {
+            res.eventChannel.emit('code',{ code: code })
+          }
+        })
+      }
+    })  
   },
   // 选项卡展示
   tabSelect(e) {
@@ -277,7 +294,8 @@ Page({
         this.setData({
           dynamicList: this.data.dynamicList,
           maxPagesByPass: res.data.data.pages,
-          isTriggered: false
+          isTriggered: false,
+          isRefresh:true
         })
         // console.log(this.data.dynamicList);
       }
@@ -402,6 +420,11 @@ Page({
 
     })
   },
+  // 查看图片
+  _previewImage(e){
+    console.log(e.currentTarget.dataset.image);
+    previewImage( [e.currentTarget.dataset.image], e.currentTarget.dataset.image)
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -416,7 +439,7 @@ Page({
         toTop: res[0].bottom * 2
       })
     })
-    this.getAuditPassList()
+    // this.getAuditPassList()
   },
 
   /**
@@ -430,6 +453,14 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    if(wx.getStorageSync('token')){
+      this.setData({
+        isLogin:true
+      })    
+      if(!this.data.isRefresh){
+        this.getAuditPassList()
+      }
+    }
 
   },
 

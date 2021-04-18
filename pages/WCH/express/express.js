@@ -85,10 +85,6 @@ Page({
       userId: wx.getStorageSync('userId')
     })
 
-    if(this.data.TabIndex === 1) {
-      this._selectUserOrder()
-    }
-
     this._getAllAddressByCampus()
   },
   login() {
@@ -110,7 +106,10 @@ Page({
   },
   tapTabIndex(e) {
     const id = e.currentTarget.dataset.id
-    id === 1 ? this._selectUserOrder() : ''
+    if(id === 1) {
+      this.data.express = []
+      this._selectUserOrder()
+    }
     this.setData({
       TabIndex: id
     })
