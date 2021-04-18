@@ -96,34 +96,13 @@ Page({
           showToast('服务器异常!')
         }
       }).then(() => {
-        _getMultiData(
-          this.data.position,
-          this.data.storeList,
-          {
-            pageNum: 1
-          }
-        ).then((res) => {
-          wx.hideLoading()
-          if(!res.storeList[9]) {
-            this.setData({
-              showEnd: true
-            })
-          }
-          
-          this.setData({
-            storeList: res.storeList || [],
-            categoryList: this.data.categoryList,
-            totalPages: res.totalPages
-          })
-        }).catch(err => {
-          showToast('服务器异常！')
-        })
+        this.getShopList()
       })
     } else {
       wx.hideLoading()
     }
   },
-  onShow() {
+  async onShow() {
     if(!wx.getStorageSync('address')) {
       wx.redirectTo({
         url: '/pages/WCH/location/location?canback=' + 0
@@ -203,17 +182,41 @@ Page({
       })
     }
   },
-  onRefresh() {
+  async getShopList() {
+    await _getMultiData(
+      this.data.position,
+      this.data.storeList,
+      {
+        pageNum: 1
+      }
+    ).then((res) => {
+      wx.hideLoading()
+      if(!res.storeList[9]) {
+        this.setData({
+          showEnd: true
+        })
+      }
+      
+      this.setData({
+        storeList: res.storeList || [],
+        categoryList: this.data.categoryList,
+        totalPages: res.totalPages
+      })
+    }).catch(err => {
+      showToast('服务器异常！')
+    })
+  },
+  async onRefresh() {
     this.data.storeList = [],
     this.setData({
       triggered: true,
       pageNum: 1,
       showEnd: false
     })
-    this.onLoad().then(() => {
-      this.setData({
-        triggered: false
-      })
+    await this.getShopList()
+    this.onShow()
+    this.setData({
+      triggered: false
     })
   },
   tapBanner(e) {
