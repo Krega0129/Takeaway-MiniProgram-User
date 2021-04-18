@@ -35,7 +35,11 @@
     <view class="title padding-left">{{order.addresseeName}}</view>
     <view class="flex-sub cuIcon-phone"> {{order.addresseePhone}}</view>
   </view>
-  <block wx:if="{{order.status !== 0}}">
+  <view class="cu-form-group text-bold text-xl">
+    <view class="title padding-left">订单编号</view>
+    <view class="flex-sub"> {{order.orderNumber}} <text class="cuIcon-copy" bindtap="copyOrderNumber"></text> </view>
+  </view>
+  <block wx:if="{{order.status === 1 || order.status === 2}}">
     <view class="padding-top-xl padding-left-xl text-center solids-top text-xxl text-bold">骑手信息</view>
     <view class="cu-form-group text-bold text-xl">
       <view class="title padding-left">{{order.riderName}}</view>
@@ -43,5 +47,5 @@
       <view class="cuIcon-copy" bindtap="copyRiderPhone"></view>
     </view>
   </block>
-  <button class="bg-cyan margin-top-xl" bindtap="cancelOrder">取消订单</button>
+  <button wx:if="{{order.status === 0}}" class="bg-cyan margin-top-xl" bindtap="cancelOrder">取消订单</button>
 </view>

@@ -4,9 +4,10 @@ import {
   H_config
 } from './config'
 
-export function selectExpressAgentPrice() {
+export function selectExpressAgentPrice(data) {
   return request({
     url: H_config.API_selectExpressAgentPrice_URL,
+    data: data
   })
 }
 

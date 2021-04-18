@@ -4,7 +4,8 @@ const app = getApp()
 
 import { 
   getShopCategory,
-  getAllPosters
+  getAllPosters,
+  getNotice
 } from '../../../service/home'
 
 import {
@@ -43,19 +44,12 @@ Page({
     showEnd: false,
     setWidth: '',
     ad: '校园生活，这是广告',
-    notice: '这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语这是标语'
+    notice: ''
   },
   async onLoad() {
     wx.showLoading({
       title: '加载中...'
     })
-    
-    wx.createSelectorQuery().select('.notice').boundingClientRect(res => {
-      let setWidth = `--width: -${res.width}px; --wid: ${res.width / 30}s`
-      this.setData({
-        setWidth: setWidth
-      })
-    }).exec()
 
     wx.createSelectorQuery().select('.search').boundingClientRect().selectViewport().scrollOffset().exec(res => {
       this.setData({
@@ -108,6 +102,24 @@ Page({
         url: '/pages/WCH/location/location?canback=' + 0
       })
     }
+
+    await getNotice({
+      address: wx.getStorageSync('address')
+    }).then(res => {
+      if(res && res.data && res.data.code == 3200) {
+        wx.hideLoading()
+        this.setData({
+          notice: res.data.data.noticeInfo
+        })
+      }
+    })
+
+    wx.createSelectorQuery().select('.notice').boundingClientRect(res => {
+      let setWidth = `--width: -${res.width}px; --wid: ${res.width / this.data.notice.length}s`
+      this.setData({
+        setWidth: setWidth
+      })
+    }).exec()
     
     for(let store of this.data.storeList) {
       store.addCart = false

@@ -1,7 +1,5 @@
-// const BASE_URL = 'https://192.168.1.105:8888'
-// const BASE_URL = 'https://172.20.10.3:8888'
-const BASE_URL = 'https://www.lizeqiang.top:8888'
-// const BASE_URL = 'https://cat.vipgz4.idcfengye.com'
+// const BASE_URL = 'https://www.sijie666.com:8080'
+const BASE_URL = 'https://192.168.1.101:8080'
 
 const H_config = {}
 H_config.STATECODE_SUCCESS = 200
@@ -17,6 +15,8 @@ H_config.STATECODE_autoComplete_SUCCESS = 1200
 H_config.API_getMultiData_URL = '/getShopInfo/userGetShop'
 H_config.STATECODE_getMultiData_SUCCESS = 1200
 H_config.STATECODE_getMultiData_FAIL = 1201
+// 首页通知
+H_config.API_getNotice_URL = '/manager/getNotice'
 
 // 商铺页面
 // 获取店铺详情：商品信息等

@@ -22,7 +22,6 @@ Page({
   async onLoad(options) {
     const pages=getCurrentPages()
     const prevPage = pages[pages.length - 2]
-    console.log(prevPage);
     if(!prevPage||prevPage.route=='pages/WCH/home/home'){
       this.data.localJudge='shop'
     }else if(prevPage.route=='pages/LSK/sociality/homePage/homePage'){
@@ -90,7 +89,7 @@ Page({
       title: '提示',
       success: (res) => {
         if(res.confirm) {
-          console.log(e.currentTarget.dataset.location);
+          // console.log(e.currentTarget.dataset.location);
           wx.setStorageSync('address', e.currentTarget.dataset.location.campusName)
           wx.setStorageSync('campusId', e.currentTarget.dataset.location.campusId)
           wx.setStorageSync('sendPrice', Number(e.currentTarget.dataset.location.campusCost).toFixed(2))

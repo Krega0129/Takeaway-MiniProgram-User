@@ -71,7 +71,7 @@
                 {{item.intro}}
               </view>
               <view class="text-cut text-sm text-gray" style="height: 50rpx; line-height: 50rpx">
-                月售{{item.monthSells}}
+                月售{{item.saleNumber}}
               </view>
               <view class="text-cut text-gray">
                 <text class="text-price text-lg text-red text-bold">{{item.price}} <text class="text-xs">{{item.specification[0]?'起':''}}</text></text>
@@ -148,7 +148,7 @@
     <view class="cu-bar bg-white justify-between">
       <view class="text-gray text-xs margin-left">
         <text class="text-price text-red text-xl text-bold margin-right">{{foodDetails.price + (foodDetails.attributePrice ? foodDetails.attributePrice : 0)}}</text>
-        月售：{{foodDetails.monthSells}}
+        月售：{{foodDetails.saleNumber}}
       </view>
       <view class="action">
         <button class="cu-btn line-green text-green" size="mini" bindtap="closeSpecification">取消</button>
@@ -171,7 +171,7 @@
         <view class="text-xs margin-bottom-xs text-gray text-cut" style="width: 400rpx">{{foodDetails.intro}}</view>
         <view class="text-gray text-xs">
           <text class="text-price text-red text-xl text-bold margin-right">{{foodDetails.price}} <text class="text-xs">{{foodDetails.specification[0]?'起':''}}</text></text>
-          月售：{{foodDetails.monthSells}}
+          月售：{{foodDetails.saleNumber}}
         </view>
       </view>
       <!-- 无规格商品，未加入购物车 -->

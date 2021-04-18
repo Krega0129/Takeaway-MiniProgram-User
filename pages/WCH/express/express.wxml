@@ -103,7 +103,7 @@
       <view class="bg-white margin-top-xs padding-sm" wx:for="{{express}}" wx:key="index"  bindtap="expressDetails" data-item="{{item}}">
         <view class="flex justify-between padding-bottom-sm solids-bottom">
           <view class="text-bold">{{item.expressType + ' - ' + item.pickUpType}}</view>
-          <view class="text-{{item.status === 0 ? 'blue' : item.status === 1 ? 'orange' : item.status === 2 ? 'green' : 'red'}} text-bold">{{item.status === 0 ? '待接单' : item.status === 1 ? '已接单' : item.status === 2 ? '已送达' : '订单异常'}}</view>
+          <view class="text-{{expressStatusColor[item.status] ? expressStatusColor[item.status] : 'red'}} text-bold">{{expressStatusName[item.status] ? expressStatusName[item.status] : '订单异常'}}</view>
         </view>
         <view class="padding-top-sm padding-left">
           <view class="text-cut margin-bottom-xs text-lg text-bold text-cyan padding-left">

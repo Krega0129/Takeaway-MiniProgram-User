@@ -35,6 +35,17 @@ export function getAllCampus() {
   })
 }
 
+export function getNotice(data) {
+  return request({
+    method: 'post',
+    url: H_config.API_getNotice_URL,
+    data: data,
+    header: {
+      'content-type': 'application/x-www-form-urlencoded'
+    }
+  })
+}
+
 export function getAllPosters(data) {
   return request({
     method: 'post',

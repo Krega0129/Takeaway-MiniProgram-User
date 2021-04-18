@@ -68,7 +68,8 @@ Page({
       this.renewCartList()
       // 获取店铺信息
       getShopInfo({
-        shopId: this.data.shopId
+        shopId: this.data.shopId,
+        userId: wx.getStorageSync('userId')
       }).then(res => {
         if(res && res.data && res.data.code === H_config.STATECODE_getShopInfo_SUCCESS) {
           const shopInfo = res.data.data
@@ -110,7 +111,7 @@ Page({
                   id: null,
                   name: null,
                   intro: null,
-                  monthSells: null,
+                  saleNumber: null,
                   specification: [],
                   price: null,
                   // 规格字符串
@@ -124,7 +125,7 @@ Page({
                 foodListItem.imgUrl = BASE_URL + '/' + food.commodityPhoto
                 foodListItem.price = food.commodityPrice
                 foodListItem.intro = food.commodityDetail
-                foodListItem.monthSells = 999
+                foodListItem.saleNumber = food.saleNumber
                 // 有规格
                 if(food.specs.length) {
                   for(let specs of food.specs) {

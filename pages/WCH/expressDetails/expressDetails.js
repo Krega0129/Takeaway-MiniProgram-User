@@ -2,6 +2,7 @@
 import {
   cancelExpressOrder
 } from '../../../service/express'
+import { showToast } from '../../../utils/util'
 
 Page({
   data: {
@@ -21,8 +22,8 @@ Page({
       riderPhone: '19120333220',
       status: 3
     },
-    status: ['等待骑手接单...', '待送达', '已完成', '订单异常'],
-    statusColor: ['blue', 'orange', 'green', 'red']
+    status: ['等待骑手接单...', '待送达', '已完成', '已退款', '已取消'],
+    statusColor: ['blue', 'orange', 'green', 'black', 'grey']
   },
   onLoad: function (options) {
     let eventChannel = this.getOpenerEventChannel()
@@ -55,13 +56,35 @@ Page({
       success: res => {
         if(res.confirm) {
           cancelExpressOrder({
-            id: String(this.data.order.orderNumber)
+            id: String(this.data.order.id)
           }).then(res => {
             wx.hideLoading()
-            console.log(res);
+            if(res.data.code === 3200) {
+              wx.showToast({
+                title: '取消成功',
+              })
+              setTimeout(() => {
+                wx.navigateBack()
+              }, 1000)
+            } else {
+              showToast('取消失败')
+            }
           })
         }
       }
     })
   },
+  copyOrderNumber() {
+    wx.setClipboardData({
+      data: this.data.order.orderNumber,
+      success() {
+        wx.showToast({
+          title: '复制成功',
+        });
+      },
+      fail: () => {
+        showToast('复制失败')
+      }
+    })
+  }
 })

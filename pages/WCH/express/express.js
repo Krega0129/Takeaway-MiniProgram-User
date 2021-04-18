@@ -24,6 +24,8 @@ Page({
     flagBottom: null,
     express: [],
     pickUpTypeList: ['蜂巢柜', '菜鸟驿站', '摆摊'],
+    expressStatusName: ['待接单', '待送达', '已完成', '已退款', '已取消'],
+    expressStatusColor: ['blue', 'orange', 'green', 'black', 'grey'],
     index: 0,
     specList: [],
     specificationsList: [],
@@ -58,7 +60,9 @@ Page({
       })
     })
 
-    selectExpressAgentPrice().then(res => {
+    selectExpressAgentPrice({
+      campus: wx.getStorageSync('address')
+    }).then(res => {
       wx.hideLoading()
       if(res.data.code === H_config.STATECODE_express_SUCCESS) {
         for(let item of res.data.data) {
@@ -145,6 +149,8 @@ Page({
       showToast('内容不能为空')
     } else {
       submitNewForm(expressAgent).then(res => {
+        console.log(res);
+        
         if(res.data.code === H_config.STATECODE_express_SUCCESS) {
           this.setData({
             orderNum: res.data.data.orderNumber
@@ -170,7 +176,8 @@ Page({
                   }
                 },
                 'fail': () => {
-                  this.cancelOrder(res.data.data.orderNumber)
+                  console.log('取消支付了');
+                  this.cancelOrder(res.data.data.id)
                 },
                 complete: () => {
                   this.setData({

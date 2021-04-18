@@ -25,14 +25,14 @@ App({
       this.webSocketConnect()
     }
 
-    getAllCampus().then(res => {
-      if(res.data && res.data.code && res.data.code === 3200) {
-        let list = res.data.data
-        let address = list.find(item => item.campusId === wx.getStorageSync('campusId'))
-        wx.setStorageSync('sendPrice', address.campusCost)
-        wx.setStorageSync('minPrice', address.campusMinPrice)
-      }
-    })
+    // getAllCampus().then(res => {
+    //   if(res.data && res.data.code && res.data.code === 3200) {
+    //     let list = res.data.data
+    //     let address = list.find(item => item.campusId === wx.getStorageSync('campusId'))
+    //     wx.setStorageSync('sendPrice', address.campusCost)
+    //     wx.setStorageSync('minPrice', address.campusMinPrice)
+    //   }
+    // })
     
     wx.getSystemInfo({
       success: e => {
