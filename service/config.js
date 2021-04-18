@@ -1,6 +1,6 @@
 // const BASE_URL = 'https://192.168.1.105:8888'
-// const BASE_URL = 'https://192.168.1.101:8888'
-const BASE_URL = 'https://www.sijie666.com:8080'
+const BASE_URL = 'https://192.168.1.101:8080'
+// const BASE_URL = 'https://www.sijie666.com:8080'
 // const BASE_URL = 'https://cat.vipgz4.idcfengye.com'
 
 const H_config = {}
