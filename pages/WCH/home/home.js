@@ -69,7 +69,7 @@ Page({
     
     if(wx.getStorageSync('address')) {
       await getAllPosters({
-        campusId: wx.getStorageSync('campusId')
+        campus: wx.getStorageSync('address')
       }).then(res => {
         wx.hideLoading()
         this.setData({
