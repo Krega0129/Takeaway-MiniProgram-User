@@ -11,6 +11,9 @@ import {
   giveThunbUp,
   cancelThunbUp
 } from '../../../../service/socialty'
+import { 
+  getAllPosters,
+} from '../../../../service/home'
 import {
   K_config,
   BASE_URL
@@ -25,27 +28,7 @@ Page({
   data: {
     toTop:null,
     isTriggered:false,
-    swiperList: [{
-      id: 0,
-      type: 'image',
-      url: 'https://p1.meituan.net/travelcube/01d2ab1efac6e2b7adcfcdf57b8cb5481085686.png'
-    }, {
-      id: 1,
-        type: 'image',
-        url: 'http://p0.meituan.net/codeman/33ff80dc00f832d697f3e20fc030799560495.jpg',
-    }, {
-      id: 2,
-      type: 'image',
-      url: 'http://p0.meituan.net/codeman/a97baf515235f4c5a2b1323a741e577185048.jpg'
-    }, {
-      id: 3,
-      type: 'image',
-      url: 'http://p1.meituan.net/codeman/826a5ed09dab49af658c34624d75491861404.jpg'
-    }, {
-      id: 4,
-      type: 'image',
-      url: 'http://p0.meituan.net/codeman/daa73310c9e57454dc97f0146640fd9f69772.jpg'
-    }],
+    swiperList: [],
     imgUrl: '',
     showImg: false,
     // 定位
@@ -63,9 +46,9 @@ Page({
     baseurl : '',
     userId : wx.getStorageSync('userId'),
     //是否到达底部
-    showEnd:false,
+    showEnd:true,
     // 是否登录
-    isLogin : false,
+    isLogin : true,
     // 是否刷新
     isRefresh:false
   },
@@ -280,6 +263,17 @@ Page({
         toTop: res[0].bottom * 2
       })
     })
+
+    if(wx.getStorageSync('address') && wx.getStorageSync('token')) {
+      getAllPosters({
+        campus: wx.getStorageSync('address')
+      }).then(res => {
+        wx.hideLoading()
+        this.setData({
+          swiperList: res.data.data
+        })
+      })
+    }
   },
 
   /**
@@ -293,7 +287,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if (wx.getStorageSync('token')) {
+    if (!wx.getStorageSync('token')) {
+      this.setData({
+        isLogin: false,
+      })
+    }else{
       this.setData({
         isLogin: true,
         baseurl:BASE_URL,

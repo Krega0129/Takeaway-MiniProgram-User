@@ -1,5 +1,5 @@
-// const BASE_URL = 'https://www.sijie666.com:8080'
-const BASE_URL = 'https://192.168.1.101:8080'
+const BASE_URL = 'https://www.sijie666.com:8080'
+// const BASE_URL = 'https://192.168.1.101:8080'
 
 const H_config = {}
 H_config.STATECODE_SUCCESS = 200

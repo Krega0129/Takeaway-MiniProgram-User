@@ -91,7 +91,7 @@ Page({
         //和服务器约定的token, 一般也可以放在header中
         'session_token': wx.getStorageSync('session_token')
       },
-      success: function (res) {
+      success: function (res) { 
         let data = JSON.parse(res.data)
         addDynamic({
           userId,
@@ -99,29 +99,13 @@ Page({
           sharePicture: data.data.name,
           shareAddress: that.data.localCampus
         }).then((res) => {
+          showToast('发布成功，请等待管理员审核',1000)
           loadingOff()
-          // if (res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_addDynamic_SUCCESS) {
-          //     this.upload(this,this.data.imgList)  
-          // }
         })
-        // console.log(JSON.parse(res.data));
-        // console.log(res);
-        // that.setData({
-        //   returnImgUrl:data.data.name
-        // })
-        
         wx.navigateBack()
-        // let data = JSON.parse(res.data)
-        // console.log(data);
-        // const head=data.data
-        // updateUserInfo({head,userId}).then((res)=>{
-        //   if(res.data.code===K_config.STATECODE_updateUserInfo_SUCCESS || res.data.code===K_config.STATECODE_SUCCESS){
-        //     showToast('头像更新成功',1000)
-        //   }
-        // })
       },
       fail: function (res) {
-        showToast('头像上传失败，请检查网络')
+        showToast('图片上传失败，请检查网络')
       },
     })
   },
@@ -137,12 +121,21 @@ Page({
       cancelText: '取消',
       confirmText: '确定',
       success: res => {
-        if(this.data.shareContent.length!==0||this.data.imgList.length!==0){
-          this.upload(this,this.data.imgList) 
+        if( this.data.imgList.length !== 0){
+          this.upload(this, this.data.imgList) 
+        }else if(this.data.shareContent.length !== 0 && this.data.imgList.length === 0){
+          addDynamic({
+            userId,
+            shareContent:this.data.shareContent,
+            shareAddress: this.data.localCampus
+          }).then((res) => {
+            showToast('发布成功，请等待管理员审核',1000)
+            loadingOff()     
+          })      
+          wx.navigateBack()
         }else{
           showToast('上传不能为空',1000)
         }
-         
       }
     })
 

@@ -48,6 +48,7 @@ Page({
                 });
                 prevPage.refreshPage();
               }
+              showToast('删除成功', 1000)
               wx.navigateBack({         //返回上一页  
                 delta: 1
               })

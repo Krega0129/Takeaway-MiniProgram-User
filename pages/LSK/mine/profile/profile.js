@@ -77,7 +77,7 @@ Page({
       loadingOff()
       if(res.data.code===K_config.STATECODE_selectUserInfo_SUCCESS || res.data.code===K_config.STATECODE_SUCCESS){
         let userMsg=res.data.data
-        console.log(userMsg);
+        wx.setStorageSync('nickName', userMsg.nickname)
         this.setData({
           userMsg:userMsg
         })

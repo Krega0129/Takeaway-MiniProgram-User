@@ -12,7 +12,7 @@
             <view class="text-bold text-xl">请先登录</view>
           </view>
           <view class="margin-left-xl" wx:else>
-            <view class="margin-bottom-sm text-bold text-xl">{{userMsg.nickname?userMsg.nickname:'默认用户'}}</view>
+            <view class="margin-bottom-sm text-bold text-xl">{{userMsg.nickname}}</view>
             <view class="text-sm">{{userMsg.userPhone}}</view>
           </view>
         </block>
