@@ -121,6 +121,8 @@ Page({
         // })
       },
       fail: function (res) {
+        console.log(res);
+        
         showToast('头像上传失败，请检查网络')
       },
     })
