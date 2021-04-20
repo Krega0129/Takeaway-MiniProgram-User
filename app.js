@@ -3,6 +3,12 @@ import  bus  from './utils/bus'
 import {
   getAllCampus
 } from './service/home'
+import {
+  loginByTourist
+} from './service/touristLogin'
+import {
+  K_config
+} from './service/config'
 App({
   onLaunch: function () {
     this.globalData.bus=bus
@@ -10,6 +16,13 @@ App({
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
+    if(!wx.getStorageSync('token')){
+      loginByTourist().then((res) => {
+        if(res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_touristLogin_SUCCESS){
+          wx.setStorageSync('touristToken', res.data.data)
+        }
+      })
+    }
 
     if(!wx.getStorageSync('searchFoodHistoryList')) {
       wx.setStorageSync('searchFoodHistoryList', [])

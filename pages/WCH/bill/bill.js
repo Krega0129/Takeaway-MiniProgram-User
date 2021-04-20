@@ -90,8 +90,7 @@ Page({
         remark: data.remark
       })
     })
-    this._getAllAddressByCampus()
-    
+    wx.getStorageSync('token') && this._getAllAddressByCampus()
   },
   takeAway() {
     app.culPrice(this.data.cartList, Number(wx.getStorageSync('sendPrice')))

@@ -102,20 +102,19 @@ Page({
             swiperList: res.data.data
           })
         })
+
+        await getNotice({
+          address: wx.getStorageSync('address')
+        }).then(res => {
+          if (res && res.data && res.data.code == 3200) {
+            wx.hideLoading()
+            this.setData({
+              notice: res.data.data ? res.dat1a.data.noticeInfo : '欢迎光临'
+            })
+          }
+        })
       }
     }
-
-      await getNotice({
-        address: wx.getStorageSync('address')
-      }).then(res => {
-        if (res && res.data && res.data.code == 3200) {
-          wx.hideLoading()
-          this.setData({
-            notice: res.data.data ? res.data.data.noticeInfo : '欢迎光临'
-          })
-        }
-      })
-
       wx.createSelectorQuery().select('.notice').boundingClientRect(res => {
         let setWidth = `--width: -${res.width}px; --wid: ${res.width / this.data.notice.length}s`
         this.setData({

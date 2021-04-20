@@ -15,7 +15,7 @@ Page({
     shopId: null,
     totalPrice: app.globalData.totalPrice,
     totalCount: app.globalData.totalCount,
-    sendPrice: Number(wx.getStorageSync('sendPrice')),
+    sendPrice: (Number(wx.getStorageSync('sendPrice')) / 2).toFixed(2),
     storeName: '店家名称',
     storeDesc: '商家简介',
     storeImgURL: '',
@@ -80,7 +80,7 @@ Page({
             storeAddress: shopInfo.detailAddress,
             storeImgURL: BASE_URL + '/' + shopInfo.shopHead,
             storeTelNum: shopInfo.contactPhone,
-            sendPrice: wx.getStorageSync('sendPrice')
+            sendPrice: (Number(wx.getStorageSync('sendPrice')) / 2).toFixed(2)
           })
         } else {
           showToast('网络异常')

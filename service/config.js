@@ -1,9 +1,12 @@
-const BASE_URL = 'https://www.sijie666.com:8080'
-// const BASE_URL = 'https://192.168.1.101:8080'
+// const BASE_URL = 'https://www.sijie666.com:8080'
+const BASE_URL = 'https://192.168.1.102:8080'
 
 const H_config = {}
+const K_config = {}
 H_config.STATECODE_SUCCESS = 200
 
+K_config.API_touristLogin_URL = '/manager/touristLogin'
+K_config.STATECODE_touristLogin_SUCCESS = 3200
 // 登录
 H_config.API_login_URL = '/user/login'
 // 搜索提示
@@ -84,7 +87,7 @@ H_config.API_refund_URL = '/wechatpay/refund'
 H_config.STATECODE_refund_SUCCESS = 3200
 H_config.STATECODE_refund_FAILED = 2530
 
-const K_config = {}
+
 
 K_config.STATECODE_SUCCESS = 200
 K_config.STATECODE_getUserOrderByStatus_SUCCESS = 3203

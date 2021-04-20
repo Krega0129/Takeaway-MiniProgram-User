@@ -80,7 +80,6 @@ Page({
     }
   },
   reLocate(e) {
-    
     // 提示框
    if(this.data.localJudge=='shop'){
     wx.showModal({

@@ -65,6 +65,7 @@ export function getShopCategory(data) {
 }
 
 export function searchTip(data) {
+  
   return new Promise((resolve, reject) => {
     wx.request({
       method: 'post',

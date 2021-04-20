@@ -12,9 +12,15 @@ export default async function(options) {
   })
 
   if(options.header) {
-    options.header.token = wx.getStorageSync('token') || ''
+    options.header.touristToken = wx.getStorageSync('touristToken')
+    if(wx.getStorageSync('token')){
+      options.header.userToken = wx.getStorageSync('token')
+    }
   } else {
-    header.token = wx.getStorageSync('token') || ''
+    header.touristToken = wx.getStorageSync('touristToken')
+    if(wx.getStorageSync('token')){
+      header.userToken = wx.getStorageSync('token')
+    }
   }
   
   return new Promise((resolve, reject) => {
@@ -23,7 +29,22 @@ export default async function(options) {
       url: BASE_URL + options.url,
       data: options.data || {},
       header: options.header || header,
-      success: resolve,
+      success: res => {
+        if(res.data.code === 1534 || res.data.code === 1535 || res.data.code === 1536 || res.data.code === 1545) {
+          wx.removeStorageSync('token')
+          wx.showToast({
+            title: '登录已过期，请重新登录！',
+            icon: 'none'
+          })
+          setTimeout(() => {
+            wx.navigateTo({
+              url: '/pages/WCH/login/login',
+            })
+          }, 1000)
+        } else {
+          resolve(res)
+        }
+      },
       fail: reject
     })
   })

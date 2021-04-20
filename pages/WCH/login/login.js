@@ -13,7 +13,7 @@ Page({
   },
   onLoad: function (options) {
     let eventChannel = this.getOpenerEventChannel()
-    eventChannel.on('code', data => {
+    eventChannel.on && eventChannel.on('code', data => {
       this.data.code = data.code
     })
   },
