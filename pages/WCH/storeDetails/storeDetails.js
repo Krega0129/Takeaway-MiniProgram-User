@@ -605,6 +605,8 @@ Page({
 
     this.culAttrPrice()
 
+    this.data.foodDetails.singlePrice = Number(this.data.foodDetails.price + this.data.foodDetails.attributePrice).toFixed(2)
+
     this.setData({
       foodDetails: this.data.foodDetails,
       foodId: e.currentTarget.dataset.id,
@@ -670,6 +672,7 @@ Page({
   },
   culAttrPrice() {
     let price = 0;
+    // 计算选中的规格的价格
     for(let attr of this.data.specificationList){
       for(let apr of attr.list) {
         if(apr.check) {
@@ -677,6 +680,7 @@ Page({
         }
       }
     }
+    // 将选中的价格放在对象中
     this.data.foodDetails.attributePrice = price
   },
   checkCer() {

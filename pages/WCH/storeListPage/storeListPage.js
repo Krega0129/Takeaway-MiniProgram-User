@@ -3,6 +3,10 @@ import {
   _getMultiData
 } from '../../../utils/util'
 
+import {
+  getAllCampus
+} from '../../../service/home'
+
 const BACK_TOP = 500
 
 const app = getApp()
@@ -18,11 +22,25 @@ Page({
     showEnd: false,
     toBottom: 100 + 2 * app.globalData.CustomBar,
     triggered: false,
-    showBackTop: false
+    showBackTop: false,
+    sendPrice: Number(wx.getStorageSync('sendPrice')),
+    minPrice: Number(wx.getStorageSync('minPrice')),
   },
   async onLoad(options) {
     wx.showLoading({
       title: '加载中...'
+    })
+
+    getAllCampus().then(res => {
+      if(res.data.code === 3200) {
+        const campus = res.data.data.find(item => item.campusId === wx.getStorageSync('campusId'))
+        wx.setStorageSync('sendPrice', campus.campusCost)
+        wx.setStorageSync('minPrice', campus.campusMinPrice)
+        this.setData({
+          sendPrice: campus.campusCost,
+          minPrice: campus.campusMinPrice
+        })
+      }
     })
 
     wx.createSelectorQuery().select('.search').boundingClientRect().selectViewport().scrollOffset().exec(res => {

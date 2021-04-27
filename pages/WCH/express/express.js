@@ -172,11 +172,18 @@ Page({
                 'success':  (response) => {
                   if(response.errMsg === 'requestPayment:ok') {
                     console.log('支付了');
+                    wx.showToast({
+                      title: '支付成功！',
+                    })
                   }
                 },
                 'fail': () => {
                   console.log('取消支付了');
                   this.cancelOrder(res.data.data.id)
+                  wx.showToast({
+                    title: '支付已取消！',
+                    icon: 'error'
+                  })
                 },
                 complete: () => {
                   this.setData({

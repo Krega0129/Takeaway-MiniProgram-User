@@ -100,7 +100,7 @@
       </view>
       <view class="margin-left" style="line-height: 64rpx">x{{item.count ? item.count : item.num}}</view>
     </view>
-    <view class="text-price margin-right-xl text-red text-bold" style="line-height: 64rpx">{{item.price + (item.attrPrice?item.attrPrice:0)}}</view>
+    <view class="text-price margin-right-xl text-red text-bold" style="line-height: 64rpx">{{item.singlePrice}}</view>
   </view>
   <view class="padding-lr padding-bottom-xs padding-top-lg flex justify-between" style="line-height: 38rpx">
     <view>包装费</view>
