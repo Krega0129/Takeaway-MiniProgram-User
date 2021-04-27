@@ -17,12 +17,12 @@
 <!-- 占位 -->
 <view class="cu-bar search">
   <view class="search-form radius">
-    <text class="cuIcon-search"></text>
-    <text class="text-gray">搜索美食</text>
+    <!-- <text class="cuIcon-search"></text> -->
+    <text class="text-gray">    </text>
   </view>
   <view class="action">
-    <text class="cuIcon-search"></text>
-    <text>搜索</text>
+    <!-- <text class="cuIcon-search"></text> -->
+    <text>    </text>
   </view>
 </view>
 

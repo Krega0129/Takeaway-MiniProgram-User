@@ -109,7 +109,7 @@ Page({
           if (res && res.data && res.data.code == 3200) {
             wx.hideLoading()
             this.setData({
-              notice: res.data.data ? res.dat1a.data.noticeInfo : '欢迎光临'
+              notice: res.data.data ? res.data.data.noticeInfo : '欢迎光临'
             })
           }
         })

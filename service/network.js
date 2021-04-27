@@ -30,7 +30,7 @@ export default async function(options) {
       data: options.data || {},
       header: options.header || header,
       success: res => {
-        if(res.data.code === 1534 || res.data.code === 1535 || res.data.code === 1536 || res.data.code === 1545) {
+        if(res.data.code === 400) {
           wx.removeStorageSync('token')
           wx.showToast({
             title: '登录已过期，请重新登录！',

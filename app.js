@@ -130,13 +130,13 @@ App({
   },
   webSocketConnect(uid = wx.getStorageSync('userId'), identity, lastestOrderDate) {
     wx.connectSocket({
-      url: 'wss://www.lizeqiang.top:58080/ws',
+      url: 'wss://www.sijie666.com:58080/ws',
       timeout: 50000,
       header: {
         'content-type': 'application/json'
       },
       success: (res) => {
-        console.log('connect',res);
+        // console.log('connect',res);
         this.webSocketOpen(uid, identity = 'user', lastestOrderDate)
       },
       fail: (res) => {
@@ -152,7 +152,7 @@ App({
           lastestOrderDate
         }),
         success: res => {
-          console.log('send',res);
+          // console.log('send',res);
           this.webGetSocketMessage()
         }
       })
@@ -164,7 +164,7 @@ App({
           identity,
         }),
         success: res => {
-          console.log('send',res);
+          // console.log('send',res);
           this.webGetSocketMessage()
         }
       })
@@ -173,6 +173,8 @@ App({
   webGetSocketMessage() {      
     wx.onSocketMessage((res) => {
     // const a=JSON.parse(res.data)
+    console.log(res.data);
+    
       if(res.data!=="服务器连接成功！"){
         let orderMsg=JSON.parse(res.data)
         bus.emit('orderMsg',orderMsg)

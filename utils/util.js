@@ -86,8 +86,6 @@ export function showToast(showMsg, time) {
 
 export function pay(data) {
   prePay(data).then(res => {
-    console.log(res);
-    
     if(res && res.data && res.data.code === H_config.STATECODE_prePay_SUCCESS) {
       if (res.data.prepayId != ''){
         const map = res.data.data

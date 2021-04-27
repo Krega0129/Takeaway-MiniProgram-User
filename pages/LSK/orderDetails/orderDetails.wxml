@@ -4,7 +4,7 @@
   <text slot="backText">返回</text>
   <text slot="content">订单详情</text>
 </cu-custom>
-<view class="bg-red" style="height:100rpx;width:750rpx;position:fixed;z-index:999"><text
+<view class="bg-cyan" style="height:100rpx;width:750rpx;position:fixed;z-index:999"><text
     class="text-bold text-xxl padding-left-lg letter-spacing-lg" style="line-height:100rpx">{{status}}</text>
 </view>
 <view class="margin-lr-lg bg-white shadow shadow-lg margin-bottom" style="margin-top:100rpx">
@@ -75,7 +75,7 @@
       <view class="flex justify-between padding-tb ">
         <view>下单时间</view>
         <view class="text-gray" wx:if="{{orderDetails.status===7}}">{{orderDetails.completeTime}}</view>
-        <view class="text-gray" wx:else>{{orderDetails.date}}</view>
+        <view class="text-gray" wx:else>{{orderDetails.date ? orderDetails.date : '未付款'}}</view>
       </view>
       <view class="flex justify-between padding-tb ">
         <view>订单备注</view>

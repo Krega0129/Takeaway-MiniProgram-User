@@ -16,7 +16,8 @@ Page({
 
   _getTip(){
     getTip({
-      type: this.data.type
+      type: this.data.type,
+      address: wx.getStorageSync('address')
     }).then((res) => {
       loadingOff()
       console.log(res); 
