@@ -52,8 +52,8 @@ Page({
     showEndByunaudited: false,
     // 需要删除的动态的index
     deleteIndex:null,
-    isLogin:false,
-    isRefresh:false
+    isLogin: true,
+    isRefresh: false
   },
   // 是否登录
   toLogin: function () {
@@ -453,10 +453,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if(wx.getStorageSync('token')){
+    if(!wx.getStorageSync('token')){
       this.setData({
-        isLogin:true
+        isLogin:false
       })    
+    }else{
       if(!this.data.isRefresh){
         this.getAuditPassList()
       }

@@ -5,7 +5,8 @@ const app = getApp()
 import {
   getShopCategory,
   getAllPosters,
-  getNotice
+  getNotice,
+  getAllCampus
 } from '../../../service/home'
 
 import {
@@ -93,6 +94,19 @@ Page({
         url: '/pages/WCH/location/location?canback=' + 0
       })
     } else {
+      getAllCampus().then(res => {
+        console.log(res);
+        if(res.data.code === 3200) {
+          const campus = res.data.data.find(item => item.campusId === wx.getStorageSync('campusId'))
+          wx.setStorageSync('sendPrice', campus.campusCost)
+          wx.setStorageSync('minPrice', campus.campusMinPrice)
+          this.setData({
+            sendPrice: campus.campusCost,
+            minPrice: campus.campusMinPrice
+          })
+        }
+      })
+
       if (wx.getStorageSync('address')) {
         await getAllPosters({
           campus: wx.getStorageSync('address')
@@ -226,6 +240,9 @@ Page({
           pageNum: 1,
           showEnd: false
         })
+
+      
+
       await this.getShopList()
       this.onShow()
       this.setData({

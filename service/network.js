@@ -12,14 +12,16 @@ export default async function(options) {
   })
 
   if(options.header) {
-    options.header.touristToken = wx.getStorageSync('touristToken')
     if(wx.getStorageSync('token')){
       options.header.userToken = wx.getStorageSync('token')
+    } else {
+      options.header.touristToken = wx.getStorageSync('touristToken')
     }
   } else {
-    header.touristToken = wx.getStorageSync('touristToken')
     if(wx.getStorageSync('token')){
       header.userToken = wx.getStorageSync('token')
+    } else {
+      header.touristToken = wx.getStorageSync('touristToken')
     }
   }
   
@@ -36,9 +38,19 @@ export default async function(options) {
             title: '登录已过期，请重新登录！',
             icon: 'none'
           })
+          console.log(111111);
+          
           setTimeout(() => {
-            wx.navigateTo({
-              url: '/pages/WCH/login/login',
+            wx.login({
+              success: res => {
+                const code = res.code
+                wx.navigateTo({
+                  url: '/pages/WCH/login/login',
+                  success: res => {
+                    res.eventChannel.emit('code',{ code: code })
+                  }
+                })
+              }
             })
           }, 1000)
         } else {

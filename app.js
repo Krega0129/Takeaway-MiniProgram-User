@@ -82,6 +82,7 @@ App({
     } else if(!oldInfo && !tag) {
       // 购物车不存在 && 没有规格
       obj.num = 1
+      obj.singlePrice = obj.price
       old.foodList.push(obj)
     } else if (oldInfo && tag && tag === oldInfo.spec) {
       // 购物车中存在 && 有规格 && 购物车中存在此规格商品
@@ -89,7 +90,7 @@ App({
       oldInfo.count++
     } else if(!oldInfo || (oldInfo && tag && tag !== oldInfo.spec)){
       // 购物车中不存在该商品 || 规格
-      old.foodList.push({...obj, spec: tag, count: 1})
+      old.foodList.push({...obj, spec: tag, count: 1, singlePrice: Number(obj.price + obj.attrPrice).toFixed(2)})
     }
 
     if(oldInfo) {
@@ -108,7 +109,8 @@ App({
     this.globalData.totalCount = 0
     for(let item of list) {
       const num = item.count ? item.count : item.num
-      this.globalData.totalPrice += (item.price + (item.attrPrice ? item.attrPrice : 0)) * num
+      // this.globalData.totalPrice += (item.price + (item.attrPrice ? item.attrPrice : 0)) * num
+      this.globalData.totalPrice += item.singlePrice * num
       this.globalData.totalCount += num
     }
     this.globalData.totalPrice = this.globalData.totalPrice + (sendPrice || 0)

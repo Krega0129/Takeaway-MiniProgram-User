@@ -43,18 +43,21 @@
       <view class="content">
         <view class="pos-re margin-top">
           <image src="{{item.shopHead}}" mode="aspectFill" style="width: 200rpx; height: 6.4em"></image>
-          <view class="cu-tag badge" wx:if="{{item.addCart}}">{{item.num}}</view>
+          <!-- <view class="cu-tag badge" wx:if="{{item.addCart}}">{{item.num}}</view> -->
         </view>
-        <view class="desc padding-top">
+        <view class="desc padding-top pos-re">
           <view class="title text-cut" style="font-size: 40rpx; line-height: 40rpx">{{item.shopName}}</view>
           <view class="text-gray margin-left">浏览人数：{{item.glanceNumber}}</view>
           <view class="text-gray margin-left">
-            起送 <text class="text-price">{{item.minPrice ? item.minPrice : 0}}</text>
-            配送 <text class="text-price">{{item.sentPrice ? item.sentPrice : 0}}</text>
+            <!-- 起送 <text class="text-price">{{item.minPrice ? item.minPrice : 0}}</text>
+            配送 <text class="text-price">{{item.sentPrice ? item.sentPrice : 0}}</text> -->
+            <text wx:if="{{minPrice}}"> 起送 <text class="text-price">{{minPrice}} </text></text>
+            <text wx:if="{{sendPrice}}"> 配送 <text class="text-price">{{sendPrice}} </text></text>
           </view>
           <view>
             <view class="dp-in-bk text-cut bg-orange light margin-left" style="max-width: 380rpx">“ {{item.shopIntroduce}} ”</view>
           </view>
+          <view class="cu-tag badge bg-cyan" style="right: 50rpx; top: 30rpx" wx:if="{{item.addCart}}">{{item.num}}</view>
         </view>
       </view>
     </view>

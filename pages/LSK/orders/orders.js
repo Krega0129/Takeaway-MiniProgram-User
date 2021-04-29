@@ -413,6 +413,8 @@ Page({
     wx.login({
       success: res => {
         const code = res.code
+        console.log(res);
+        
         wx.navigateTo({
           url: '/pages/WCH/login/login',
           success: res => {
