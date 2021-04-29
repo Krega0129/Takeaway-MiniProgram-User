@@ -30,14 +30,14 @@ Page({
     showBackTop: false,
     pageNum: 1,
     cateImgList: [
-      '../../../assets/img/WCH/category/BBQ.png',
-      '../../../assets/img/WCH/category/bread.png',
-      '../../../assets/img/WCH/category/fast-food.png',
-      '../../../assets/img/WCH/category/fruit.png',
-      '../../../assets/img/WCH/category/hambur.png',
-      '../../../assets/img/WCH/category/noodle.png',
-      '../../../assets/img/WCH/category/shop.png',
-      '../../../assets/img/WCH/category/tea-milk.png'
+      '../../../assets/img/WCH/category/美食快餐.jpg',
+      '../../../assets/img/WCH/category/米粉面馆.jpg',
+      '../../../assets/img/WCH/category/奶茶.jpg',
+      '../../../assets/img/WCH/category/汉堡炸鸡.jpg',
+      '../../../assets/img/WCH/category/鲜果.jpg',
+      '../../../assets/img/WCH/category/烧烤夜宵.jpg',
+      '../../../assets/img/WCH/category/超市商铺.jpg',
+      '../../../assets/img/WCH/category/快递代拿.jpg'
     ],
     totalPages: 1,
     toBottom: null,
