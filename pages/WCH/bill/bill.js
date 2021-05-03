@@ -6,7 +6,8 @@ import {
 import {
   getAllAddress,
   getAllAddressByCampus,
-  orderNewOrder
+  orderNewOrder,
+  selectUpdateCondition
 } from '../../../service/bill'
 
 import {
@@ -261,6 +262,8 @@ Page({
       }
 
       orderNewOrder(order).then(res => {
+        console.log(res);
+        
         // 下单成功
         if(res && res.data && res.data.code === H_config.STATECODE_orderNewOrder_SUCCESS) {
           const obj = res.data.data
@@ -269,6 +272,7 @@ Page({
           pay.call(this, obj)
           let oldCart = app.globalData.cartList.find(item => item.shopId === this.data.shopId)
           oldCart.foodList = []
+         
         }else {
           showToast(res.data.msg)
         }

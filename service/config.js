@@ -62,9 +62,11 @@ H_config.STATECODE_orderNewOrder_SUCCESS = 3201
 // 取消未支付订单
 H_config.API_cancelUnpaidOrder_URL = '/order/cancelUnpaidOrder'
 H_config.STATECODE_cancelUnpaidOrder_SUCCESS = 3204
-// 修改订单状态
+// 修改订单状态（支付）
 H_config.API_changeOrderStatus_URL = '/order/payForOrder'
 H_config.STATECODE_changeOrderStatus_SUCCESS = 3202
+// 根据订单编号获取id
+H_config.API_selectUpdateCondition_URL = '/order/selectUpdateCondition'
 
 // 分页获取校区
 H_config.API_getCampus_URL = '/campus/selectAllByPage'
