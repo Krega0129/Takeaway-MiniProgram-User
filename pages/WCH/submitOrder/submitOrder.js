@@ -7,8 +7,13 @@ import {
 
 import {
   cancelOrder,
-  refund
+  refund,
+  selectUpdateCondition
 } from '../../../service/bill'
+
+import {
+  updateOrderStatus
+} from '../../../service/order'
 
 import {
   formatTime,
@@ -64,6 +69,8 @@ Page({
 
     let eventChannel = this.getOpenerEventChannel()
     eventChannel.on('submitOrder', data => {
+      console.log(data);
+      
       let payTime = null
       if(data.payTime) {
         payTime = formatTime(data.payTime)
@@ -211,12 +218,30 @@ Page({
       wx.hideLoading()
       this.hideModal()
       if(res.data && res.data.code && res.data.code === H_config.STATECODE_refund_SUCCESS) {
-        wx.showToast({
-          title: '申请成功',
+        selectUpdateCondition({
+          orderNumber: this.data.orderNum
+        }).then(result => {
+          wx.hideLoading()
+          updateOrderStatus({
+            id: result.data.data.id,
+            orderId: result.data.data.orderId,
+            orderNumber: this.data.orderNum,
+            status: 1
+          }).then((res)=>{
+            wx.hideLoading()
+            if(res.data.code === 3255) {
+              wx.showToast({
+                title: '申请成功',
+              })
+              this.setData({
+                isRefund: true
+              })
+            } else {
+              showToast('申请失败')
+            }
+          })
         })
-        this.setData({
-          isRefund: true
-        })
+        
       } else {
         showToast('申请失败')
       }

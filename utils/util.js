@@ -101,8 +101,8 @@ export function pay(data) {
               changeOrderStatus({
                 orderNumber: data.orderNumber,
                 userId: wx.getStorageSync('userId')
-              }).then(res => {
-                if(res && res.data && res.data.code === H_config.STATECODE_changeOrderStatus_SUCCESS) {
+              }).then(rest => {
+                if(rest && rest.data && rest.data.code === H_config.STATECODE_changeOrderStatus_SUCCESS) {
                   wx.showToast({
                     title: '支付成功！'
                   })
@@ -124,7 +124,7 @@ export function pay(data) {
                     }
                   })
                 } else {
-                  showToast('支付失败！：' + res.data.msg)
+                  showToast('支付失败！：' + rest.data.msg)
                 }
               })
             }

@@ -56,7 +56,7 @@ export function addNewAddress(data) {
   })
 }
 
-export function orderNewOrder(data) {
+export async function orderNewOrder(data) {
   return request({
     url: H_config.API_orderNewOrder_URL,
     method: 'post',
@@ -132,6 +132,18 @@ export function prePay(data) {
 export function refund(data) {
   return request({
     url: H_config.API_refund_URL,
+    method: 'post',
+    data: data,
+    header: {
+      'content-type': 'application/x-www-form-urlencoded'
+    }
+  })
+}
+
+// 根据订单编号查询id
+export function selectUpdateCondition(data) {
+  return request({
+    url: H_config.API_selectUpdateCondition_URL,
     method: 'post',
     data: data,
     header: {
