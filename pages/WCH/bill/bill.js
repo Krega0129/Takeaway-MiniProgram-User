@@ -92,6 +92,10 @@ Page({
       })
     })
     wx.getStorageSync('token') && this._getAllAddressByCampus()
+    this.setData({
+      sendPrice: (Number(wx.getStorageSync('sendPrice')) / 2).toFixed(2),
+      packPrice: (Number(wx.getStorageSync('sendPrice')) / 2).toFixed(2)
+    })
   },
   takeAway() {
     app.culPrice(this.data.cartList, Number(wx.getStorageSync('sendPrice')))
