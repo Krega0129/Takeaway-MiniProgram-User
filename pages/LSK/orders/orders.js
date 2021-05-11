@@ -1,9 +1,14 @@
 import { getUserTotalOrder, getUnpaidOrder, cancelUnpaidOrder, selectUserPaidOrder,updateOrderStatus } from '../../../service/order';
-import {changeOrderStatus,refundOrder} from '../../../service/bill';
+import {
+  prePay,
+  changeOrderStatus,
+  refundOrder
+} from '../../../service/bill';
 import { loadingOff, showToast } from '../../../utils/util';
 import {
   BASE_URL,
-  K_config
+  K_config,
+  H_config
 } from '../../../service/config'
 let app = getApp()
 let bus = app.globalData.bus
@@ -408,6 +413,8 @@ Page({
     wx.login({
       success: res => {
         const code = res.code
+        console.log(res);
+        
         wx.navigateTo({
           url: '/pages/WCH/login/login',
           success: res => {
@@ -431,13 +438,9 @@ Page({
     }, order)
   },
   // 微信支付请求
-  pay(data, parm) {
-    wx.request({
-      url: BASE_URL + '/wechatpay/prePay',
-      method: 'POST',
-      header: { 'content-type': 'application/json' },
-      data: data,
-      success: (res) => {
+  pay(data) {
+    prePay(data).then(res => {
+    if(res && res.data && res.data.code === H_config.STATECODE_prePay_SUCCESS) {
         if (res.data.prepayId != ''){
           const map = res.data.data
           wx.requestPayment({
@@ -459,64 +462,12 @@ Page({
                 })
                 this.setUnpaidOrder()
               }
-              // setTimeout(() => {
-              //   oncePaySharing({
-              //     deliveryFee: parm.deliveryFee,
-              //     orderNumber: parm.orderNumber,
-              //     shopName: parm.shopName,
-              //     totalAmount: parm.totalAmount
-              //   }).then(result => {
-              //     console.log(result);
-              //   })
-              // }, 90000);
-              // wx.navigateTo({
-              //   url: '/pages/WCH/submitOrder/submitOrder',
-              //   success: result => {
-              //     result.eventChannel.emit('submitOrder', {
-              //       cartList: this.data.cartList,
-              //       shopAddress: this.data.storeAddress,
-              //       user: this.data.user,
-              //       storeTelNum: this.data.storeTelNum,
-              //       remark: this.data.remark || '',
-              //       takeAway: this.data.takeAway,
-              //       payTime: new Date(),
-              //       obj: data,
-              //       isPay: true
-              //     })
-              //   }
-              // })
             },
             'fail': () => {
-              showToast('支付异常',2000)
-              // wx.navigateTo({
-              //   url: '/pages/WCH/submitOrder/submitOrder',
-              //   success: res => {
-              //     // 记录时间
-              //     // console.log(data);
-              //     wx.setStorageSync('time', new Date().getTime() + 900000)
-              //     res.eventChannel.emit('submitOrder', {
-              //       cartList: this.data.cartList,
-              //       shopAddress: this.data.storeAddress,
-              //       user: this.data.user,
-              //       storeTelNum: this.data.storeTelNum,
-              //       remark: this.data.remark || '',
-              //       takeAway: this.data.takeAway,
-              //       obj: data,
-              //       isPay: false
-              //     })
-              //   }
-              // })
+              showToast('取消支付',2000)
             }
           })
         }
-
-
-      },
-      fail: () => {
-        wx.showToast({
-          title: '支付异常，请重新尝试！',
-          icon: 'none'
-        })
       }
     });
   },
@@ -531,9 +482,9 @@ Page({
     const index=e.currentTarget.dataset.index
     const orderMsg=orderList[index]
     wx.showActionSheet({
-      itemList:['不想点了','点错单了','昌辉屎忽鬼','锴爷起飞','其他原因'],
+      itemList:['不想点了','点错单了','其他原因'],
       success:(res)=>{
-        let  itemList=['不想点了','点错单了','昌辉屎忽鬼','锴爷起飞','其他原因']
+        let  itemList=['不想点了','点错单了','其他原因']
         const tapIndex=res.tapIndex
         const refundDesc=itemList[tapIndex]
         // console.log(orderMsg);

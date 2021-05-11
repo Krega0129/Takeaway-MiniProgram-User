@@ -172,6 +172,9 @@ Page({
                 'success':  (response) => {
                   if(response.errMsg === 'requestPayment:ok') {
                     console.log('支付了');
+                    this.setData({
+                      TabIndex: 1
+                    })
                     wx.showToast({
                       title: '支付成功！',
                     })

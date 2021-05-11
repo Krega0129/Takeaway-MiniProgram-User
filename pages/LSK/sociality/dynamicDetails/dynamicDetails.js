@@ -163,9 +163,13 @@ Page({
     console.log(e);
     let {comment} = e.detail.value
     let userId = this.data.userId
+    if(comment.length === 0){
+      showToast('评论不能为空', 1000)
+      return
+    }
     insertComment({
       content:comment,
-      nickname:wx.getStorageSync('nickName'),
+      nickName:wx.getStorageSync('nickName'),
       userId,
       shareId:this.data.dynamicDetails.shareId
     }).then((res)=>{
@@ -173,8 +177,9 @@ Page({
       if(res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_insertComment_SUCCESS){
         showToast('发布成功',1000)
         const commentItem={
-          content:comment,
-          nickName:wx.getStorageSync('nickName')
+          content: comment,
+          nickName: wx.getStorageSync('nickName'),
+          userId: userId
         }
         let commentList=this.data.dynamicDetails.commentList
         this.setData({

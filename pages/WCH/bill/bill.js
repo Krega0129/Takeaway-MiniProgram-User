@@ -252,7 +252,7 @@ Page({
           quantity: num,
           specification: item.spec,
           totalPrice: num * item.price,
-          unitPrice: item.price + (item.attrPrice ? item.attrPrice : 0)
+          unitPrice:Number(item.price + (item.attrPrice ? item.attrPrice : 0)).toFixed(2)
         }
         order.orderCommodities.push(food)
       }

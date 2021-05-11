@@ -41,7 +41,7 @@ Page({
       // }
     ],
     // 判断是否登录
-    isLogin : false
+    isLogin : true
   },
   // 修改地址
   goToAddressModify: function (e) {
@@ -103,10 +103,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if(wx.getStorageSync('token')){
+    if(!wx.getStorageSync('token')){
       this.setData({
-        isLogin:true
+        isLogin:false
       })
+    }else{
       this.setAllAddress()
     }
   },

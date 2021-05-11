@@ -86,7 +86,9 @@ Page({
       url: BASE_URL + "/shareschool/updatePhoto",
       filePath: path[0],
       name: 'file',
-      header: { "Content-Type": "multipart/form-data" },
+      header: { 
+        'userToken': wx.getStorageSync('token'),
+        "Content-Type": "multipart/form-data" },
       formData: {
         //和服务器约定的token, 一般也可以放在header中
         'session_token': wx.getStorageSync('session_token')
