@@ -106,7 +106,7 @@ Page({
     })
   },
   selfTake() {
-    app.culPrice(this.data.cartList)
+    app.culPrice(this.data.cartList, Number(this.data.packPrice))
     this.setData({
       takeAway: false,
       sendPrice: 0,
