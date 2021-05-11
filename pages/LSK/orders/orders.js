@@ -588,7 +588,7 @@ Page({
           let orderItem = paidList.find(res => res.orderNumber === orderNumber)
           orderItem.statusCode = '待送达'
         }
-        else if (orderMsg.currentStatus === 7) {
+        else if (orderMsg.currentStatus === 6) {
           for (let index = 0; index < obligationList.length; index++) {
             if (orderMsg.orderNumber === obligationList[index].orderNumber) {
               obligationList.splice(index - 1, 1)

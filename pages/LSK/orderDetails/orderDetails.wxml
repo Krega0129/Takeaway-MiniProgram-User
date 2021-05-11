@@ -66,7 +66,7 @@
       <view class="align-center flex justify-between padding-top-sm text-sm">
         <text>包装费</text>
         <block>
-          <text class="text-price">{{orderDetails.deliveryFee}}</text>
+          <text class="text-price">{{orderDetails.deliveryFee / 2}}</text>
         </block>
       </view>
     </view>
