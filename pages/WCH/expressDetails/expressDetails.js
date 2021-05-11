@@ -39,7 +39,7 @@ Page({
   },
   copyRiderPhone() {
     wx.setClipboardData({
-      data: this.data.riderPhone,
+      data: this.data.order.riderPhone,
       success() {
         wx.showToast({
           title: '复制成功',

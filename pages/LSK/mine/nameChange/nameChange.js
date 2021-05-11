@@ -37,7 +37,7 @@ Page({
   },
   // 修改姓名
   nameModify() {
-    let reg = /^[\w\u4e00-\u9fa5]{2,8}$/;
+    let reg = /^[\w\u4e00-\u9fa5]{2,12}$/;
     if(!reg.test(this.data.name)){
       wx.showToast({
         icon:'none',

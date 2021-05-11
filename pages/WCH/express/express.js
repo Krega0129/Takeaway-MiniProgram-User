@@ -175,6 +175,7 @@ Page({
                     this.setData({
                       TabIndex: 1
                     })
+                    this._selectUserOrder()
                     wx.showToast({
                       title: '支付成功！',
                     })

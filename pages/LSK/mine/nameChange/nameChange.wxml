@@ -5,7 +5,7 @@
 </cu-custom>
 <form bindsubmit="nameModify">
   <view class="cu-form-group" style="min-height:80rpx">
-    <input value="{{name}}" class="" data-auto-clear-button="true" style="position:relative" maxlength="8" bindinput="inputListener">
+    <input value="{{name}}" class="" data-auto-clear-button="true" style="position:relative" maxlength="12" bindinput="inputListener">
     <text class="cuIcon-roundclosefill text-gray {{isEmpty?'iconHide':'iconShow'}}" style="position:absolute;right:10rpx;top:10rpx;z-index:10" bindtap="clearInput"></text>
   </input>
   </view>
