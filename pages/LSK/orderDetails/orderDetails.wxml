@@ -42,11 +42,33 @@
         </view>
       </view>
     </view>
-    <view class="padding-tb solid-bottom  text-black align-center flex justify-between" style="font-size:30rpx" wx:if="{{orderDetails.deliveryAddress}}">
-      <text class="text-bold">配送费</text>
-      <block>
-        <text class="text-price">{{orderDetails.deliveryFee}}</text>
-      </block>
+    <view class="padding-tb solid-bottom  text-black " style="font-size:30rpx" wx:if="{{orderDetails.deliveryAddress}}">
+      <view class="align-center flex justify-between">
+        <text class="text-bold">配送费</text>
+        <block>
+          <text class="text-price">{{orderDetails.deliveryFee / 2}}</text>
+        </block>
+      </view>
+      <view class="align-center flex justify-between padding-top-sm text-sm">
+        <text>包装费</text>
+        <block>
+          <text class="text-price">{{orderDetails.deliveryFee / 2}}</text>
+        </block>
+      </view>
+    </view>
+    <view class="padding-tb solid-bottom  text-black " style="font-size:30rpx" wx:else>
+      <view class="align-center flex justify-between">
+        <text class="text-bold">配送费</text>
+        <block>
+          <text class="text-price">0</text>
+        </block>
+      </view>
+      <view class="align-center flex justify-between padding-top-sm text-sm">
+        <text>包装费</text>
+        <block>
+          <text class="text-price">{{orderDetails.deliveryFee}}</text>
+        </block>
+      </view>
     </view>
     <view class="padding-tb-sm align-center flex text-bold justify-between" style="height:104rpx">
       <text class="">实付</text>

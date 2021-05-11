@@ -138,7 +138,7 @@ App({
         'content-type': 'application/json'
       },
       success: (res) => {
-        // console.log('connect',res);
+        console.log('connect',res);
         this.webSocketOpen(uid, identity = 'user', lastestOrderDate)
       },
       fail: (res) => {
@@ -154,7 +154,7 @@ App({
           lastestOrderDate
         }),
         success: res => {
-          // console.log('send',res);
+          console.log('send',res);
           this.webGetSocketMessage()
         }
       })
@@ -166,7 +166,7 @@ App({
           identity,
         }),
         success: res => {
-          // console.log('send',res);
+          console.log('send',res);
           this.webGetSocketMessage()
         }
       })

@@ -31,7 +31,7 @@
 >
 <swiper class="screen-swiper square-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
   <swiper-item wx:for="{{swiperList}}" wx:key="index" data-url="{{item.photo}}" bindtap="tapBanner">
-    <image src="{{baseurl}}/{{item.photo}}" mode="scaleToFill"></image>
+    <image src="{{baseurl}}/{{item.photo}}" mode="aspectFill"></image>
   </swiper-item>
 </swiper>
 <view>
