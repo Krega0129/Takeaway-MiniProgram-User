@@ -106,7 +106,7 @@ Page({
     })
   },
   selfTake() {
-    app.culPrice(this.data.cartList)
+    app.culPrice(this.data.cartList, Number(this.data.packPrice))
     this.setData({
       takeAway: false,
       sendPrice: 0,
@@ -222,7 +222,7 @@ Page({
       // 整个订单大对象
       const order = {
         businessPhone: this.data.storeTelNum,
-        deliveryFee: this.data.sendPrice,
+        deliveryFee: Number(wx.getStorageSync('sendPrice')),
         orderCommodities: [],
         remarks: this.data.remark,
         shopAddress: this.data.storeAddress,
@@ -272,6 +272,7 @@ Page({
         if(res && res.data && res.data.code === H_config.STATECODE_orderNewOrder_SUCCESS) {
           const obj = res.data.data
           // obj.userId = wx.getStorageSync('userId')
+          obj.packPrice = this.data.packPrice
           wx.hideLoading()
           pay.call(this, obj)
           let oldCart = app.globalData.cartList.find(item => item.shopId === this.data.shopId)

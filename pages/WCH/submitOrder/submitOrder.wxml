@@ -70,11 +70,15 @@
       </view>
       <view class="margin-left" style="line-height: 64rpx">x{{item.count ? item.count : item.num}}</view>
     </view>
-    <view class="text-price margin-right-xl text-red text-bold" style="line-height: 64rpx">{{item.price + (item.attrPrice?item.attrPrice:0)}}</view>
+    <view class="text-price margin-right-xl text-red text-bold" style="line-height: 64rpx">{{item.singlePrice}}</view>
   </view>
   <view class="padding-lr padding-tb-xs flex justify-between" style="line-height: 38rpx" wx:if="{{takeAway}}">
     <view>配送费</view>
     <view class="text-price margin-right-xl text-red text-bold">{{sendPrice}}</view>
+  </view>
+  <view class="padding-lr padding-tb-xs flex justify-between" style="line-height: 38rpx">
+    <view>包装费</view>
+    <view class="text-price margin-right-xl text-red text-bold">{{packPrice}}</view>
   </view>
   <view class="padding text-right margin-right-xl" style="line-height: 38rpx">
     <text class="text-sm padding-right">小计</text>
