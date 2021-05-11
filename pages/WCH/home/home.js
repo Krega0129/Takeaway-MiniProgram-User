@@ -22,7 +22,7 @@ Page({
     swiperList: [],
     imgUrl: '',
     showImg: false,
-    sendPrice: Number(wx.getStorageSync('sendPrice')),
+    sendPrice: Number(wx.getStorageSync('sendPrice')) / 2,
     minPrice: Number(wx.getStorageSync('minPrice')),
     triggered: false,
     categoryList: [],
@@ -100,10 +100,6 @@ Page({
           const campus = res.data.data.find(item => item.campusId === wx.getStorageSync('campusId'))
           wx.setStorageSync('sendPrice', campus.campusCost)
           wx.setStorageSync('minPrice', campus.campusMinPrice)
-          this.setData({
-            sendPrice: campus.campusCost,
-            minPrice: campus.campusMinPrice
-          })
         }
       })
 
