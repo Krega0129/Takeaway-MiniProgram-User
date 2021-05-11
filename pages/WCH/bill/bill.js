@@ -222,7 +222,7 @@ Page({
       // 整个订单大对象
       const order = {
         businessPhone: this.data.storeTelNum,
-        deliveryFee: this.data.sendPrice,
+        deliveryFee: Number(wx.getStorageSync('sendPrice')),
         orderCommodities: [],
         remarks: this.data.remark,
         shopAddress: this.data.storeAddress,
