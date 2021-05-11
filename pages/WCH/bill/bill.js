@@ -272,6 +272,7 @@ Page({
         if(res && res.data && res.data.code === H_config.STATECODE_orderNewOrder_SUCCESS) {
           const obj = res.data.data
           // obj.userId = wx.getStorageSync('userId')
+          obj.packPrice = this.data.packPrice
           wx.hideLoading()
           pay.call(this, obj)
           let oldCart = app.globalData.cartList.find(item => item.shopId === this.data.shopId)

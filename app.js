@@ -82,7 +82,7 @@ App({
     } else if(!oldInfo && !tag) {
       // 购物车不存在 && 没有规格
       obj.num = 1
-      obj.singlePrice = obj.price
+      obj.singlePrice = Number(obj.price).toFixed(2)
       old.foodList.push(obj)
     } else if (oldInfo && tag && tag === oldInfo.spec) {
       // 购物车中存在 && 有规格 && 购物车中存在此规格商品

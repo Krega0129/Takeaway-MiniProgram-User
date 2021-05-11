@@ -27,6 +27,7 @@ Page({
     totalPrice: null,
     shopName: '',
     sendPrice: 0,
+    packPrice: 0,
     totalCount: 0,
     shopId: '',
     user: {},
@@ -76,12 +77,16 @@ Page({
         payTime = formatTime(data.payTime)
       }
       app.culPrice(data.cartList, data.sendPrice)
+      data.cartList.map(item => {
+        item.singlePrice = Number(item.singlePrice).toFixed(2)
+      })
       this.setData({
         cartList: data.cartList,
         shopName: data.obj.shopName,
-        sendPrice: data.obj.deliveryFee,
+        sendPrice: Number(data.obj.deliveryFee).toFixed(2),
+        packPrice: Number(data.obj.packPrice).toFixed(2),
         shopAddress: data.shopAddress,
-        totalPrice: data.obj.totalAmount,
+        totalPrice: Number(data.obj.totalAmount).toFixed(2),
         user: data.user,
         storeTelNum: data.storeTelNum,
         remark: data.remark,
