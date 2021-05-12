@@ -63,7 +63,7 @@
     <view class="flex">
       <view class="cu-avatar" style="background-image:url({{item.imgUrl}});"></view>
       <view class="content margin-left">
-        <view class="text-cut text-black" style="width: 300rpx">
+        <view class="text-black" style="width: 300rpx">
           <view class="text-bold">{{item.name}}</view>
           <view class="text-gray text-xs">{{item.spec}}</view>
         </view>

@@ -76,15 +76,25 @@ Page({
       if(data.payTime) {
         payTime = formatTime(data.payTime)
       }
-      app.culPrice(data.cartList, data.sendPrice)
+      app.culPrice(data.cartList, data.obj.deliveryFee)
       data.cartList.map(item => {
         item.singlePrice = Number(item.singlePrice).toFixed(2)
       })
+
+      // 如果不是自取
+      if(data.takeAway) {
+        this.data.sendPrice = (Number(data.obj.deliveryFee) / 2).toFixed(2)
+        this.data.packPrice = (Number(data.obj.deliveryFee) / 2).toFixed(2)
+      } else {
+        this.data.sendPrice = 0
+        this.data.packPrice = Number(data.obj.deliveryFee).toFixed(2)
+      }
+
       this.setData({
         cartList: data.cartList,
         shopName: data.obj.shopName,
-        sendPrice: Number(data.obj.deliveryFee).toFixed(2),
-        packPrice: Number(data.obj.packPrice).toFixed(2),
+        sendPrice: this.data.sendPrice,
+        packPrice: this.data.packPrice,
         shopAddress: data.shopAddress,
         totalPrice: Number(data.obj.totalAmount).toFixed(2),
         user: data.user,

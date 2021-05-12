@@ -49,8 +49,8 @@
           <text class="text-price">{{orderDetails.deliveryFee / 2}}</text>
         </block>
       </view>
-      <view class="align-center flex justify-between padding-top-sm text-sm">
-        <text>包装费</text>
+      <view class="align-center flex justify-between padding-top-sm">
+        <text class="text-bold">包装费</text>
         <block>
           <text class="text-price">{{orderDetails.deliveryFee / 2}}</text>
         </block>
@@ -63,10 +63,10 @@
           <text class="text-price">0</text>
         </block>
       </view>
-      <view class="align-center flex justify-between padding-top-sm text-sm">
-        <text>包装费</text>
+      <view class="align-center flex justify-between padding-top-sm">
+        <text class="text-bold">包装费</text>
         <block>
-          <text class="text-price">{{orderDetails.deliveryFee / 2}}</text>
+          <text class="text-price">{{orderDetails.deliveryFee}}</text>
         </block>
       </view>
     </view>
