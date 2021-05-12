@@ -222,7 +222,6 @@ Page({
       // 整个订单大对象
       const order = {
         businessPhone: this.data.storeTelNum,
-        deliveryFee: Number(wx.getStorageSync('sendPrice')),
         orderCommodities: [],
         remarks: this.data.remark,
         shopAddress: this.data.storeAddress + '(' + wx.getStorageSync('address') + ')',
@@ -236,11 +235,15 @@ Page({
 
       // 是否自提
       if(this.data.takeAway) {
-        order.userName = this.data.user.contactName + (this.data.user.sex === 1 ? '（先生）' : '（女士）'),
+        order.userName = this.data.user.contactName + (this.data.user.sex === 1 ? '（先生）' : '（女士）')
+        // 配送费+包装费
+        order.deliveryFee = Number(wx.getStorageSync('sendPrice')).toFixed(2)
         order.userPhone = this.data.user.contactPhone
         order.deliveryAddress = this.data.user.campus + '-' + this.data.user.detailedAddress
       } else {
         order.userPhone = this.data.userTel
+        // 包装费
+        order.deliveryFee = Number(wx.getStorageSync('sendPrice') / 2).toFixed(2)
       } 
 
       // 每个商品对象
@@ -252,7 +255,7 @@ Page({
           quantity: num,
           specification: item.spec,
           totalPrice: num * item.price,
-          unitPrice:Number(item.price + (item.attrPrice ? item.attrPrice : 0)).toFixed(2)
+          unitPrice: Number(item.price + (item.attrPrice ? item.attrPrice : 0)).toFixed(2)
         }
         order.orderCommodities.push(food)
       }
@@ -272,7 +275,6 @@ Page({
         if(res && res.data && res.data.code === H_config.STATECODE_orderNewOrder_SUCCESS) {
           const obj = res.data.data
           // obj.userId = wx.getStorageSync('userId')
-          obj.packPrice = this.data.packPrice
           wx.hideLoading()
           pay.call(this, obj)
           let oldCart = app.globalData.cartList.find(item => item.shopId === this.data.shopId)
