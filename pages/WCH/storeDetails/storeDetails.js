@@ -712,5 +712,12 @@ Page({
   _previewImage(e) {
     // previewImage(e.currentTarget.dataset.imgurl)
     previewImage(this.data.licenseImg, e.currentTarget.dataset.imgurl)
+  },
+  onShareAppMessage(options) {
+    return {
+      title: '啰咪校园',
+      path: '/pages/WCH/home/home',
+      imageUrl: BASE_URL + '/images/logo.png'
+    }
   }
 })
