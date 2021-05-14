@@ -459,8 +459,9 @@ Page({
                   wx.showToast({
                     title: '支付成功！'
                   })
+                  this.setUnpaidOrder()
                 })
-                this.setUnpaidOrder()
+                
               }
             },
             'fail': () => {
@@ -488,30 +489,29 @@ Page({
         const tapIndex=res.tapIndex
         const refundDesc=itemList[tapIndex]
         // console.log(orderMsg);
-        refundOrder({
-          deliveryFee:orderMsg.deliveryFee,
+        updateOrderStatus({
+          id:orderMsg.id,
+          orderId:orderMsg.orderId,
           orderNumber:orderMsg.orderNumber,
-          refundDesc:refundDesc,
-          shopName:orderMsg.shopName,
-          totalAmount:orderMsg.totalAmount
+          status:orderMsg.status
         }).then((res)=>{
-          if(res.data.code===K_config.STATECODE_refund_SUCCESS){
-            wx.hideLoading()
-            console.log('111',orderMsg);
-            updateOrderStatus({
-              id:orderMsg.id,
-              orderId:orderMsg.orderId,
+          wx.hideLoading()
+          if(res.data.code===K_config.STATECODE_updateOrderStatus_SUCCESS){
+            refundOrder({
+              deliveryFee:orderMsg.deliveryFee,
               orderNumber:orderMsg.orderNumber,
-              status:orderMsg.status
+              refundDesc:refundDesc,
+              shopName:orderMsg.shopName,
+              totalAmount:orderMsg.totalAmount
             }).then((res)=>{
-              wx.hideLoading()
-              if(res.data.code===K_config.STATECODE_updateOrderStatus_SUCCESS){
+              if(res.data.code===K_config.STATECODE_refund_SUCCESS){
+                wx.hideLoading()
                 showToast('退款成功',2000)
                 this.setSelectUserPaidOrder()
-              }else{
-                showToast('退款失败，当前状态不允许修改',2000)
               }
             })
+          }else{
+            showToast('退款失败，当前状态不允许修改',2000)
           }
         })
       }
@@ -588,7 +588,7 @@ Page({
           let orderItem = paidList.find(res => res.orderNumber === orderNumber)
           orderItem.statusCode = '待送达'
         }
-        else if (orderMsg.currentStatus === 6) {
+        else {
           for (let index = 0; index < obligationList.length; index++) {
             if (orderMsg.orderNumber === obligationList[index].orderNumber) {
               obligationList.splice(index - 1, 1)

@@ -30,14 +30,14 @@ Page({
     showBackTop: false,
     pageNum: 1,
     cateImgList: [
-      '../../../assets/img/WCH/category/美食快餐.jpg',
-      '../../../assets/img/WCH/category/米粉面馆.jpg',
-      '../../../assets/img/WCH/category/奶茶.jpg',
-      '../../../assets/img/WCH/category/汉堡炸鸡.jpg',
-      '../../../assets/img/WCH/category/鲜果.jpg',
-      '../../../assets/img/WCH/category/烧烤夜宵.jpg',
-      '../../../assets/img/WCH/category/超市商铺.jpg',
-      '../../../assets/img/WCH/category/快递代拿.jpg'
+      BASE_URL + '/images/SBCH1.jpg',
+      BASE_URL + '/images/SBCH2.jpg',
+      BASE_URL + '/images/SBCH3.jpg',
+      BASE_URL + '/images/SBCH4.jpg',
+      BASE_URL + '/images/SBCH5.jpg',
+      BASE_URL + '/images/SBCH6.jpg',
+      BASE_URL + '/images/SBCH7.jpg',
+      BASE_URL + '/images/SBCH8.jpg'
     ],
     totalPages: 1,
     toBottom: null,

@@ -189,6 +189,8 @@ App({
     })
   },
   webSocketClose() {
-    wx.onSocketClose((result) => { })
+    wx.onSocketClose((result) => { 
+      console.log(result);
+    })
   }
 })

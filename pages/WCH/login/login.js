@@ -42,6 +42,7 @@ Page({
               wx.setStorageSync('nickName', res.data.data.nickname)
             } 
           })
+          getApp().webSocketConnect()
           wx.hideLoading()
           wx.showToast({
             title: '登录成功',

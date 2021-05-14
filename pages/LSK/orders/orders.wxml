@@ -110,8 +110,8 @@
               <view class="flex justify-end padding-top-sm">
                 <view class=""><button class="cu-btn button-hover " role="button" aria-disable="false" style="width:180rpx"
                     catchtap="showModal" data-target="Modal"  data-index="{{index}}">联系商家</button></view>
-                <view class="padding-left-sm"><button class="cu-btn button-hover " role="button" aria-disable="false"
-                    style="width:180rpx" catchtap="refund" data-index="{{index}}" wx:if="{{item.status==1}}">退款</button></view>
+                <view class="padding-left-sm" wx:if="{{item.status==1}}"><button class="cu-btn button-hover " role="button" aria-disable="false"
+                    style="width:180rpx" catchtap="refund" data-index="{{index}}" >退款</button></view>
               </view>
             </view>
           </view>

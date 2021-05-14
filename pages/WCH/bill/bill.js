@@ -224,7 +224,7 @@ Page({
         businessPhone: this.data.storeTelNum,
         orderCommodities: [],
         remarks: this.data.remark,
-        shopAddress: this.data.storeAddress,
+        shopAddress: this.data.storeAddress + '(' + wx.getStorageSync('address') + ')',
         shopId: this.data.shopId,
         shopName: this.data.shopName,
         shopPicture: this.data.imgUrl || '',

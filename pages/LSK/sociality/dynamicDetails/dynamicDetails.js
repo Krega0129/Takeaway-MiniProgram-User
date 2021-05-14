@@ -176,11 +176,7 @@ Page({
       loadingOff()
       if(res.data.code === K_config.STATECODE_SUCCESS || res.data.code === K_config.STATECODE_insertComment_SUCCESS){
         showToast('发布成功',1000)
-        const commentItem={
-          content: comment,
-          nickName: wx.getStorageSync('nickName'),
-          userId: userId
-        }
+        const commentItem = res.data.data 
         let commentList=this.data.dynamicDetails.commentList
         this.setData({
           comment:'',
@@ -191,7 +187,6 @@ Page({
           console.log(commentList);
           this.setData({
             'dynamicDetails.commentList':commentList,
-            
           })
         }
         let pages = getCurrentPages();
